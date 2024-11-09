@@ -15,6 +15,8 @@ import Personal from "./pages/Personal";
 import PersonalAccount from "./pages/PersonalAccount";
 import PersonalHistory from "./pages/PersonalHistory";
 import PersonalNotifications from "./pages/PersonalNotifications";
+import EmployeePositionList from "./pages/EmployeePositionList";
+import EmployeePositionEdit from "./pages/EmployeePositionEdit";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
             <Route path='/users/:id' element={<PrivateWrapper><UserEdit/></PrivateWrapper>}/>
             <Route path="/employees" element={<PrivateWrapper><EmployeeList/></PrivateWrapper>} />
             <Route path="/employees/:id" element={<PrivateWrapper><EmployeeEdit/></PrivateWrapper>} />
+            <Route path="/employee_position" element={<PrivateWrapper><EmployeePositionList/></PrivateWrapper>} />
+            <Route path="/employee_position/:id" element={<PrivateWrapper><EmployeePositionEdit/></PrivateWrapper>} />
             <Route path="/login" element={<LoginPage/>}></Route>
             <Route path='/error' element={<AccessDenied/>}/>
             <Route path="*" element={<NotFound/>} />

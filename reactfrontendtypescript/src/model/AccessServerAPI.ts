@@ -4,6 +4,7 @@ import {UserInfoResponse} from "./UserInfoResponse";
 import {User} from "./user.model";
 import {RoleForUser} from "./RoleForUser.model";
 import {Employee} from "./employee.model";
+import {EmployeePosition} from "./EmployeePosition.model";
 
 const token = "";
 
@@ -70,11 +71,20 @@ const employees = {
     delete: (id: number) => request.delete(`/employee/${id}`),
     find: (findNamePart: string) => request.post<Employee[]>('/employee/find', {findNamePart})
 };
+const positions = {
+    list: () => request.get<EmployeePosition[]>('/employee_position'),
+    details: (id: number) => request.get<EmployeePosition>(`/employee_position/${id}`),
+    create: (data: EmployeePosition) => request.post<EmployeePosition>('/employee_position', data),
+    update: (data: EmployeePosition) => request.put<EmployeePosition>(`/employee_position/${data.id}`, data),
+    delete: (id: number) => request.delete(`/employee_position/${id}`),
+    find: (findNamePart: string) => request.post<EmployeePosition[]>('/employee_position/find', {findNamePart})
+};
 
 const accessServerAPI = {
     loginUtils,
     users,
-    employees
+    employees,
+    positions
 }
 
 export default accessServerAPI;
