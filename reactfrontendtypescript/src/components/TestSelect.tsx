@@ -3,6 +3,7 @@ import AsyncSelect from 'react-select/async';
 import {Col, Label} from "reactstrap";
 import accessServerAPI from "../model/AccessServerAPI";
 import {Employee} from "../model/employee.model";
+import {EmployeePosition} from "../model/EmployeePosition.model";
 
 const loadOptions = (
     inputValue: string,
@@ -19,6 +20,21 @@ const loadOptions = (
     )
 };
 
+const loadOptionsPosition = (
+    inputValue: string,
+    callback: (options: any) => void
+) => {
+    accessServerAPI.positions.find(inputValue).then(
+        employeePositionList => {
+            const positionOptions = employeePositionList.map((position: EmployeePosition ) => ({
+                value: position.id,
+                label: position.id
+            }));
+            callback(positionOptions);
+        }
+    )
+};
+
 export const MyComponent = () => {
 
     return (
@@ -27,6 +43,17 @@ export const MyComponent = () => {
             {/*<Select options={options} id="aaa" name="aaa"/>*/}
             <AsyncSelect cacheOptions loadOptions={loadOptions} defaultOptions/>
         </Col>
+        </label>
+    )
+}
+export const MyComponentPosition = () => {
+
+    return (
+        <label className="row small mb-1"> <div className="col-2 text-end pe-0" >Професия</div>
+            <Col sm="10" className="text-start">
+                {/*<Select options={options} id="aaa" name="aaa"/>*/}
+                <AsyncSelect cacheOptions loadOptions={loadOptionsPosition} defaultOptions/>
+            </Col>
         </label>
     )
 }

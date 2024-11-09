@@ -60,7 +60,7 @@ class EmployeePositionEdit extends Component<EmployeePositionEditProps, Employee
 
     render() {
         const position  = this.state.position;
-        const title = <div>{position.id ? 'Редактировать сотрудника' : 'Добавить сотрудника'}</div>;
+        const title = <div>{position.id ? 'Редактировать професию' : 'Добавить професию'}</div>;
 
         return (
         <div>

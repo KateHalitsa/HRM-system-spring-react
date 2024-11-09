@@ -54,14 +54,14 @@ class EmployeePositionList extends Component<{}, EmployeePositionListState> {
             <div>
                 <AppNavbar />
                 <Container fluid className="pt-2">
-                    <h5>Должности</h5>
+                    <h5>Професии</h5>
                     <Table striped hover size="sm">
                         <thead>
                         <tr>
                             <th>Название</th>
                             <th className="text-end">
                                 <Button size="sm" color="success" outline tag={Link} to="/employee_position/new" className="py-0">
-                                    Добавить должность
+                                    Добавить професию
                                 </Button>
                             </th>
                         </tr>

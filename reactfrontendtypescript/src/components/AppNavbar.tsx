@@ -44,7 +44,8 @@ const AppNavbar: React.FC<AppNavbarProps> = (args) => {
                     <PrivateNavItem to="/personal" name="Личный кабинет" />
                     <PrivateNavItem to="/users" name="Пользователи" />
                     <PrivateNavItem to="/employees" name="Сотрудники" />
-                    <PrivateNavItem to="/employee_position" name="Должности" />
+                    <PrivateNavItem to="/employee_position" name="Професии" />
+                    <PrivateNavItem to="/workplace" name="Должности" />
                 </Nav>
                 {
                     auth.isAuthenticated() ? (
