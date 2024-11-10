@@ -1,11 +1,10 @@
-//import {emptyWorkplace, Workplace} from "../model/workplace.model";
 import React, {Component} from "react";
 import accessServerAPI from "../model/AccessServerAPI";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomControls";
 import {useNavigate} from "react-router-dom";
 import {MyComponentPosition} from "./LookupSelector";
-import {emptyWorkplace, Workplace} from "../model/workplace.model";
+import {Workplace} from "../model/workplace.model";
 
 
 export type ButtonType = "save" | "apply" | "cancel" | "close";
@@ -29,7 +28,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
     constructor(props: IWorkplaceEditorProps) {
         super(props);
         this.state = {
-            workplace: emptyWorkplace,
+            workplace: new Workplace(),
             dataChanged: false,
             name: "",
 

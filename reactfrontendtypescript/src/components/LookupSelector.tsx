@@ -113,7 +113,7 @@ export class LookupSelector extends Component<ILookupSelectorProps, ILookupSelec
                 <label className="row small mb-1">
                     <div className="col-2 text-end pe-0" style={{display: "flex", alignItems: "center", justifyContent: "right"}}>{this.props.label}</div>
                     <Col sm="10" className="text-start">
-                        <AsyncSelect cacheOptions defaultOptions
+                        <AsyncSelect cacheOptions defaultOptions isClearable
                                      loadOptions={this.props.findFunction}
                                      value={value}
                                      onChange={(lookupItem) => onChangeSelectedOption(lookupItem)}

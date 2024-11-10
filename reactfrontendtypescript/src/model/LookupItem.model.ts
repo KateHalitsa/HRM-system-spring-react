@@ -1,4 +1,4 @@
 export class LookupItem {
-    public value!: number;
-    public label!: string;
+    public value: number = 0;
+    public label: string = "";
 }

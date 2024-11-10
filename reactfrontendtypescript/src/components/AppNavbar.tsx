@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react';
-import { Collapse, Nav, Navbar, NavbarBrand, NavbarText, NavbarToggler, NavItem, Button } from 'reactstrap';
-import { Link, useLocation, useNavigate, NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Collapse, Nav, Navbar, NavbarBrand, NavbarText, NavbarToggler, Button } from 'reactstrap';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import lLogoEmployees from '../images/employees.png';
 import { auth } from "../PrivateRouteUtils/Auth";
 import {PrivateNavItem, CommonNavItem}  from "../PrivateRouteUtils/PrivateNavItem";

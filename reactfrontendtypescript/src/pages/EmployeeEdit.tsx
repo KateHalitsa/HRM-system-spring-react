@@ -1,4 +1,4 @@
-import React, {Component, RefObject} from 'react';
+import React, {Component} from 'react';
 import {withRouter, WithRouterProps} from "../PrivateRouteUtils/RouterUtils";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';

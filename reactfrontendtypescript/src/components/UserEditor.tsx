@@ -1,4 +1,4 @@
-import {emptyUser, User} from "../model/user.model";
+import {User} from "../model/user.model";
 import React, {Component} from "react";
 import accessServerAPI from "../model/AccessServerAPI";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
@@ -29,7 +29,7 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
     constructor(props: IUserEditorProps) {
         super(props);
         this.state = {
-            user: emptyUser,
+            user: new User(),
             dataChanged: false,
             password: "",
             passwordConfirm: "",

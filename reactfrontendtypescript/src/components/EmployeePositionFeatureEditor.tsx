@@ -1,11 +1,10 @@
-//import {emptyEmployeePositionFeature, EmployeePositionFeature} from "../model/feature.model";
 import React, {Component} from "react";
 import accessServerAPI from "../model/AccessServerAPI";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomControls";
 import {useNavigate} from "react-router-dom";
 import {MyComponentPosition} from "./LookupSelector";
-import {emptyEmployeePositionFeature, EmployeePositionFeature} from "../model/EmployeePositionFeature.model";
+import {EmployeePositionFeature} from "../model/EmployeePositionFeature.model";
 
 
 export type ButtonType = "save" | "apply" | "cancel" | "close";
@@ -29,7 +28,7 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
     constructor(props: IEmployeePositionFeatureEditorProps) {
         super(props);
         this.state = {
-            feature: emptyEmployeePositionFeature,
+            feature: new EmployeePositionFeature(),
             dataChanged: false,
             name: "",
 
@@ -78,8 +77,6 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
         feature.employeePositionId = parseInt(event.target.value);
         this.setState({...this.state, feature, dataChanged: true});
     }
-
-
 
     validateData(){
         let errorMessage = "";

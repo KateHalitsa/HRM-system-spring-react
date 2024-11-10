@@ -1,16 +1,9 @@
 export class User {
-  id!: number;
-  login!: string;
-  password!: string;
-  email!: string;
-  employeeId!: number;
+  id: number = 0;
+  login: string = "";
+  password: string = "";
+  email: string = "";
+  employeeId: number = 0;
 }
 
-export const emptyUser: User = {
-  id: 0,
-  login: '',
-  password: '',
-  email: '',
-  employeeId: 0
-};
 

@@ -1,10 +1,7 @@
-import React, {Component, MouseEventHandler, RefObject} from 'react';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
 import {withRouter, WithRouterProps} from "../PrivateRouteUtils/RouterUtils";
 import {Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
-import axios from "axios";
-import {User} from "../model/user.model";
 import accessServerAPI from "../model/AccessServerAPI";
 import {auth} from "../PrivateRouteUtils/Auth";
 

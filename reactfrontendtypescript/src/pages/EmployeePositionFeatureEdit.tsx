@@ -1,8 +1,7 @@
-import React, {Component, RefObject} from 'react';
+import React, {Component} from 'react';
 import {withRouter, WithRouterProps} from "../PrivateRouteUtils/RouterUtils";
 import {Container} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
-//import {EmployeePositionFeatureRoles} from "../components/EmployeePositionFeatureRoles";
 import {EmployeePositionFeatureEditor} from "../components/EmployeePositionFeatureEditor";
 
 interface IEmployeePositionFeatureEditProps extends WithRouterProps {}

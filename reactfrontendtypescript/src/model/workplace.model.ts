@@ -1,12 +1,5 @@
 export class Workplace {
-  id!: number;
-  name!: string;
-  employeePositionId!:number;
+  id: number = 0;
+  name: string = "";
+  employeePositionId: number = 0;
 }
-
-export const emptyWorkplace: Workplace = {
-  id: 0,
-  name: '',
-  employeePositionId:0
-};
-

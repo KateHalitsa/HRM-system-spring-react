@@ -14,12 +14,3 @@ export function dateToDisplayStr(date: Date): string {
   const d = new Date(date);
   return d.toLocaleDateString("ru",{day: 'numeric', month: 'long', year: 'numeric'});
 }
-
-
-/*
-export const emptyEmployee: Employee  = {
-  id: 0,
-  firstName: '',
-  lastName: '',
-  birthday: new Date(),
-}; */

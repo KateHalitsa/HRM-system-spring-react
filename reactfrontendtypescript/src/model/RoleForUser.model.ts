@@ -1,6 +1,6 @@
 export class RoleForUser {
-    public roleId!: number;
-    public roleName!: string;
-    public isSelected!: boolean;
-    public userRoleId!: number;
+    public roleId: number = 0;
+    public roleName: string = "";
+    public isSelected: boolean = false;
+    public userRoleId: number = 0;
 }

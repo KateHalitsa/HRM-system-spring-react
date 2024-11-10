@@ -1,4 +1,4 @@
-import React, {Component, ReactNode} from 'react';
+import React, {Component} from 'react';
 import '../App.css';
 import AppNavbar from '../components/AppNavbar';
 import {Container, Nav, Navbar, NavItem} from 'reactstrap';
