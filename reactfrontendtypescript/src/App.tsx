@@ -19,6 +19,8 @@ import EmployeePositionList from "./pages/EmployeePositionList";
 import EmployeePositionEdit from "./pages/EmployeePositionEdit";
 import WorkplaceList from "./pages/WorkplaceList";
 import WorkplaceEdit from "./pages/WorkplaceEdit";
+import EmployeePositionFeatureEdit from "./pages/EmployeePositionFeatureEdit";
+import EmployeePositionFeatureList from "./pages/EmployeePositionFeatureList";
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
             <Route path="/employee_position/:id" element={<PrivateWrapper><EmployeePositionEdit/></PrivateWrapper>} />
             <Route path="/workplace" element={<PrivateWrapper><WorkplaceList/></PrivateWrapper>} />
             <Route path="/workplace/:id" element={<PrivateWrapper><WorkplaceEdit/></PrivateWrapper>} />
+            <Route path="/employee_position_feature" element={<PrivateWrapper><EmployeePositionFeatureList/></PrivateWrapper>} />
+            <Route path="/employee_position_feature/:id" element={<PrivateWrapper><EmployeePositionFeatureEdit/></PrivateWrapper>} />
             <Route path="/login" element={<LoginPage/>}></Route>
             <Route path='/error' element={<AccessDenied/>}/>
             <Route path="*" element={<NotFound/>} />

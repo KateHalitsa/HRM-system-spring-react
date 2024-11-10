@@ -88,6 +88,14 @@ const workplaces = {
     delete: (id: number) => request.delete(`/workplace/${id}`),
     find: (findNamePart: string) => request.post<Workplace[]>('/workplace/find', {findNamePart})
 };
+const features = {
+    list: () => request.get<Workplace[]>('/employee_position_feature'),
+    details: (id: number) => request.get<Workplace>(`/employee_position_feature/${id}`),
+    create: (data: EmployeePosition) => request.post<Workplace>('/employee_position_feature', data),
+    update: (data: EmployeePosition) => request.put<Workplace>(`/employee_position_feature/${data.id}`, data),
+    delete: (id: number) => request.delete(`/employee_position_feature/${id}`),
+    find: (findNamePart: string) => request.post<Workplace[]>('/employee_position_feature/find', {findNamePart})
+};
 
 
 const accessServerAPI = {
@@ -95,7 +103,8 @@ const accessServerAPI = {
     users,
     employees,
     positions,
-    workplaces
+    workplaces,
+    features
 }
 
 export default accessServerAPI;
