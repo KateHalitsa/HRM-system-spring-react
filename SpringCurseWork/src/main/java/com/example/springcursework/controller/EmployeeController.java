@@ -2,7 +2,7 @@ package com.example.springcursework.controller;
 
 import com.example.springcursework.model.Employee;
 import com.example.springcursework.servise.EmployeeService;
-import com.example.springcursework.payload.request.EmployeeFindRequest;
+import com.example.springcursework.payload.request.LookupFindRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +36,7 @@ public class EmployeeController {
 
     @PostMapping(value = "/find")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public List<Employee> find(@RequestBody EmployeeFindRequest findVO) {
+    public List<Employee> find(@RequestBody LookupFindRequest findVO) {
         return this.employeeService.findByNamePart(findVO.getFindNamePart());
     }
 

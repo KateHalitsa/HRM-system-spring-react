@@ -4,7 +4,7 @@ import accessServerAPI from "../model/AccessServerAPI";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomControls";
 import {useNavigate} from "react-router-dom";
-import {MyComponent} from "./TestSelect";
+import {LookupSelector} from "./LookupSelector";
 
 
 export type ButtonType = "save" | "apply" | "cancel" | "close";
@@ -36,6 +36,7 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
             errorMessage: ""
         };
         this.reloadUserFromServer = this.reloadUserFromServer.bind(this);
+        this.onChangeEmployeeId = this.onChangeEmployeeId.bind(this);
         this.onChangeLogin = this.onChangeLogin.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePasswordConfirm = this.onChangePasswordConfirm.bind(this);
@@ -96,9 +97,11 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
         let errorMessage = "";
         const {user, password, passwordConfirm} = this.state;
 
-        if (user.login === ""){
+        if (user.employeeId <= 0) {
+            errorMessage = "Заполните поле 'Сотрудник'"
+        } else if (user.login === "") {
             errorMessage = "Заполните 'Логин'"
-        } else if (user.id <= 0)  {
+        } else if ((user.id <= 0) && (password === "")) {
             errorMessage = "Заполните 'Пароль'"
         } else if (password !== passwordConfirm){
             errorMessage = "'Подтверждение пароля' не равно 'Паролю'"
@@ -140,6 +143,13 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
       this.reloadUserFromServer();
     }
 
+    onChangeEmployeeId(newId: number){
+        let user = this.state.user;
+        user.employeeId = newId;
+        this.setState({...this.state, user, dataChanged: true});
+
+    }
+
     render() {
         const user  = this.state.user;
         const passwordPlaceholder = user.id ? 'для изменения пароля введите новый пароль' : '';
@@ -155,7 +165,12 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
                     <CardHeader className='py-1'>{this.props.title}</CardHeader>
                     <CardBody className="m-0 pb-0">
                         <Form>
-                            <MyComponent/>
+                            <LookupSelector label="Сотрудник"
+                                            lookupObjectId={user.employeeId}
+                                            findFunction={accessServerAPI.lookup.employeeList}
+                                            loadFunction={accessServerAPI.lookup.employee}
+                                            onChange={this.onChangeEmployeeId}
+                                            /*enabled={user.id <= 0}*/  />
                             <InputWithLabel label="Логин" id="login" value={user.login} onChange={this.onChangeLogin}/>
                             <InputWithLabel label="Пароль" id="password" type="password"
                                             placeholder={passwordPlaceholder}

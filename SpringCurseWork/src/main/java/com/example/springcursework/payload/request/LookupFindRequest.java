@@ -1,6 +1,6 @@
 package com.example.springcursework.payload.request;
 
-public class EmployeeFindRequest {
+public class LookupFindRequest {
     private String findNamePart;
 
     public String getFindNamePart() { return findNamePart;  }

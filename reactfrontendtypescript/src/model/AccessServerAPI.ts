@@ -6,6 +6,7 @@ import {RoleForUser} from "./RoleForUser.model";
 import {Employee} from "./employee.model";
 import {EmployeePosition} from "./EmployeePosition.model";
 import {Workplace} from "./workplace.model";
+import {LookupItem} from "./LookupItem.model";
 
 const token = "";
 
@@ -53,7 +54,10 @@ const request = {
 const loginUtils = {
     login: (username: string, password: string) => request.post<UserInfoResponse>('/auth/signin', {username, password}),
 }
-
+const lookup = {
+    employee: (id: number) => request.get<LookupItem>(`/lookup/employee/${id}`),
+    employeeList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee', {findNamePart}),
+};
 const users = {
     list: () => request.get<User[]>('/user'),
     details: (id: number) => request.get<User>(`/user/${id}`),
@@ -63,7 +67,6 @@ const users = {
     roles: (id: number) => request.get<RoleForUser[]>(`/user/roles/${id}`),
     updateRoles: (id: number, data: RoleForUser[]) => request.put<RoleForUser[]>(`/user/roles/${id}`, data),
 };
-
 const employees = {
     list: () => request.get<Employee[]>('/employee'),
     details: (id: number) => request.get<Employee>(`/employee/${id}`),
@@ -97,9 +100,9 @@ const features = {
     find: (findNamePart: string) => request.post<Workplace[]>('/employee_position_feature/find', {findNamePart})
 };
 
-
 const accessServerAPI = {
     loginUtils,
+    lookup,
     users,
     employees,
     positions,

@@ -4,7 +4,7 @@ import accessServerAPI from "../model/AccessServerAPI";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomControls";
 import {useNavigate} from "react-router-dom";
-import {MyComponent, MyComponentPosition} from "./TestSelect";
+import {MyComponentPosition} from "./LookupSelector";
 import {emptyWorkplace, Workplace} from "../model/workplace.model";
 
 

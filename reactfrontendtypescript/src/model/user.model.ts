@@ -3,12 +3,14 @@ export class User {
   login!: string;
   password!: string;
   email!: string;
+  employeeId!: number;
 }
 
 export const emptyUser: User = {
   id: 0,
   login: '',
   password: '',
-  email: ''
+  email: '',
+  employeeId: 0
 };
 
