@@ -49,19 +49,19 @@ export class LookupSelector extends Component<ILookupSelectorProps, ILookupSelec
         this.state = {
             curLookupItem: new LookupItem()
         }
-        this.LoadCurrentEmployee = this.LoadCurrentEmployee.bind(this);
+        this.LoadCurrentLookupItem = this.LoadCurrentLookupItem.bind(this);
     }
 
     componentDidMount() {
-        this.LoadCurrentEmployee();
+        this.LoadCurrentLookupItem();
     }
     componentDidUpdate(prevProps: ILookupSelectorProps, prevState: ILookupSelectorState){
         if (prevProps.lookupObjectId !== this.props.lookupObjectId){
-            this.LoadCurrentEmployee();
+            this.LoadCurrentLookupItem();
         }
     }
 
-    LoadCurrentEmployee(){
+    LoadCurrentLookupItem(){
         const lookupObjectId = this.props.lookupObjectId;
         const lookupItem = this.state.curLookupItem;
         if (lookupItem.value !== lookupObjectId) {
