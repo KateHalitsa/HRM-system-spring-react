@@ -23,5 +23,19 @@ public interface LookupItemRepository extends JpaRepository<LookupItem, Integer>
             """,
             nativeQuery = true)
     public LookupItem loadEmployeeItem(int id);
+    @Query(value = """
+            SELECT e.id,  e.name
+            FROM employee_position e
+            WHERE  e.name LIKE ?1
+            """,
+            nativeQuery = true)
+    List<LookupItem> findPositionList(String likeParam);
 
+    @Query(value = """
+            SELECT e.id,  e.name
+            FROM employee_position e
+            WHERE e.id = ?1
+            """,
+            nativeQuery = true)
+    public LookupItem loadPositionItem(int id);
 }

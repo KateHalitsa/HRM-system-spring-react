@@ -3,13 +3,15 @@ import accessServerAPI from "../model/AccessServerAPI";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomControls";
 import {useNavigate} from "react-router-dom";
-import {MyComponentPosition} from "./LookupSelector";
+import {LookupSelector} from "./LookupSelector";
 import {EmployeePositionFeature} from "../model/EmployeePositionFeature.model";
+
 
 
 export type ButtonType = "save" | "apply" | "cancel" | "close";
 
 export interface IEmployeePositionFeatureEditorProps {
+
     featureId: number;
     title: string;
     buttons: ButtonType[];
@@ -18,6 +20,7 @@ export interface IEmployeePositionFeatureEditorProps {
 }
 
 interface IEmployeePositionFeatureEditorState {
+
     feature: EmployeePositionFeature;
     dataChanged: boolean;
     name: string;
@@ -28,6 +31,7 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
     constructor(props: IEmployeePositionFeatureEditorProps) {
         super(props);
         this.state = {
+
             feature: new EmployeePositionFeature(),
             dataChanged: false,
             name: "",
@@ -36,10 +40,10 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
         };
         this.reloadEmployeePositionFeatureFromServer = this.reloadEmployeePositionFeatureFromServer.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
-        this.onChangePosition = this.onChangePosition.bind(this);
         this.validateData = this.validateData.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onCancel = this.onCancel.bind(this);
+        this.onChangePositionId = this.onChangePositionId.bind(this);
     }
 
     componentDidMount() {
@@ -72,18 +76,22 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
         feature.name = event.target.value;
         this.setState({...this.state, feature, dataChanged: true});
     }
-    onChangePosition(event: React.ChangeEvent<HTMLInputElement>) {
-        let feature = this.state.feature;
-        feature.employeePositionId = parseInt(event.target.value);
-        this.setState({...this.state, feature, dataChanged: true});
-    }
 
+    onChangePositionId(newId: number){
+        let feature = this.state.feature;
+        feature.employeePositionId = newId;
+        this.setState({...this.state, feature, dataChanged: true});
+
+    }
     validateData(){
         let errorMessage = "";
         const {feature, name} = this.state;
 
         if (feature.name === ""){
             errorMessage = "Заполните 'Название'"
+        }else if  (feature.employeePositionId<= 0)
+        {
+            errorMessage = "Заполните поле 'Профессия'"
         }
 
         this.setState({...this.state, errorMessage});
@@ -133,9 +141,15 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
                     <CardHeader className='py-1'>{this.props.title}</CardHeader>
                     <CardBody className="m-0 pb-0">
                         <Form>
-                            <MyComponentPosition/>
+
+                            <LookupSelector label="Профессия"
+                                            lookupObjectId={feature.employeePositionId}
+                                            findFunction={accessServerAPI.lookup.positionList}
+                                            loadFunction={accessServerAPI.lookup.aposition}
+                                            onChange={this.onChangePositionId}
+                                /*enabled={user.id <= 0}*/  />
                             <InputWithLabel label="Название характеристики" id="name" value={feature.name} onChange={this.onChangeName}/>
-                            <InputWithLabel label="Профессия" id="employee_position_id" value={String(feature.employeePositionId)} onChange={this.onChangePosition}/>
+                            {/*  <InputWithLabel label="Профессия" id="employee_position_id" value={String(feature.employeePositionId)} onChange={this.onChangePosition}/>*/}
                             <ErrorPanel error={this.state.errorMessage}/>
                             <FormGroup className="text-end">
                                 {buttons.includes("save") && <SaveButton onClick={() => this.onSave(true)} enabled={this.state.dataChanged} />}

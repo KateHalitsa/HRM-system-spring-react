@@ -57,6 +57,8 @@ const loginUtils = {
 const lookup = {
     employee: (id: number) => request.get<LookupItem>(`/lookup/employee/${id}`),
     employeeList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee', {findNamePart}),
+    aposition: (id: number) => request.get<LookupItem>(`/lookup/employee_position/${id}`),
+    positionList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee_position', {findNamePart}),
 };
 const users = {
     list: () => request.get<User[]>('/user'),

@@ -5,31 +5,9 @@ import accessServerAPI from "../model/AccessServerAPI";
 import {EmployeePosition} from "../model/EmployeePosition.model";
 import {LookupItem} from "../model/LookupItem.model";
 
-const loadOptionsPosition = (
-    inputValue: string,
-    callback: (options: any) => void
-) => {
-    accessServerAPI.positions.find(inputValue).then(
-        employeePositionList => {
-            const positionOptions = employeePositionList.map((position: EmployeePosition ) => ({
-                value: position.id,
-                label: position.id
-            }));
-            callback(positionOptions);
-        }
-    )
-};
 
-export const MyComponentPosition = () => {
 
-    return (
-        <label className="row small mb-1"> <div className="col-2 text-end pe-0" >Професия</div>
-            <Col sm="10" className="text-start">
-                <AsyncSelect cacheOptions loadOptions={loadOptionsPosition} defaultOptions/>
-            </Col>
-        </label>
-    )
-}
+
 
 interface ILookupSelectorProps {
     label: string;

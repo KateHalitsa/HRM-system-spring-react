@@ -3,7 +3,7 @@ import accessServerAPI from "../model/AccessServerAPI";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomControls";
 import {useNavigate} from "react-router-dom";
-import {MyComponentPosition} from "./LookupSelector";
+import {LookupSelector} from "./LookupSelector";
 import {Workplace} from "../model/workplace.model";
 
 
@@ -36,10 +36,10 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         };
         this.reloadWorkplaceFromServer = this.reloadWorkplaceFromServer.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
-        this.onChangePosition = this.onChangePosition.bind(this);
         this.validateData = this.validateData.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onCancel = this.onCancel.bind(this);
+        this.onChangePositionId = this.onChangePositionId.bind(this);
     }
 
     componentDidMount() {
@@ -72,12 +72,13 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         workplace.name = event.target.value;
         this.setState({...this.state, workplace, dataChanged: true});
     }
-    onChangePosition(event: React.ChangeEvent<HTMLInputElement>) {
-        let workplace = this.state.workplace;
-        workplace.employeePositionId = parseInt(event.target.value);
-        this.setState({...this.state, workplace, dataChanged: true});
-    }
 
+    onChangePositionId(newId: number){
+        let workplace = this.state.workplace;
+        workplace.employeePositionId = newId;
+        this.setState({...this.state, workplace, dataChanged: true});
+
+    }
 
 
     validateData(){
@@ -87,8 +88,12 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         if (workplace.name === ""){
             errorMessage = "Заполните 'Название'"
         }
+        else if  (workplace.employeePositionId<= 0)
+        {
+            errorMessage = "Заполните поле 'Профессия'"
+        }
 
-        this.setState({...this.state, errorMessage});
+            this.setState({...this.state, errorMessage});
 
         return errorMessage === "";
     }
@@ -130,14 +135,21 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         }
 
         return (
+
             <Container className="mx-0 my-0 px-0 py-0">
                 <Card color="light"  className="mt-0 p-0">
                     <CardHeader className='py-1'>{this.props.title}</CardHeader>
                     <CardBody className="m-0 pb-0">
                         <Form>
-                            <MyComponentPosition/>
+
+                            <LookupSelector label="Профессия"
+                                            lookupObjectId={workplace.employeePositionId}
+                                            findFunction={accessServerAPI.lookup.positionList}
+                                            loadFunction={accessServerAPI.lookup.aposition}
+                                            onChange={this.onChangePositionId}
+                                /*enabled={user.id <= 0}*/  />
                             <InputWithLabel label="Название" id="name" value={workplace.name} onChange={this.onChangeName}/>
-                            <InputWithLabel label="Профессия" id="employee_position_id" value={String(workplace.employeePositionId)} onChange={this.onChangePosition}/>
+                            {/*<InputWithLabel label="Профессия" id="employee_position_id" value={String(workplace.employeePositionId)} onChange={this.onChangePosition}/>*/}
                             <ErrorPanel error={this.state.errorMessage}/>
                             <FormGroup className="text-end">
                                 {buttons.includes("save") && <SaveButton onClick={() => this.onSave(true)} enabled={this.state.dataChanged} />}
