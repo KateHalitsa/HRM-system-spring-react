@@ -1,9 +1,8 @@
 package com.example.springcursework.servise;
 
-import com.example.springcursework.model.Workplace;
+import com.example.springcursework.model.*;
 
-import com.example.springcursework.repository.RoleRepository;
-import com.example.springcursework.repository.WorkplaceRepository;
+import com.example.springcursework.repository.*;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,11 @@ public class WorkplaceServiceImpl implements WorkplaceService{
     @Autowired
     private WorkplaceRepository workplaceRepository;
     @Autowired
-    private RoleRepository roleRepository;
-   /* @Autowired
-    private RoleForWorkplaceRepository roleForWorkplaceRepository;
+    private EmployeePositionFeatureRepository featureRepository;
     @Autowired
-    private WorkplaceRoleRepository workplaceRoleRepository;*/
+    private FeatureForWorkplaceRepository featureForWorkplaceRepository;
+    @Autowired
+    private WorkplaceFeatureRepository workplaceFeatureRepository;
 
     @Override
     public Workplace insert(Workplace workplaceVO) {
@@ -47,6 +46,37 @@ public class WorkplaceServiceImpl implements WorkplaceService{
     public Workplace updateWorkplace(int id, Workplace workplaceVO) {
         workplaceVO.setId(id);
         return this.workplaceRepository.save(workplaceVO);
+    }
+
+    @Override
+    public List<EmployeePositionFeature> findRelatedFeatures(int workplaceId) {
+        return  featureRepository.findByWorkplaceId(workplaceId);
+    }
+
+    @Override
+    public List<FeatureForWorkplace> FeaturesByWorkplaceId(int id) {
+        return  featureForWorkplaceRepository.findFeatureForWorkplaceId(id);
+    }
+
+    @Override
+    public List<FeatureForWorkplace> updateFeaturesByWorkplaceId(int workplaceId, List<FeatureForWorkplace> features) {
+        for (int i = 0; i < features.size(); i++) {
+            FeatureForWorkplace feature = features.get(i);
+            boolean isEmptyUserRoleId = (feature.getWorkplaceFeatureId() == null) || (feature.getWorkplaceFeatureId() <= 0);
+            if (feature.getIsSelected()){
+                if (isEmptyUserRoleId){
+                    WorkplaceFeature newWorkplaceFeature = new WorkplaceFeature();
+                    newWorkplaceFeature.setWorkplaceId(workplaceId);
+                    newWorkplaceFeature.setFeatureId(feature.getFeatureId());
+                    workplaceFeatureRepository.save(newWorkplaceFeature);
+                }
+            } else {
+                if (!isEmptyUserRoleId){
+                    workplaceFeatureRepository.deleteById(feature.getWorkplaceFeatureId());
+                }
+            }
+        }
+        return FeaturesByWorkplaceId(workplaceId);
     }
 
 }

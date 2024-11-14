@@ -147,9 +147,8 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
                                             findFunction={accessServerAPI.lookup.positionList}
                                             loadFunction={accessServerAPI.lookup.aposition}
                                             onChange={this.onChangePositionId}
-                                /*enabled={user.id <= 0}*/  />
+                                enabled={workplace.id <= 0}  />
                             <InputWithLabel label="Название" id="name" value={workplace.name} onChange={this.onChangeName}/>
-                            {/*<InputWithLabel label="Профессия" id="employee_position_id" value={String(workplace.employeePositionId)} onChange={this.onChangePosition}/>*/}
                             <ErrorPanel error={this.state.errorMessage}/>
                             <FormGroup className="text-end">
                                 {buttons.includes("save") && <SaveButton onClick={() => this.onSave(true)} enabled={this.state.dataChanged} />}

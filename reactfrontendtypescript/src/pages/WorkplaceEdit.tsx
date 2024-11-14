@@ -3,6 +3,8 @@ import {withRouter, WithRouterProps} from "../PrivateRouteUtils/RouterUtils";
 import {Container} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
 import {WorkplaceEditor} from "../components/WorkplaceEditor";
+import {UserRoles} from "../components/UserRoles";
+import {WorkplaceFeatures} from "../components/WorkplaceFeatures";
 
 interface IWorkplaceEditProps extends WithRouterProps {}
 interface IWorkplaceEditState {}
@@ -14,7 +16,7 @@ class WorkplaceEdit extends Component<IWorkplaceEditProps, IWorkplaceEditState> 
         if (idStr !== 'new'){ workplaceId = parseInt(idStr) }
 
         const title = workplaceId ? 'Редактировать должность' : 'Добавить должность';
-
+        const featurePanel = <WorkplaceFeatures workplaceId={workplaceId}/>;
 
         const navigate = this.props.navigate;
 
@@ -25,7 +27,7 @@ class WorkplaceEdit extends Component<IWorkplaceEditProps, IWorkplaceEditState> 
                 <WorkplaceEditor workplaceId={workplaceId} title={title}
                             buttons={["save", "apply", "close"]}
                             navigate = {navigate}
-
+                            childContent={featurePanel}
                 />
             </Container>
         </div>

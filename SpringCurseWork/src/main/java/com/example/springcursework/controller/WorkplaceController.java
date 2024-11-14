@@ -1,6 +1,8 @@
 package com.example.springcursework.controller;
 
-//import com.example.springcursework.model.RoleForWorkplace;
+
+import com.example.springcursework.model.FeatureForWorkplace;
+import com.example.springcursework.model.RoleForUser;
 import com.example.springcursework.model.Workplace;
 import com.example.springcursework.servise.WorkplaceService;
 import com.example.springcursework.servise.Z_StudentService;
@@ -48,5 +50,15 @@ public class WorkplaceController {
         this.workplaceService.delete(id);
     }
 
+    @GetMapping(value = "/features/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<FeatureForWorkplace> FeaturesByWorkplaceId(@PathVariable int id) {
+        return workplaceService.FeaturesByWorkplaceId(id);
+    }
 
+    @PutMapping(value = "/features/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<FeatureForWorkplace> FeaturesByWorkplaceId(@PathVariable int id, @RequestBody List<FeatureForWorkplace> featuresVO) {
+        return workplaceService.updateFeaturesByWorkplaceId(id, featuresVO);
+    }
 }

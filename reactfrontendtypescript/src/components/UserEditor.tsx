@@ -170,7 +170,7 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
                                             findFunction={accessServerAPI.lookup.employeeList}
                                             loadFunction={accessServerAPI.lookup.employee}
                                             onChange={this.onChangeEmployeeId}
-                                            /*enabled={user.id <= 0}*/  />
+                                            enabled={user.id <= 0} />
                             <InputWithLabel label="Логин" id="login" value={user.login} onChange={this.onChangeLogin}/>
                             <InputWithLabel label="Пароль" id="password" type="password"
                                             placeholder={passwordPlaceholder}
