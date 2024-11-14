@@ -23,7 +23,7 @@ export class WorkplaceFeatures extends Component<IWorkplaceFeaturesProps, IWorkp
 
 
         this.loadFeatures = this.loadFeatures.bind(this);
-        this.onChecked = this.onChecked.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.saveFeatures = this.saveFeatures.bind(this);
     }
 
@@ -44,12 +44,28 @@ export class WorkplaceFeatures extends Component<IWorkplaceFeaturesProps, IWorkp
         }
     }
 
-    onChecked(featureId: number){
+    onChange(e: React.ChangeEvent<HTMLInputElement>){
+
+        let valueStr = e.target.value.trim();
+        if (valueStr === ""){
+            valueStr = "0";
+        }
+        const value = parseInt(valueStr);
+
+        e.target.style.fontWeight = "bold";
+        if (isNaN(value)) {
+            e.target.style.color = "red";
+            return;
+        }
+        e.target.style.color = "green";
+
+        const featureStr = e.target.getAttribute('featureId')!;
+        const featureId =  parseInt(featureStr);
+
         const { features } = this.state;
         let feature = features.find((element) => element.featureId === featureId);
         if (feature) {
-            feature!.isSelected = !feature!.isSelected;
-
+            feature.weight = value;
             this.setState({...this.state, features: features, featuresChanged: true});
         }
     }
@@ -79,8 +95,10 @@ export class WorkplaceFeatures extends Component<IWorkplaceFeaturesProps, IWorkp
                   </Label>
                     </td>
                     <td>
-                    <Input className="form-text-input" type="text"  id={"name_" + feature.weight}
-                           checked={feature.isSelected} onChange={() => this.onChecked(feature.weight)} />
+                    <Input className="form-text-input" type="text"  id={"name_" + feature.featureId}
+                           featureId={feature.featureId}
+                           value={feature.weight}
+                           onChange={this.onChange} />
                         </td>
                         </tr >
 
