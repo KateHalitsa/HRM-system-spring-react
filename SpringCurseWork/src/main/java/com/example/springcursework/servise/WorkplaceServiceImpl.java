@@ -63,23 +63,21 @@ public class WorkplaceServiceImpl implements WorkplaceService{
     public List<FeatureForWorkplace> updateFeaturesByWorkplaceId(int workplaceId, List<FeatureForWorkplace> features) {
         for (int i = 0; i < features.size(); i++) {
             FeatureForWorkplace feature = features.get(i);
-            boolean isEmptyUserRoleId = (feature.getWorkplaceFeatureId() == null) || (feature.getWorkplaceFeatureId() <= 0);
+            boolean isEmptyWorkplaceFeatureId = (feature.getWorkplaceFeatureId() == null) || (feature.getWorkplaceFeatureId() <= 0);
             boolean isEmptyWeight=(feature.getWeight()==null)||feature.getWeight()==0;
             if ( !isEmptyWeight){
                 WorkplaceFeature newWorkplaceFeature = new WorkplaceFeature();
                 newWorkplaceFeature.setWorkplaceId(workplaceId);
                 newWorkplaceFeature.setFeatureId(feature.getFeatureId());
                 newWorkplaceFeature.setWeight(feature.getWeight());
-                if (!isEmptyUserRoleId){
-                    int feature_id=feature.getWorkplaceFeatureId();
-                    WorkplaceFeature anotherFeature=workplaceFeatureRepository.findByWorkplaceAndFeatureId(workplaceId,feature_id);
-                    int id=anotherFeature.getId();
+                if (!isEmptyWorkplaceFeatureId){
+                   int id = feature.getWorkplaceFeatureId();
                    newWorkplaceFeature.setId(id);
                 }
                 workplaceFeatureRepository.save(newWorkplaceFeature);
             }
             else {
-                if (!isEmptyUserRoleId && feature.getWeight()==0){
+                if (!isEmptyWorkplaceFeatureId && feature.getWeight()==0){
                     workplaceFeatureRepository.deleteById(feature.getWorkplaceFeatureId());
                 }
             }
