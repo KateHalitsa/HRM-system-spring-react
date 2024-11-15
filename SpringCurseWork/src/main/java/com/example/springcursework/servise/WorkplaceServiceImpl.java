@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -63,15 +64,22 @@ public class WorkplaceServiceImpl implements WorkplaceService{
         for (int i = 0; i < features.size(); i++) {
             FeatureForWorkplace feature = features.get(i);
             boolean isEmptyUserRoleId = (feature.getWorkplaceFeatureId() == null) || (feature.getWorkplaceFeatureId() <= 0);
-            if (feature.getIsSelected()){
-                if (isEmptyUserRoleId){
-                    WorkplaceFeature newWorkplaceFeature = new WorkplaceFeature();
-                    newWorkplaceFeature.setWorkplaceId(workplaceId);
-                    newWorkplaceFeature.setFeatureId(feature.getFeatureId());
-                    workplaceFeatureRepository.save(newWorkplaceFeature);
-                }
-            } else {
+            boolean isEmptyWeight=(feature.getWeight()==null)||feature.getWeight()==0;
+            if ( !isEmptyWeight){
+                WorkplaceFeature newWorkplaceFeature = new WorkplaceFeature();
+                newWorkplaceFeature.setWorkplaceId(workplaceId);
+                newWorkplaceFeature.setFeatureId(feature.getFeatureId());
+                newWorkplaceFeature.setWeight(feature.getWeight());
                 if (!isEmptyUserRoleId){
+                    int feature_id=feature.getWorkplaceFeatureId();
+                    WorkplaceFeature anotherFeature=workplaceFeatureRepository.findByWorkplaceAndFeatureId(workplaceId,feature_id);
+                    int id=anotherFeature.getId();
+                   newWorkplaceFeature.setId(id);
+                }
+                workplaceFeatureRepository.save(newWorkplaceFeature);
+            }
+            else {
+                if (!isEmptyUserRoleId && feature.getWeight()==0){
                     workplaceFeatureRepository.deleteById(feature.getWorkplaceFeatureId());
                 }
             }

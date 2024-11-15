@@ -49,6 +49,7 @@ public class WorkplaceFeature {
     }
 
     public int getWeight() {
+
         return weight;
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class EmployeePositionFeatureServiceImpl implements EmployeePositionFeatureService{
     @Autowired
-    private EmployeePositionFeatureRepository workplaceRepository;
+    private EmployeePositionFeatureRepository featureRepository;
     @Autowired
     private RoleRepository roleRepository;
    /* @Autowired
@@ -23,29 +23,29 @@ public class EmployeePositionFeatureServiceImpl implements EmployeePositionFeatu
     private EmployeePositionFeatureRoleRepository workplaceRoleRepository;*/
 
     @Override
-    public EmployeePositionFeature insert(EmployeePositionFeature workplaceVO) {
-        return this.workplaceRepository.save(workplaceVO);
+    public EmployeePositionFeature insert(EmployeePositionFeature featureVO) {
+        return this.featureRepository.save(featureVO);
     }
 
     @Override
     public List<EmployeePositionFeature> findAll() {
-        return this.workplaceRepository.findAll();
+        return this.featureRepository.findAll();
     }
 
     @Override
     public void delete(int id) {
-        this.workplaceRepository.deleteById(id);
+        this.featureRepository.deleteById(id);
     }
 
     @Override
     public EmployeePositionFeature findById(int id) {
-        return this.workplaceRepository.findById(id).get();
+        return this.featureRepository.findById(id).get();
     }
 
     @Override
     public EmployeePositionFeature updateEmployeePositionFeature(int id, EmployeePositionFeature featureVO) {
         featureVO.setId(id);
-        return this.workplaceRepository.save(featureVO);
+        return this.featureRepository.save(featureVO);
     }
 
 }
