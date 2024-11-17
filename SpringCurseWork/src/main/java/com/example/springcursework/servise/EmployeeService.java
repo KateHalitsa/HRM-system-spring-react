@@ -1,6 +1,8 @@
 package com.example.springcursework.servise;
 
 import com.example.springcursework.model.Employee;
+import com.example.springcursework.model.EmployeePositionFeature;
+import com.example.springcursework.model.FeatureForEmployee;
 
 import java.util.List;
 
@@ -16,4 +18,9 @@ public interface EmployeeService {
     public List<Employee> findByNamePart(String namePart);
 
     public Employee updateEmployee(int id, Employee employeeVO);
+
+    public List<EmployeePositionFeature> findRelatedFeatures(int employeeId);
+
+    public List<FeatureForEmployee> FeaturesByEmployeeId(int id);
+    public List<FeatureForEmployee> updateFeaturesByEmployeeId(int employeeId, List<FeatureForEmployee> features);
 }

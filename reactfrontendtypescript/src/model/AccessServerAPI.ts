@@ -8,6 +8,7 @@ import {EmployeePosition} from "./EmployeePosition.model";
 import {Workplace} from "./workplace.model";
 import {LookupItem} from "./LookupItem.model";
 import {FeatureForWorkplace} from "./FeatureForWorkplace.model";
+import {FeatureForEmployee} from "./FeatureForEmployee.model";
 
 const token = "";
 
@@ -76,7 +77,9 @@ const employees = {
     create: (data: Employee) => request.post<Employee>('/employee', data),
     update: (data: Employee) => request.put<Employee>(`/employee/${data.id}`, data),
     delete: (id: number) => request.delete(`/employee/${id}`),
-    find: (findNamePart: string) => request.post<Employee[]>('/employee/find', {findNamePart})
+    find: (findNamePart: string) => request.post<Employee[]>('/employee/find', {findNamePart}),
+    features: (id: number) => request.get<FeatureForEmployee[]>(`/employee/features/${id}`),
+    updateFeatures: (id: number, data: FeatureForEmployee[]) => request.put<FeatureForEmployee[]>(`/employee/features/${id}`, data),
 };
 const positions = {
     list: () => request.get<EmployeePosition[]>('/employee_position'),

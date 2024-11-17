@@ -5,8 +5,10 @@ import AppNavbar from '../components/AppNavbar';
 import {dateToISOStr, Employee} from "../model/employee.model";
 import accessServerAPI from "../model/AccessServerAPI";
 import {CloseButton, InputWithLabel, SaveButton} from "../components/CustomControls";
+import {EmployeeFeatures} from "../components/EmployeeFeatures";
+import {EmployeeEditor} from "../components/EmployeeEditor";
 
-interface EmployeeEditProps extends WithRouterProps {}
+/*interface EmployeeEditProps extends WithRouterProps {}
 
 interface EmployeeEditState {
     employee: Employee;
@@ -76,9 +78,10 @@ class EmployeeEdit extends Component<EmployeeEditProps, EmployeeEditState> {
     }
 
     render() {
+        let employeeId: number = 0;
         const employee  = this.state.employee;
         const title = <div>{employee.id ? 'Редактировать сотрудника' : 'Добавить сотрудника'}</div>;
-
+        const featurePanel = <EmployeeFeatures employeeId={employeeId}/>;
         return (
         <div>
             <AppNavbar />
@@ -98,9 +101,41 @@ class EmployeeEdit extends Component<EmployeeEditProps, EmployeeEditState> {
                             </FormGroup>
                         </Form>
                     </CardBody>
+                    <EmployeeFeatures employeeId={employeeId} />
                 </Card>
             </Container>
         </div>)
+    }
+}
+
+export default withRouter(EmployeeEdit);*/
+interface IEmployeeEditProps extends WithRouterProps {}
+interface IEmployeeEditState {}
+class EmployeeEdit extends Component<IEmployeeEditProps, IEmployeeEditState> {
+    render(){
+
+        let employeeId: number = 0;
+        const idStr: string = this.props.params.id;
+        if (idStr !== 'new'){ employeeId = parseInt(idStr) }
+
+        const title = employeeId ? 'Редактировать пользователя' : 'Добавить пользователя';
+        const featurePanel = <EmployeeFeatures employeeId={employeeId}/>;
+
+        const navigate = this.props.navigate;
+
+        return (
+            <div>
+                <AppNavbar />
+                <Container className="mt-1">
+
+                    <EmployeeEditor employeeId={employeeId} title={title}
+                                     buttons={["save", "apply", "close"]}
+                                     navigate = {navigate}
+                                     childContent={featurePanel}
+                    />
+                </Container>
+            </div>
+        );
     }
 }
 

@@ -1,7 +1,10 @@
 package com.example.springcursework.servise;
 
 import com.example.springcursework.model.Employee;
-import com.example.springcursework.repository.EmployeeRepository;
+import com.example.springcursework.model.EmployeePositionFeature;
+import com.example.springcursework.model.FeatureForEmployee;
+import com.example.springcursework.model.EmployeeFeature;
+import com.example.springcursework.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,12 @@ public class EmployeeServiceImpl implements EmployeeService
 {
    @Autowired
    private EmployeeRepository employeeRepository;
-
+    @Autowired
+    private EmployeePositionFeatureRepository featureRepository;
+    @Autowired
+    private FeatureForEmployeeRepository featureForEmployeeRepository;
+    @Autowired
+    private EmployeeFeatureRepository employeeFeatureRepository;
     @Override
 
     public Employee insert(Employee employeeVO) {
@@ -73,5 +81,41 @@ public class EmployeeServiceImpl implements EmployeeService
     public Employee updateEmployee(int id, Employee employeeVO) {
         employeeVO.setId(id);
         return this.employeeRepository.save(employeeVO);
+    }
+
+    @Override
+    public List<EmployeePositionFeature> findRelatedFeatures(int employeeId) {
+        return  featureRepository.findByEmployeeId(employeeId);
+    }
+
+    @Override
+    public List<FeatureForEmployee> FeaturesByEmployeeId(int id) {
+        return  featureForEmployeeRepository.findFeatureForEmployeeId(id);
+    }
+
+    @Override
+    public List<FeatureForEmployee> updateFeaturesByEmployeeId(int employeeId, List<FeatureForEmployee> features) {
+        for (int i = 0; i < features.size(); i++) {
+            FeatureForEmployee feature = features.get(i);
+            boolean isEmptyEmployeeFeatureId = (feature.getEmployeeFeatureId() == null) || (feature.getEmployeeFeatureId() <= 0);
+            boolean isEmptyWeight=(feature.getValue()==null)||feature.getValue()==0;
+            if ( !isEmptyWeight){
+                EmployeeFeature newEmployeeFeature = new EmployeeFeature();
+                newEmployeeFeature.setEmployeeId(employeeId);
+                newEmployeeFeature.setFeatureId(feature.getFeatureId());
+                newEmployeeFeature.setValue(feature.getValue());
+                if (!isEmptyEmployeeFeatureId){
+                    int id = feature.getEmployeeFeatureId();
+                    newEmployeeFeature.setId(id);
+                }
+                employeeFeatureRepository.save(newEmployeeFeature);
+            }
+            else {
+                if (!isEmptyEmployeeFeatureId && feature.getValue()==0){
+                    employeeFeatureRepository.deleteById(feature.getEmployeeFeatureId());
+                }
+            }
+        }
+        return FeaturesByEmployeeId(employeeId);
     }
 }

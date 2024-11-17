@@ -127,7 +127,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
 
     render() {
         const workplace  = this.state.workplace;
-        const passwordPlaceholder = workplace.id ? 'для изменения пароля введите новый пароль' : '';
+
 
         let buttons: ButtonType[] = [];
         if (this.props.buttons) {
