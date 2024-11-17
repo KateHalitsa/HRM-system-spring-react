@@ -145,7 +145,7 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
                             <LookupSelector label="Профессия"
                                             lookupObjectId={feature.employeePositionId}
                                             findFunction={accessServerAPI.lookup.positionList}
-                                            loadFunction={accessServerAPI.lookup.aposition}
+                                            loadFunction={accessServerAPI.lookup.position}
                                             onChange={this.onChangePositionId}
                                 /*enabled={user.id <= 0}*/  />
                             <InputWithLabel label="Название характеристики" id="name" value={feature.name} onChange={this.onChangeName}/>

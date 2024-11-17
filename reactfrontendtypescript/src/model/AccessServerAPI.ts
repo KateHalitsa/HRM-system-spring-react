@@ -9,6 +9,7 @@ import {Workplace} from "./workplace.model";
 import {LookupItem} from "./LookupItem.model";
 import {FeatureForWorkplace} from "./FeatureForWorkplace.model";
 import {FeatureForEmployee} from "./FeatureForEmployee.model";
+import {EmployeeEfficiencyTable} from "./EmployeeEfficiencyTable.model";
 
 const token = "";
 
@@ -59,7 +60,7 @@ const loginUtils = {
 const lookup = {
     employee: (id: number) => request.get<LookupItem>(`/lookup/employee/${id}`),
     employeeList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee', {findNamePart}),
-    aposition: (id: number) => request.get<LookupItem>(`/lookup/employee_position/${id}`),
+    position: (id: number) => request.get<LookupItem>(`/lookup/employee_position/${id}`),
     positionList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee_position', {findNamePart}),
 };
 const users = {
@@ -81,6 +82,9 @@ const employees = {
     features: (id: number) => request.get<FeatureForEmployee[]>(`/employee/features/${id}`),
     updateFeatures: (id: number, data: FeatureForEmployee[]) => request.put<FeatureForEmployee[]>(`/employee/features/${id}`, data),
 };
+const employeeEfficiency = {
+    load: ()=> request.post<EmployeeEfficiencyTable>('/efficiency/load', {})
+}
 const positions = {
     list: () => request.get<EmployeePosition[]>('/employee_position'),
     details: (id: number) => request.get<EmployeePosition>(`/employee_position/${id}`),
@@ -111,6 +115,7 @@ const features = {
 const accessServerAPI = {
     loginUtils,
     lookup,
+    employeeEfficiency,
     users,
     employees,
     positions,

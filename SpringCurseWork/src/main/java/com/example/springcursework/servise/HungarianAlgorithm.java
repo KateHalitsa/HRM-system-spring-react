@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import static java.lang.Boolean.TRUE;
 
+// https://habr.com/ru/articles/63982/
+
 public class HungarianAlgorithm {
 
     int n;

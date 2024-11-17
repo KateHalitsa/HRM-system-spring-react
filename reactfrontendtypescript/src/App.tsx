@@ -21,6 +21,7 @@ import WorkplaceList from "./pages/WorkplaceList";
 import WorkplaceEdit from "./pages/WorkplaceEdit";
 import EmployeePositionFeatureEdit from "./pages/EmployeePositionFeatureEdit";
 import EmployeePositionFeatureList from "./pages/EmployeePositionFeatureList";
+import RecruitmentForWorkplace from "./pages/RecruitmentForWorkplace";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="/workplace/:id" element={<PrivateWrapper><WorkplaceEdit/></PrivateWrapper>} />
             <Route path="/employee_position_feature" element={<PrivateWrapper><EmployeePositionFeatureList/></PrivateWrapper>} />
             <Route path="/employee_position_feature/:id" element={<PrivateWrapper><EmployeePositionFeatureEdit/></PrivateWrapper>} />
+            <Route path="/recruitment" element={<PrivateWrapper><RecruitmentForWorkplace/></PrivateWrapper>} />
             <Route path="/login" element={<LoginPage/>}></Route>
             <Route path='/error' element={<AccessDenied/>}/>
             <Route path="*" element={<NotFound/>} />

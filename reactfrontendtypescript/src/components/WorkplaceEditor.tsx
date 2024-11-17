@@ -145,7 +145,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
                             <LookupSelector label="Профессия"
                                             lookupObjectId={workplace.employeePositionId}
                                             findFunction={accessServerAPI.lookup.positionList}
-                                            loadFunction={accessServerAPI.lookup.aposition}
+                                            loadFunction={accessServerAPI.lookup.position}
                                             onChange={this.onChangePositionId}
                                 enabled={workplace.id <= 0}  />
                             <InputWithLabel label="Название" id="name" value={workplace.name} onChange={this.onChangeName}/>
