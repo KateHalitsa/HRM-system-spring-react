@@ -10,7 +10,7 @@ import java.util.List;
 public interface EmployeeEfficiencyCellRepository extends JpaRepository<EmployeeEfficiencyCell, EmployeeEfficiencyCellKey> {
     @Query(value = """
             SELECT wf.workplace_id, ef.employee_id, SUM(wf.weight * ef.value) efficiency
-            FROM workplace_feature wf, empoyee_feature ef
+            FROM workplace_feature wf, employee_feature ef
             WHERE wf.feature_id = ef.feature_id
             GROUP BY wf.workplace_id, ef.employee_id
             """,
