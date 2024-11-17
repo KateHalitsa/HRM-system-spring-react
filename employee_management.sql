@@ -26,14 +26,15 @@ CREATE TABLE `employee` (
   `last_name` varchar(100) DEFAULT NULL,
   `birthday` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `employee` */
 
 insert  into `employee`(`id`,`first_name`,`last_name`,`birthday`) values 
 (1,'Екатерина','Галица','2003-04-15 09:00:00'),
 (2,'Александр','Завадский','2010-05-05 09:00:00'),
-(3,'Татьяна','Куленкович','2002-05-07 09:00:00');
+(3,'Татьяна','Куленкович','2002-05-07 09:00:00'),
+(4,'test','test','2024-11-17 18:48:57');
 
 /*Table structure for table `employee_position` */
 
@@ -43,9 +44,13 @@ CREATE TABLE `employee_position` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `employee_position` */
+
+insert  into `employee_position`(`id`,`name`) values 
+(1,'Кассир'),
+(2,'Грузчик');
 
 /*Table structure for table `employee_position_feature` */
 
@@ -58,9 +63,13 @@ CREATE TABLE `employee_position_feature` (
   PRIMARY KEY (`id`),
   KEY `emploee_position_id` (`employee_position_id`),
   CONSTRAINT `emploee_position_id` FOREIGN KEY (`employee_position_id`) REFERENCES `employee_position` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `employee_position_feature` */
+
+insert  into `employee_position_feature`(`id`,`name`,`employee_position_id`) values 
+(1,'Опыт работы кассиром (лет)',1),
+(2,'Наличие среднего экономического образования',1);
 
 /*Table structure for table `employee_workplace` */
 
@@ -96,9 +105,27 @@ CREATE TABLE `empoyee_feature` (
   KEY `employee_position_feature` (`feature_id`),
   CONSTRAINT `employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`),
   CONSTRAINT `employee_position_feature` FOREIGN KEY (`feature_id`) REFERENCES `employee_position_feature` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `empoyee_feature` */
+
+insert  into `empoyee_feature`(`id`,`employee_id`,`feature_id`,`value`) values 
+(1,1,1,2),
+(2,1,2,1),
+(3,3,1,3),
+(4,3,2,1);
+
+/*Table structure for table `project` */
+
+DROP TABLE IF EXISTS `project`;
+
+CREATE TABLE `project` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `project` */
 
 /*Table structure for table `roles` */
 
@@ -138,12 +165,7 @@ CREATE TABLE `user_role` (
 
 insert  into `user_role`(`id`,`user_id`,`role_id`) values 
 (24,2,1),
-(31,7,1),
-(32,7,3),
-(33,7,4),
 (36,2,4),
-(39,7,2),
-(40,7,5),
 (41,5,2),
 (43,5,1),
 (44,5,5),
@@ -171,10 +193,9 @@ CREATE TABLE `users` (
 /*Data for the table `users` */
 
 insert  into `users`(`id`,`login`,`password`,`email`,`employee_id`) values 
-(1,'kate','kate','kate@gmail12.com',NULL),
-(2,'alex2','alex','alex@gmail345.com',NULL),
-(5,'test11156d','','test2225',NULL),
-(7,'test1234 5','test','test@mail.ru',NULL);
+(1,'kate','kate','kate@gmail12.com',1),
+(2,'alex','alex','alex@gmail345.com',2),
+(5,'tatiana','tatiana','tatiana@gmail.com',3);
 
 /*Table structure for table `workplace` */
 
@@ -184,12 +205,20 @@ CREATE TABLE `workplace` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `employee_position_id` int DEFAULT NULL,
+  `project_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `employee_position_id` (`employee_position_id`),
-  CONSTRAINT `employee_position_id` FOREIGN KEY (`employee_position_id`) REFERENCES `employee_position` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_workplace_project_id` (`project_id`),
+  CONSTRAINT `employee_position_id` FOREIGN KEY (`employee_position_id`) REFERENCES `employee_position` (`id`),
+  CONSTRAINT `fk_workplace_project_id` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `workplace` */
+
+insert  into `workplace`(`id`,`name`,`employee_position_id`,`project_id`) values 
+(1,'Главный кассир',1,NULL),
+(2,'Бригадир грузчиков',2,NULL),
+(3,'Помощник касира',1,NULL);
 
 /*Table structure for table `workplace_feature` */
 
@@ -205,9 +234,13 @@ CREATE TABLE `workplace_feature` (
   KEY `workplace` (`workplace_id`),
   CONSTRAINT `feature_id` FOREIGN KEY (`feature_id`) REFERENCES `employee_position_feature` (`id`),
   CONSTRAINT `workplace` FOREIGN KEY (`workplace_id`) REFERENCES `workplace` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `workplace_feature` */
+
+insert  into `workplace_feature`(`id`,`feature_id`,`weight`,`workplace_id`) values 
+(1,1,8,1),
+(2,2,4,1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
