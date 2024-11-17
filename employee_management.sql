@@ -36,6 +36,30 @@ insert  into `employee`(`id`,`first_name`,`last_name`,`birthday`) values
 (3,'Татьяна','Куленкович','2002-05-07 09:00:00'),
 (4,'test','test','2024-11-17 18:48:57');
 
+/*Table structure for table `employee_feature` */
+
+DROP TABLE IF EXISTS `employee_feature`;
+
+CREATE TABLE `employee_feature` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int DEFAULT NULL,
+  `feature_id` int DEFAULT NULL,
+  `value` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `employee_position_feature` (`feature_id`),
+  CONSTRAINT `employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`),
+  CONSTRAINT `employee_position_feature` FOREIGN KEY (`feature_id`) REFERENCES `employee_position_feature` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `employee_feature` */
+
+insert  into `employee_feature`(`id`,`employee_id`,`feature_id`,`value`) values 
+(1,1,1,2),
+(2,1,2,1),
+(3,3,1,3),
+(4,3,2,1);
+
 /*Table structure for table `employee_position` */
 
 DROP TABLE IF EXISTS `employee_position`;
@@ -90,30 +114,6 @@ CREATE TABLE `employee_workplace` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `employee_workplace` */
-
-/*Table structure for table `empoyee_feature` */
-
-DROP TABLE IF EXISTS `empoyee_feature`;
-
-CREATE TABLE `empoyee_feature` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `employee_id` int DEFAULT NULL,
-  `feature_id` int DEFAULT NULL,
-  `value` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `employee_id` (`employee_id`),
-  KEY `employee_position_feature` (`feature_id`),
-  CONSTRAINT `employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`),
-  CONSTRAINT `employee_position_feature` FOREIGN KEY (`feature_id`) REFERENCES `employee_position_feature` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-/*Data for the table `empoyee_feature` */
-
-insert  into `empoyee_feature`(`id`,`employee_id`,`feature_id`,`value`) values 
-(1,1,1,2),
-(2,1,2,1),
-(3,3,1,3),
-(4,3,2,1);
 
 /*Table structure for table `project` */
 
