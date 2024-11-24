@@ -1,9 +1,10 @@
 import React, { Component, ReactNode } from 'react';
-import {Button, ButtonGroup, Container, Input, Label, Table} from 'reactstrap';
+import {Button, ButtonGroup, Col, Container, Input, Label, Table} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
 import accessServerAPI from "../model/AccessServerAPI";
 import {EmployeeEfficiencyCell, EmployeeEfficiencyTable} from "../model/EmployeeEfficiencyTable.model";
 import {ErrorPanel} from "../components/CustomControls";
+import {EmployeeWorkplace} from "../model/EmployeeWorkplace.model";
 
 interface ISelectedId {
     [id: number]: boolean;
@@ -14,6 +15,7 @@ interface RecruitmentForWorkplaceState {
     selectedEmployeeList: ISelectedId;
     selectedWorkplaceList: ISelectedId;
     errorMessage: string;
+    employeeWorkplaceList: EmployeeWorkplace[];
 }
 
 class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState> {
@@ -24,7 +26,8 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             efficiencyTable: new EmployeeEfficiencyTable(),
             selectedEmployeeList: {},
             selectedWorkplaceList: {},
-            errorMessage: ""
+            errorMessage: "",
+            employeeWorkplaceList: []
         };
         this.onWorkplaceChecked = this.onWorkplaceChecked.bind(this);
         this.onEmployeeChecked = this.onEmployeeChecked.bind(this);
@@ -45,7 +48,7 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                     selectedWorkplaceList[workplace.id] = true;
                 }
 
-                this.setState({efficiencyTable: foundEfficiencyTable, selectedEmployeeList, selectedWorkplaceList});
+                this.setState({...this.state, efficiencyTable: foundEfficiencyTable, selectedEmployeeList, selectedWorkplaceList});
             }
         )
     }
@@ -96,7 +99,13 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             errorMessage = `Количество сотрудников (${employeeCount}) не равно количеству должностей (${workplaceCount})`
         }
 
-        this.setState({...this.state, errorMessage});
+        let employeeWorkplaceList = this.state.employeeWorkplaceList;
+        if (errorMessage !== "")
+        {
+            employeeWorkplaceList = []; // Очистить предыдущие результаты расчетов
+        }
+
+        this.setState({...this.state, errorMessage, employeeWorkplaceList});
 
         return errorMessage === "";
     }
@@ -124,16 +133,42 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
 
         accessServerAPI.employeeEfficiency.calc(efficiencyTable.cells, employeeIds, workplaceIds).then(employeeWorkplaceList =>
             {
-
+                this.setState({...this.state, employeeWorkplaceList});
             }
         );
     }
 
     render() {
-        const { efficiencyTable, selectedEmployeeList, selectedWorkplaceList } = this.state;
+        const {
+            efficiencyTable, selectedEmployeeList,
+            selectedWorkplaceList, employeeWorkplaceList
+        } = this.state;
+
         const workplaceList = efficiencyTable.workplaces;
         const employeeList = efficiencyTable.employees;
         const valueList = efficiencyTable.cells;
+
+        const getEmployeeName = (id: number) =>{
+            const employee = employeeList.find(e => e.id === id);
+            if (employee === undefined){
+                return "Employee=" + id;
+            }
+            else
+            {
+                return employee.lastName + " " + employee.firstName;
+            }
+        }
+
+        const getWorkplaceName = (id: number) =>{
+            const workplace = workplaceList.find(e => e.id === id);
+            if (workplace === undefined){
+                return "Workplace=" + id;
+            }
+            else
+            {
+                return workplace.name;
+            }
+        }
 
         const tableHeader: ReactNode = workplaceList.map(workplace => {
             return (
@@ -187,19 +222,52 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             <div>
                 <AppNavbar />
                 <Container fluid className="pt-2">
-                    <h5>Таблица назначений</h5>
-                    <Table striped hover bordered size="sm">
+                    <h5>Таблица расчета назначений</h5>
+                    <Table striped hover bordered size="sm" className="mb-2">
                         <thead>
                         <tr>
-                            <th/>{tableHeader}
+                            <th/>
+                            {tableHeader}
                         </tr>
                         </thead>
                         <tbody>
-                            {tableBody}
+                        {tableBody}
                         </tbody>
                     </Table>
-                    <ErrorPanel error={this.state.errorMessage}/>
-                    <Button className="py-0 ms-1" size="sm" color="primary" outline onClick={this.onCalculateClick}>Рассчитать назначения</Button>
+
+                    <div className="row mb-1">
+                        <Col sm="9">
+                            <ErrorPanel error={this.state.errorMessage} leftSpace={false}/>
+                        </Col>
+                        <Col sm="3" style={{textAlign: "right"}}>
+                            <Button className="ms-1" size="sm" color="primary" outline onClick={this.onCalculateClick}>Рассчитать
+                                назначения</Button>
+                        </Col>
+                    </div>
+
+                    {employeeWorkplaceList.length > 0?(
+                    <div>
+                    <h5>Результат расчета назначений</h5>
+                    <Table striped hover bordered size="sm" className="mb-2">
+                        <thead>
+                        <tr>
+                            <th>Сотрудник</th>
+                            <th>Предлагаемая должность</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {employeeWorkplaceList.map(e=>
+                            <tr>
+                                <td>{getEmployeeName(e.employeeId)}</td>
+                                <td>{getWorkplaceName(e.workplaceId)}</td>
+                            </tr>)}
+                        </tbody>
+                    </Table>
+                     </div>
+                     ):(
+                     <></>
+                    )}
+
                 </Container>
             </div>
         );

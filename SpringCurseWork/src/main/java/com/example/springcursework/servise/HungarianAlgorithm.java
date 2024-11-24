@@ -60,11 +60,11 @@ public class HungarianAlgorithm {
 
     }
 
-    private int getCellValue(List<EmployeeEfficiencyCell> cells, int employeeId, int workplaceId){
+    private int getCellValue(List<EmployeeEfficiencyCell> cellList, int employeeId, int workplaceId){
         int res = 0;
-        EmployeeEfficiencyCell found = cells.stream().
-                filter(employee ->
-                        (employee.getEmployeeId() == employeeId) && (employee.getWorkplaceId() == workplaceId)
+        EmployeeEfficiencyCell found = cellList.stream().
+                filter(cell ->
+                        (cell.getEmployeeId() == employeeId) && (cell.getWorkplaceId() == workplaceId)
                 ).findAny().orElse(null);
         if (found != null){
             res = found.getEfficiency();
@@ -87,7 +87,7 @@ public class HungarianAlgorithm {
         for (int i = 0; i<n; i++){
             for (int j = 0; j<n; j++){
                 int employeeId = employeeList.get(i);
-                int workplaceId = workplaceList.get(i);
+                int workplaceId = workplaceList.get(j);
                 int value = getCellValue(cells, employeeId, workplaceId);
                 a[i][j] = value;
             }

@@ -58,15 +58,23 @@ export const InputWithLabel = (props: IInputWithLabelProps) => {
 
 export interface IErrorPanelProps {
     error: string;
+    leftSpace?: boolean;
 }
 export const ErrorPanel = (props: IErrorPanelProps) => {
     const errorMessage = props.error;
     const errorFound = errorMessage !== "";
+    const leftSpace: boolean = (props.leftSpace !== undefined)? props.leftSpace: true;
+
+    let spaceSize = 2;
+    if (!leftSpace){
+        spaceSize = 0
+    }
+    const messageSize = 12 - spaceSize;
 
     return (errorFound)?(
-        <div className="row mb-1">
-            <Label sm="2" size="sm"></Label>
-            <Col sm="10">
+        <div className="row mb-1 py-0">
+            <Label sm={spaceSize} size="sm" className="py-0"></Label>
+            <Col sm={messageSize}>
                 <div className="alert alert-danger mb-0 p-1 text-start ps-2 small" role="alert">
                     {errorMessage}
                 </div>
