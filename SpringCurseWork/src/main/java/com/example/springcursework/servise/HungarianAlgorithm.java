@@ -1,6 +1,11 @@
 package com.example.springcursework.servise;
 
+import com.example.springcursework.model.EmployeeEfficiencyCell;
+import com.example.springcursework.model.EmployeeWorkplace;
+import com.example.springcursework.payload.request.EmployeeEfficiencyTableRequest;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import static java.lang.Boolean.TRUE;
@@ -15,7 +20,7 @@ public class HungarianAlgorithm {
     boolean[] vx, vy;     // Альтернирующее дерево vx[разраб], vy[задача]
     int[] maxrow, mincol; // Способности, изученность
 
-    Boolean dotry (int i) {
+    Boolean doTry (int i) {
 
         if (vx[i]) return false;
 
@@ -41,7 +46,7 @@ public class HungarianAlgorithm {
 
         for (int j=0; j<n; ++j)
 
-            if (a[i][j]-maxrow[i]-mincol[j] == 0 && dotry (yx[j])) {
+            if (a[i][j]-maxrow[i]-mincol[j] == 0 && doTry (yx[j])) {
 
                 xy[i] = j;
 
@@ -55,10 +60,46 @@ public class HungarianAlgorithm {
 
     }
 
-    void main() {
+    private int getCellValue(List<EmployeeEfficiencyCell> cells, int employeeId, int workplaceId){
+        int res = 0;
+        EmployeeEfficiencyCell found = cells.stream().
+                filter(employee ->
+                        (employee.getEmployeeId() == employeeId) && (employee.getWorkplaceId() == workplaceId)
+                ).findAny().orElse(null);
+        if (found != null){
+            res = found.getEfficiency();
+        }
+        return res;
+    }
+
+    private void fillMatrixByRequest(EmployeeEfficiencyTableRequest efficiencyTable) throws Exception {
+        List<Integer> employeeList = efficiencyTable.getEmployeeIds();
+        List<Integer> workplaceList = efficiencyTable.getWorkplaceIds();
+        List<EmployeeEfficiencyCell> cells = efficiencyTable.getCells();
+
+        if (employeeList.size() != workplaceList.size()) {
+             throw new Exception("employeeList.size() != workplaceList.size() (%d != %d)".formatted(employeeList.size(), workplaceList.size()));
+        }
+
+        n = employeeList.size();
+        a = new int[n][n];
+
+        for (int i = 0; i<n; i++){
+            for (int j = 0; j<n; j++){
+                int employeeId = employeeList.get(i);
+                int workplaceId = workplaceList.get(i);
+                int value = getCellValue(cells, employeeId, workplaceId);
+                a[i][j] = value;
+            }
+
+        }
+    }
+
+    public List<EmployeeWorkplace> calculate(EmployeeEfficiencyTableRequest efficiencyTable) throws Exception {
 
 
         // ... чтение a ...
+        fillMatrixByRequest(efficiencyTable);
 
         mincol = new int[n];
 
@@ -88,7 +129,7 @@ public class HungarianAlgorithm {
             int k = 0;
 
             for (int i=0; i<n; ++i)
-                if (xy[i] == -1 && dotry (i))
+                if (xy[i] == -1 && doTry (i))
                     ++k;
 
             c += k;
@@ -119,6 +160,23 @@ public class HungarianAlgorithm {
 
         }
 
+
+        List<Integer> employeeList = efficiencyTable.getEmployeeIds();
+        List<Integer> workplaceList = efficiencyTable.getWorkplaceIds();
+
+        List<EmployeeWorkplace> res = new ArrayList<>();
+        for (int i=0; i<n; ++i){
+            int employeeId = employeeList.get(i);
+            int workplaceId = workplaceList.get(xy[i]);
+
+            EmployeeWorkplace employeeWorkplace = new EmployeeWorkplace();
+            employeeWorkplace.setEmployeeId(employeeId);
+            employeeWorkplace.setWorkplaceId(workplaceId);
+
+            res.add(employeeWorkplace);
+        }
+
+        return res;
 
 /*
         int ans = 0;

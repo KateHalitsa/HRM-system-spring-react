@@ -9,8 +9,9 @@ import {Workplace} from "./workplace.model";
 import {LookupItem} from "./LookupItem.model";
 import {FeatureForWorkplace} from "./FeatureForWorkplace.model";
 import {FeatureForEmployee} from "./FeatureForEmployee.model";
-import {EmployeeEfficiencyTable} from "./EmployeeEfficiencyTable.model";
+import {EmployeeEfficiencyCell, EmployeeEfficiencyTable} from "./EmployeeEfficiencyTable.model";
 import {Project} from "./Project.model";
+import {EmployeeWorkplace} from "./EmployeeWorkplace.model";
 
 const token = "";
 
@@ -86,7 +87,10 @@ const employees = {
     updateFeatures: (id: number, data: FeatureForEmployee[]) => request.put<FeatureForEmployee[]>(`/employee/features/${id}`, data),
 };
 const employeeEfficiency = {
-    load: ()=> request.post<EmployeeEfficiencyTable>('/efficiency/load', {})
+    load: ()=> request.post<EmployeeEfficiencyTable>('/efficiency/load', {}),
+    calc: (cells: EmployeeEfficiencyCell[], employeeIds: number[], workplaceIds: number[])=>
+            request.post<EmployeeWorkplace[]>('/efficiency/calc', {cells, employeeIds, workplaceIds}
+        )
 }
 const positions = {
     list: () => request.get<EmployeePosition[]>('/employee_position'),

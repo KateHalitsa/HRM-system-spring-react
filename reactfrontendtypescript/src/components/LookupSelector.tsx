@@ -66,7 +66,7 @@ export class LookupSelector extends Component<ILookupSelectorProps, ILookupSelec
             const lookupItem = this.state.curLookupItem;
             return (
                 <label className="row small mb-1">
-                    <div className="col-2 text-end pe-0">Сотрудник</div>
+                    <div className="col-2 text-end pe-0">{this.props.label}</div>
                     <Col sm="10" className="text-start">
                         <Label>{lookupItem.label}</Label>
                     </Col>
