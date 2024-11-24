@@ -38,5 +38,16 @@ public class LookupController {
     public List<LookupItem> positionList(@RequestBody LookupFindRequest findVO) {
         return this.lookupService.positionList(findVO.getFindNamePart());
     }
+    @GetMapping(value = "project/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public LookupItem projectItem(@PathVariable int id) {
+        return this.lookupService.projectItem(id);
+    }
+
+    @PostMapping(value = "/project")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public List<LookupItem> projectList(@RequestBody LookupFindRequest findVO) {
+        return this.lookupService.projectList(findVO.getFindNamePart());
+    }
 
 }

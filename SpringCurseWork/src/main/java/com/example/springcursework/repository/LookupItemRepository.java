@@ -38,4 +38,20 @@ public interface LookupItemRepository extends JpaRepository<LookupItem, Integer>
             """,
             nativeQuery = true)
     public LookupItem loadPositionItem(int id);
+
+    @Query(value = """
+            SELECT p.id,  p.name
+            FROM project p
+            WHERE  p.name LIKE ?1
+            """,
+            nativeQuery = true)
+    List<LookupItem> findProjectList(String likeParam);
+
+    @Query(value = """
+            SELECT p.id,  p.name
+            FROM project p
+            WHERE p.id = ?1
+            """,
+            nativeQuery = true)
+    public LookupItem loadProjectItem(int id);
 }

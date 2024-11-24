@@ -9,4 +9,7 @@ public interface LookupService {
     public LookupItem employeeItem(int id);
     public List<LookupItem> positionList(String namePart);
     public LookupItem positionItem(int id);
+
+    public List<LookupItem> projectList(String namePart);
+    public LookupItem projectItem(int id);
 }

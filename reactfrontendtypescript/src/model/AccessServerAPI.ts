@@ -10,6 +10,7 @@ import {LookupItem} from "./LookupItem.model";
 import {FeatureForWorkplace} from "./FeatureForWorkplace.model";
 import {FeatureForEmployee} from "./FeatureForEmployee.model";
 import {EmployeeEfficiencyTable} from "./EmployeeEfficiencyTable.model";
+import {Project} from "./Project.model";
 
 const token = "";
 
@@ -62,6 +63,8 @@ const lookup = {
     employeeList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee', {findNamePart}),
     position: (id: number) => request.get<LookupItem>(`/lookup/employee_position/${id}`),
     positionList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee_position', {findNamePart}),
+    project: (id: number) => request.get<LookupItem>(`/lookup/project/${id}`),
+    projectList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/project', {findNamePart}),
 };
 const users = {
     list: () => request.get<User[]>('/user'),
@@ -111,7 +114,14 @@ const features = {
     delete: (id: number) => request.delete(`/employee_position_feature/${id}`),
     find: (findNamePart: string) => request.post<Workplace[]>('/employee_position_feature/find', {findNamePart})
 };
-
+const projects = {
+    list: () => request.get<Project[]>('/project'),
+    details: (id: number) => request.get<Project>(`/project/${id}`),
+    create: (data: Project) => request.post<Project>('/project', data),
+    update: (data: Project) => request.put<Project>(`/project/${data.id}`, data),
+    delete: (id: number) => request.delete(`/project/${id}`),
+    find: (findNamePart: string) => request.post<Project[]>('/project/find', {findNamePart})
+};
 const accessServerAPI = {
     loginUtils,
     lookup,
@@ -120,7 +130,8 @@ const accessServerAPI = {
     employees,
     positions,
     workplaces,
-    features
+    features,
+    projects
 }
 
 export default accessServerAPI;

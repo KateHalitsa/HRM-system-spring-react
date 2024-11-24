@@ -51,4 +51,15 @@ public class LookupServiceImpl implements LookupService
         return this.lookupItemRepository.loadPositionItem(id);
     }
 
+    @Override
+    public List<LookupItem> projectList(String namePart) {
+        List<LookupItem>  res = this.lookupItemRepository.findProjectList(prepareLikeParam(namePart));
+        return res;
+    }
+
+    @Override
+    public LookupItem projectItem(int id) {
+        return this.lookupItemRepository.loadProjectItem(id);
+    }
+
 }

@@ -22,6 +22,8 @@ import WorkplaceEdit from "./pages/WorkplaceEdit";
 import EmployeePositionFeatureEdit from "./pages/EmployeePositionFeatureEdit";
 import EmployeePositionFeatureList from "./pages/EmployeePositionFeatureList";
 import RecruitmentForWorkplace from "./pages/RecruitmentForWorkplace";
+import ProjectList from "./pages/ProjectList";
+import ProjectEdit from "./pages/ProjectEdit";
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
             <Route path="/employees/:id" element={<PrivateWrapper><EmployeeEdit/></PrivateWrapper>} />
             <Route path="/employee_position" element={<PrivateWrapper><EmployeePositionList/></PrivateWrapper>} />
             <Route path="/employee_position/:id" element={<PrivateWrapper><EmployeePositionEdit/></PrivateWrapper>} />
+            <Route path="/project" element={<PrivateWrapper><ProjectList/></PrivateWrapper>} />
+            <Route path="/project/:id" element={<PrivateWrapper><ProjectEdit/></PrivateWrapper>} />
             <Route path="/workplace" element={<PrivateWrapper><WorkplaceList/></PrivateWrapper>} />
             <Route path="/workplace/:id" element={<PrivateWrapper><WorkplaceEdit/></PrivateWrapper>} />
             <Route path="/employee_position_feature" element={<PrivateWrapper><EmployeePositionFeatureList/></PrivateWrapper>} />

@@ -5,6 +5,7 @@ import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomContr
 import {useNavigate} from "react-router-dom";
 import {LookupSelector} from "./LookupSelector";
 import {Workplace} from "../model/workplace.model";
+import {Project} from "../model/Project.model";
 
 
 export type ButtonType = "save" | "apply" | "cancel" | "close";
@@ -19,6 +20,7 @@ export interface IWorkplaceEditorProps {
 
 interface IWorkplaceEditorState {
     workplace: Workplace;
+    project: Project;
     dataChanged: boolean;
     name: string;
     errorMessage: string;
@@ -29,6 +31,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         super(props);
         this.state = {
             workplace: new Workplace(),
+            project: new Project(),
             dataChanged: false,
             name: "",
 
@@ -40,6 +43,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         this.onSave = this.onSave.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onChangePositionId = this.onChangePositionId.bind(this);
+        this.onChangeProjectId = this.onChangeProjectId.bind(this);
     }
 
     componentDidMount() {
@@ -79,6 +83,12 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         this.setState({...this.state, workplace, dataChanged: true});
 
     }
+    onChangeProjectId(newId: number){
+        let workplace = this.state.workplace;
+        workplace.projectId = newId;
+        this.setState({...this.state, workplace, dataChanged: true});
+
+    }
 
 
     validateData(){
@@ -91,6 +101,10 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         else if  (workplace.employeePositionId<= 0)
         {
             errorMessage = "Заполните поле 'Профессия'"
+        }
+        else if  (workplace.projectId<= 0)
+        {
+            errorMessage = "Заполните поле 'Проект'"
         }
 
             this.setState({...this.state, errorMessage});
@@ -127,7 +141,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
 
     render() {
         const workplace  = this.state.workplace;
-
+        const project  = this.state.project;
 
         let buttons: ButtonType[] = [];
         if (this.props.buttons) {
@@ -148,6 +162,12 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
                                             loadFunction={accessServerAPI.lookup.position}
                                             onChange={this.onChangePositionId}
                                 enabled={workplace.id <= 0}  />
+                            <LookupSelector label="Проект"
+                                            lookupObjectId={workplace.projectId}
+                                            findFunction={accessServerAPI.lookup.projectList}
+                                            loadFunction={accessServerAPI.lookup.project}
+                                            onChange={this.onChangePositionId}
+                                            />
                             <InputWithLabel label="Название" id="name" value={workplace.name} onChange={this.onChangeName}/>
                             <ErrorPanel error={this.state.errorMessage}/>
                             <FormGroup className="text-end">
