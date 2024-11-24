@@ -126,6 +126,16 @@ const projects = {
     delete: (id: number) => request.delete(`/project/${id}`),
     find: (findNamePart: string) => request.post<Project[]>('/project/find', {findNamePart})
 };
+const employeeWorkplaces = {
+    list: () => request.get<EmployeeWorkplace[]>('/employee_workplace'),
+    details: (id: number) => request.get<EmployeeWorkplace>(`/employee_workplace/${id}`),
+    create: (data: EmployeeWorkplace) => request.post<EmployeeWorkplace>('/employee_workplace', data),
+    update: (data: EmployeeWorkplace) => request.put<EmployeeWorkplace>(`/employee_workplace/${data.id}`, data),
+    delete: (id: number) => request.delete(`/employee_workplace/${id}`),
+    find: (findNamePart: string) => request.post<EmployeeWorkplace[]>('/employee_workplace/find', {findNamePart}),
+    //features: (id: number) => request.get<FeatureForEmployee[]>(`/employee_workplace/features/${id}`),
+   // updateFeatures: (id: number, data: FeatureForEmployee[]) => request.put<FeatureForEmployee[]>(`/employee/features/${id}`, data),
+};
 const accessServerAPI = {
     loginUtils,
     lookup,
@@ -135,7 +145,8 @@ const accessServerAPI = {
     positions,
     workplaces,
     features,
-    projects
+    projects,
+    employeeWorkplaces
 }
 
 export default accessServerAPI;

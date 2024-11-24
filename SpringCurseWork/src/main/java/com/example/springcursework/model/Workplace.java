@@ -16,6 +16,9 @@ public class Workplace {
 
     @Column(name = "employee_position_id")
     private Integer employeePositionId;
+    @Column(name = "project_id")
+    private Integer projectId;
+
 
 
     public int getId() { return id; }
@@ -36,6 +39,14 @@ public class Workplace {
 
     @Override
     public String toString() {
-        return "Workplace [id=" + id + ", name=" + name +", employeePositionId="+ getEmployeePositionId() +  "]";
+        return "Workplace [id=" + id + ", name=" + name +", employeePositionId="+ getEmployeePositionId() + ", employeePositionId="+ getProjectId() + "]";
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 }

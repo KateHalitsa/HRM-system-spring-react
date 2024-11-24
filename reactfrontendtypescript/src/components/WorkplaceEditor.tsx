@@ -166,7 +166,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
                                             lookupObjectId={workplace.projectId}
                                             findFunction={accessServerAPI.lookup.projectList}
                                             loadFunction={accessServerAPI.lookup.project}
-                                            onChange={this.onChangePositionId}
+                                            onChange={this.onChangeProjectId}
                                             />
                             <InputWithLabel label="Название" id="name" value={workplace.name} onChange={this.onChangeName}/>
                             <ErrorPanel error={this.state.errorMessage}/>

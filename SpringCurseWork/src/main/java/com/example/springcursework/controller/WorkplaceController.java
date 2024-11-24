@@ -61,4 +61,16 @@ public class WorkplaceController {
     public List<FeatureForWorkplace> FeaturesByWorkplaceId(@PathVariable int id, @RequestBody List<FeatureForWorkplace> featuresVO) {
         return workplaceService.updateFeaturesByWorkplaceId(id, featuresVO);
     }
+
+   /* @GetMapping(value = "/features/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<FeatureForWorkplace> ProjectsByWorkplaceId(@PathVariable int id) {
+        return workplaceService.ProjectsByWorkplaceId(id);
+    }
+
+    @PutMapping(value = "/features/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<FeatureForWorkplace> ProjectsByWorkplaceId(@PathVariable int id, @RequestBody List<FeatureForWorkplace> featuresVO) {
+        return workplaceService.updateProjectByWorkplaceId(id, featuresVO);
+    }*/
 }

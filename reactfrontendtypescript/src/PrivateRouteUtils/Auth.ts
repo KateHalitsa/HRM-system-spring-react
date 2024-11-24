@@ -28,6 +28,7 @@ export const PageAccess: PageRoles[] = [
     new PageRoles('/employee_position_feature', [ROLE.HR_OFFICER, ROLE.DIRECTOR]),
     new PageRoles('/recruitment', [ROLE.HR_OFFICER, ROLE.HR_MANAGER]),
     new PageRoles('/project', [ROLE.HR_OFFICER, ROLE.HR_MANAGER]),
+    new PageRoles('/employee_workplace', [ROLE.HR_OFFICER, ROLE.DIRECTOR]),
 ]
 
 const userInfoKey = 'userInfo!Q@W#E$R';
