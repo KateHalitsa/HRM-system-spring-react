@@ -2,14 +2,12 @@ import React, {Component} from 'react';
 import {withRouter, WithRouterProps} from "../PrivateRouteUtils/RouterUtils";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
-import {dateToISOStr, Employee} from "../model/employee.model";
+import {Employee} from "../model/employee.model";
 import accessServerAPI from "../model/AccessServerAPI";
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "../components/CustomControls";
-import {WorkplaceFeatures} from "../components/WorkplaceFeatures";
-import {EmployeeFeatures} from "../components/EmployeeFeatures";
 import {ButtonType, IWorkplaceEditorProps, WorkplaceEditor} from "../components/WorkplaceEditor";
 import {useNavigate} from "react-router-dom";
-
+import {dateToISOStr} from "./DateUtils";
 
 interface EmployeeEditProps extends WithRouterProps {}
 

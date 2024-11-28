@@ -1,16 +1,21 @@
 import React, { Component, ReactNode } from 'react';
-import {Button, ButtonGroup, Col, Container, Input, Label, Table} from 'reactstrap';
+import {Button, ButtonGroup, Card, CardBody, CardHeader, Col, Container, Input, Label, Table} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
 import accessServerAPI from "../model/AccessServerAPI";
 import {EmployeeEfficiencyCell, EmployeeEfficiencyTable} from "../model/EmployeeEfficiencyTable.model";
-import {ErrorPanel} from "../components/CustomControls";
+import {ErrorPanel, InputWithLabel} from "../components/CustomControls";
 import {EmployeeWorkplace} from "../model/EmployeeWorkplace.model";
+import {LookupSelector} from "../components/LookupSelector";
+import {dateToISOStr} from "../components/DateUtils";
 
 interface ISelectedId {
     [id: number]: boolean;
 }
 
 interface RecruitmentForWorkplaceState {
+    selectedProjectId: number;
+    selectedProjectDate: Date;
+    findErrorMessage: string;
     efficiencyTable: EmployeeEfficiencyTable;
     selectedEmployeeList: ISelectedId;
     selectedWorkplaceList: ISelectedId;
@@ -23,18 +28,29 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
     constructor(props: {}) {
         super(props);
         this.state = {
+            selectedProjectId: 0,
+            selectedProjectDate: new Date(),
+            findErrorMessage: "",
             efficiencyTable: new EmployeeEfficiencyTable(),
             selectedEmployeeList: {},
             selectedWorkplaceList: {},
             errorMessage: "",
-            employeeWorkplaceList: []
+            employeeWorkplaceList: [],
         };
+        this.onChangeProjectId = this.onChangeProjectId.bind(this);
+        this.onChangeProjectDate = this.onChangeProjectDate.bind(this);
+        this.onFindClick = this.onFindClick.bind(this);
         this.onWorkplaceChecked = this.onWorkplaceChecked.bind(this);
         this.onEmployeeChecked = this.onEmployeeChecked.bind(this);
         this.onCalculateClick = this.onCalculateClick.bind(this);
+        this.onApplyRecruitmentClick = this.onApplyRecruitmentClick.bind(this);
+
     }
 
     componentDidMount() {
+    }
+
+    loadEmployeeEfficiencyTable(){
         accessServerAPI.employeeEfficiency.load().then(
             foundEfficiencyTable =>
             {
@@ -51,6 +67,46 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                 this.setState({...this.state, efficiencyTable: foundEfficiencyTable, selectedEmployeeList, selectedWorkplaceList});
             }
         )
+    }
+
+    onChangeProjectId(newId: number){
+        this.setState({...this.state, selectedProjectId: newId});
+    }
+
+    onChangeProjectDate(event: React.ChangeEvent<HTMLInputElement>)
+    {
+        let selectedProjectDate = event.target.valueAsDate!;
+        this.setState({...this.state, selectedProjectDate});
+    }
+
+    private validateFindParams(): Boolean
+    {
+
+        let {selectedProjectId, efficiencyTable, employeeWorkplaceList} = this.state;
+
+        let findErrorMessage = "";
+        if (selectedProjectId <= 0){
+            findErrorMessage = "Выберите проект";
+        }
+
+        if (findErrorMessage !== "")
+        {
+            efficiencyTable = new EmployeeEfficiencyTable(); // Очистить предыдущую таблицу назначений
+            employeeWorkplaceList = []; // Очистить предыдущие результаты расчетов
+        }
+
+        this.setState({...this.state, findErrorMessage, efficiencyTable, employeeWorkplaceList});
+
+        return findErrorMessage === "";
+    }
+
+    private onFindClick(): void
+    {
+        if (!this.validateFindParams()){
+            return;
+        }
+
+        this.loadEmployeeEfficiencyTable();
     }
 
     private onWorkplaceChecked(e: React.ChangeEvent<HTMLInputElement>) {
@@ -124,11 +180,12 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             if (selectedEmployeeList[e.id]){
                 employeeIds.push(e.id);
             }
-
         }
 
         for (const w of efficiencyTable.workplaces){
-            workplaceIds.push(w.id);
+            if (selectedWorkplaceList[w.id]){
+                workplaceIds.push(w.id);
+            }
         }
 
         accessServerAPI.employeeEfficiency.calc(efficiencyTable.cells, employeeIds, workplaceIds).then(employeeWorkplaceList =>
@@ -138,10 +195,15 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
         );
     }
 
+    private onApplyRecruitmentClick(){
+
+    }
+
     render() {
         const {
-            efficiencyTable, selectedEmployeeList,
-            selectedWorkplaceList, employeeWorkplaceList
+            selectedProjectId, selectedProjectDate,
+            efficiencyTable, selectedEmployeeList,  selectedWorkplaceList,
+            employeeWorkplaceList
         } = this.state;
 
         const workplaceList = efficiencyTable.workplaces;
@@ -218,11 +280,14 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             );
         })
 
-        return (
-            <div>
-                <AppNavbar />
-                <Container fluid className="pt-2">
-                    <h5>Таблица расчета назначений</h5>
+        const  efficiencyTableIsEmpty = (efficiencyTable.workplaces.length === 0) && (efficiencyTable.employees.length === 0)
+        const efficiencyTablePresentation = !efficiencyTableIsEmpty?(
+            <Card color="light" className="m-3 mt-0">
+                <CardHeader className='py-1 m-0 navbar'>
+                    <b>Таблица расчета назначений</b>
+                </CardHeader>
+                <CardBody className="m-0 text-start">
+
                     <Table striped hover bordered size="sm" className="mb-2">
                         <thead>
                         <tr>
@@ -240,14 +305,25 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                             <ErrorPanel error={this.state.errorMessage} leftSpace={false}/>
                         </Col>
                         <Col sm="3" style={{textAlign: "right"}}>
-                            <Button className="ms-1" size="sm" color="primary" outline onClick={this.onCalculateClick}>Рассчитать
-                                назначения</Button>
+                            <Button className="ms-1" size="sm" color="primary" outline
+                                    onClick={this.onCalculateClick}>
+                                Рассчитать назначения
+                            </Button>
                         </Col>
                     </div>
+                </CardBody>
+            </Card>
+        ):(
+            <></>
+        );
 
-                    {employeeWorkplaceList.length > 0?(
-                    <div>
-                    <h5>Результат расчета назначений</h5>
+        const employeeWorkplaceListPresentation = employeeWorkplaceList.length > 0?(
+
+            <Card color="light" className="m-3 mt-0">
+                <CardHeader className='py-1 m-0 navbar' >
+                    <b>Результат расчета назначений</b>
+                </CardHeader>
+                <CardBody className="m-0 text-start">
                     <Table striped hover bordered size="sm" className="mb-2">
                         <thead>
                         <tr>
@@ -256,18 +332,55 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                         </tr>
                         </thead>
                         <tbody>
-                        {employeeWorkplaceList.map(e=>
+                        {employeeWorkplaceList.map(e =>
                             <tr>
                                 <td>{getEmployeeName(e.employeeId)}</td>
                                 <td>{getWorkplaceName(e.workplaceId)}</td>
                             </tr>)}
                         </tbody>
                     </Table>
-                     </div>
-                     ):(
-                     <></>
-                    )}
+                    <div className="text-end mt-2">
+                        <Button className="ms-1" size="sm" color="primary" outline
+                                onClick={this.onApplyRecruitmentClick}>
+                            Применить назначения
+                        </Button>
+                    </div>
 
+                </CardBody>
+            </Card>
+        ) : (
+            <></>
+        );
+
+        return (
+            <div>
+                <AppNavbar/>
+                <Container fluid className="pt-2">
+                    <Card color="light" className="m-3 mt-0">
+                        <CardHeader className='py-1 m-0 navbar'>
+                            <b>Набор сотрудников для проекта</b>
+                        </CardHeader>
+                        <CardBody className="m-0 text-start">
+                            <LookupSelector label="Выберите проект"
+                                            lookupObjectId={selectedProjectId}
+                                            findFunction={accessServerAPI.lookup.projectList}
+                                            loadFunction={accessServerAPI.lookup.project}
+                                            onChange={this.onChangeProjectId}
+                            />
+                            <InputWithLabel label="Дата набора:" id="birthday" value={dateToISOStr(selectedProjectDate)}
+                                            type="date" onChange={this.onChangeProjectDate}/>
+                            <ErrorPanel error={this.state.findErrorMessage}/>
+                            <div className="text-end mt-2">
+                                    <Button className="ms-1" size="sm" color="primary" outline
+                                            onClick={this.onFindClick}>
+                                        Поиск сотрудников для свободных вакансий проекта
+                                    </Button>
+                            </div>
+
+                        </CardBody>
+                    </Card>
+                    {efficiencyTablePresentation}
+                    {employeeWorkplaceListPresentation}
                 </Container>
             </div>
         );

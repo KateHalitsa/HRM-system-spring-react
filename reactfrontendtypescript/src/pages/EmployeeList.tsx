@@ -2,8 +2,9 @@ import React, { Component, ReactNode } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
 import { Link } from 'react-router-dom';
-import {dateToDisplayStr, Employee} from "../model/employee.model";
+import {Employee} from "../model/employee.model";
 import accessServerAPI from "../model/AccessServerAPI";
+import {dateToDisplayStr} from "../components/DateUtils";
 
 interface EmployeeListState {
     employees: Employee[];
