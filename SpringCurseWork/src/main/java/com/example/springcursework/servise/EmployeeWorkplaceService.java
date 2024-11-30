@@ -17,4 +17,6 @@ public interface EmployeeWorkplaceService {
     //public List<EmployeeWorkplace> findByNamePart(String namePart);
 
     public EmployeeWorkplace updateEmployeeWorkplace(int id, EmployeeWorkplace employeeVO);
+
+    public List<EmployeeWorkplace> insertContacts(List<EmployeeWorkplace> contracts);
 }

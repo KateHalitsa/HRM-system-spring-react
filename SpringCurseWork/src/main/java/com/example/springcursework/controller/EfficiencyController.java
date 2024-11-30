@@ -1,18 +1,16 @@
 package com.example.springcursework.controller;
 
 import com.example.springcursework.model.EmployeeWorkplace;
-import com.example.springcursework.payload.request.EmployeeEfficiencyTableRequest;
+import com.example.springcursework.payload.request.EmployeeEfficiencyForProjectRequest;
+import com.example.springcursework.payload.request.EmployeeEfficiencyTableCalcRequest;
 import com.example.springcursework.payload.response.EmployeeEfficiencyTableResponse;
-import com.example.springcursework.servise.EmployeeEfficiencyService;
-import com.example.springcursework.servise.EmployeeService;
-import com.example.springcursework.servise.HungarianAlgorithm;
-import com.example.springcursework.servise.WorkplaceService;
+import com.example.springcursework.servise.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -28,13 +26,18 @@ public class EfficiencyController {
     @Autowired
     private WorkplaceService workplaceService;
 
+    @Autowired
+    private EmployeeWorkplaceService employeeWorkplaceService;
+
     @PostMapping(value = "/load")
     @ResponseStatus(value = HttpStatus.OK)
-    public EmployeeEfficiencyTableResponse load(/*@RequestBody LookupFindRequest findVO*/) {
+    public EmployeeEfficiencyTableResponse load(@RequestBody EmployeeEfficiencyForProjectRequest findVO) {
+        int projectId = findVO.getProjectId();
+        LocalDateTime calcOnDate = findVO.getCalcOnDate();
         EmployeeEfficiencyTableResponse res = new EmployeeEfficiencyTableResponse(
-                this.employeeEfficiencyService.loadEmployeeEfficiency(),
-                this.employeeService.findAll(),
-                this.workplaceService.findAll()
+                this.employeeEfficiencyService.loadEmployeeEfficiency(projectId, calcOnDate),
+                this.employeeService.freeEmployeesOnDate(calcOnDate),
+                this.workplaceService.projectVacanciesOnDate(projectId, calcOnDate)
         );
         return res;
     }
@@ -42,7 +45,7 @@ public class EfficiencyController {
     @PostMapping(value = "/calc")
     @ResponseStatus(value = HttpStatus.OK)
     @ExceptionHandler(value = { Exception.class })
-    public List<EmployeeWorkplace> calc(@RequestBody EmployeeEfficiencyTableRequest table) {
+    public List<EmployeeWorkplace> calc(@RequestBody EmployeeEfficiencyTableCalcRequest table) {
 
         try {
             HungarianAlgorithm hungarianAlgorithm = new HungarianAlgorithm();
@@ -51,15 +54,13 @@ public class EfficiencyController {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
-
-/*
-        EmployeeEfficiencyTableResponse res = new EmployeeEfficiencyTableResponse(
-                this.employeeEfficiencyService.loadEmployeeEfficiency(),
-                this.employeeService.findAll(),
-                this.workplaceService.findAll()
-        );
-        return res; */
     }
 
+    @PostMapping(value = "/apply")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<EmployeeWorkplace> apply(@RequestBody List<EmployeeWorkplace> contracts) {
+        List<EmployeeWorkplace> res = this.employeeWorkplaceService.insertContacts(contracts);
+        return res;
+    }
 
 }

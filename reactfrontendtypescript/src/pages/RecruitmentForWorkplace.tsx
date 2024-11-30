@@ -7,6 +7,7 @@ import {ErrorPanel, InputWithLabel} from "../components/CustomControls";
 import {EmployeeWorkplace} from "../model/EmployeeWorkplace.model";
 import {LookupSelector} from "../components/LookupSelector";
 import {dateToISOStr} from "../components/DateUtils";
+import EmployeeWorkplaceList from "./EmployeeWorkplaceList";
 
 interface ISelectedId {
     [id: number]: boolean;
@@ -21,13 +22,31 @@ interface RecruitmentForWorkplaceState {
     selectedWorkplaceList: ISelectedId;
     errorMessage: string;
     employeeWorkplaceList: EmployeeWorkplace[];
+    contractFromDate: Date;
+    contractToDate: Date;
+    contractErrorMessage: string;
 }
 
 class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState> {
 
     constructor(props: {}) {
         super(props);
-        this.state = {
+        this.initState();
+        this.onChangeProjectId = this.onChangeProjectId.bind(this);
+        this.onChangeProjectDate = this.onChangeProjectDate.bind(this);
+        this.onFindClick = this.onFindClick.bind(this);
+        this.onWorkplaceChecked = this.onWorkplaceChecked.bind(this);
+        this.onEmployeeChecked = this.onEmployeeChecked.bind(this);
+        this.onCalculateClick = this.onCalculateClick.bind(this);
+
+        this.onChangeContractFromDate = this.onChangeContractFromDate.bind(this);
+        this.onChangeContractToDate = this.onChangeContractToDate.bind(this);
+        this.onApplyRecruitmentClick = this.onApplyRecruitmentClick.bind(this);
+
+    }
+
+    initState() {
+        this.state  = {
             selectedProjectId: 0,
             selectedProjectDate: new Date(),
             findErrorMessage: "",
@@ -36,26 +55,25 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             selectedWorkplaceList: {},
             errorMessage: "",
             employeeWorkplaceList: [],
+            contractFromDate: new Date(),
+            contractToDate: new Date(),
+            contractErrorMessage: ""
         };
-        this.onChangeProjectId = this.onChangeProjectId.bind(this);
-        this.onChangeProjectDate = this.onChangeProjectDate.bind(this);
-        this.onFindClick = this.onFindClick.bind(this);
-        this.onWorkplaceChecked = this.onWorkplaceChecked.bind(this);
-        this.onEmployeeChecked = this.onEmployeeChecked.bind(this);
-        this.onCalculateClick = this.onCalculateClick.bind(this);
-        this.onApplyRecruitmentClick = this.onApplyRecruitmentClick.bind(this);
-
+        this.setState(this.state);
     }
+
 
     componentDidMount() {
     }
 
     loadEmployeeEfficiencyTable(){
-        accessServerAPI.employeeEfficiency.load().then(
+        const {selectedProjectId, selectedProjectDate} = this.state;
+        accessServerAPI.employeeEfficiency.load(selectedProjectId, selectedProjectDate).then(
             foundEfficiencyTable =>
             {
                 let selectedEmployeeList: ISelectedId = {};
                 let selectedWorkplaceList: ISelectedId = {};
+                let employeeWorkplaceList: EmployeeWorkplace[] = []; // Очистить предыдущие результаты расчетов;
 
                 for (const employee of foundEfficiencyTable.employees){
                     selectedEmployeeList[employee.id] = true;
@@ -64,7 +82,7 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                     selectedWorkplaceList[workplace.id] = true;
                 }
 
-                this.setState({...this.state, efficiencyTable: foundEfficiencyTable, selectedEmployeeList, selectedWorkplaceList});
+                this.setState({...this.state, efficiencyTable: foundEfficiencyTable, selectedEmployeeList, selectedWorkplaceList, employeeWorkplaceList});
             }
         )
     }
@@ -79,14 +97,30 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
         this.setState({...this.state, selectedProjectDate});
     }
 
+    onChangeContractFromDate(event: React.ChangeEvent<HTMLInputElement>)
+    {
+        let contractFromDate = event.target.valueAsDate!;
+        this.setState({...this.state, contractFromDate});
+    }
+
+    onChangeContractToDate(event: React.ChangeEvent<HTMLInputElement>)
+    {
+        let contractToDate = event.target.valueAsDate!;
+        this.setState({...this.state, contractToDate});
+    }
+
+
     private validateFindParams(): Boolean
     {
 
-        let {selectedProjectId, efficiencyTable, employeeWorkplaceList} = this.state;
+        let {selectedProjectId, selectedProjectDate,
+            efficiencyTable, employeeWorkplaceList} = this.state;
 
         let findErrorMessage = "";
         if (selectedProjectId <= 0){
             findErrorMessage = "Выберите проект";
+        } else if (selectedProjectDate === null){
+            findErrorMessage = "Заполните дату набора";
         }
 
         if (findErrorMessage !== "")
@@ -190,20 +224,56 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
 
         accessServerAPI.employeeEfficiency.calc(efficiencyTable.cells, employeeIds, workplaceIds).then(employeeWorkplaceList =>
             {
-                this.setState({...this.state, employeeWorkplaceList});
+                const contractFromDate = this.state.selectedProjectDate;
+
+                let contractToDate = new Date(contractFromDate);
+                contractToDate.setFullYear(contractToDate.getFullYear() + 1);
+
+                this.setState({...this.state, employeeWorkplaceList, contractFromDate, contractToDate});
             }
         );
     }
 
-    private onApplyRecruitmentClick(){
+    private validateContactParams(): Boolean
+    {
+        let {contractFromDate, contractToDate} = this.state;
 
+        let contractErrorMessage = "";
+        if (contractFromDate === null){
+            contractErrorMessage = "Выберите дату начала контракта";
+        } else if (contractToDate === null){
+            contractErrorMessage = "Выберите дату завершения контракта";
+        } else if (contractFromDate >= contractToDate){
+            contractErrorMessage = "Дата завершения контракта должна быть больше даты начала контракта";
+        }
+
+        this.setState({...this.state, contractErrorMessage});
+        return contractErrorMessage === "";
+    }
+    private onApplyRecruitmentClick(){
+        if (!this.validateContactParams()){
+            return;
+        }
+
+        let {employeeWorkplaceList, contractFromDate, contractToDate} = this.state;
+        for (let item of employeeWorkplaceList){
+            item.fromDate = contractFromDate;
+            item.toDate = contractToDate;
+        }
+
+        accessServerAPI.employeeEfficiency.apply(employeeWorkplaceList).then( res =>
+            {
+                this.initState();
+            }
+        );
     }
 
     render() {
         const {
             selectedProjectId, selectedProjectDate,
             efficiencyTable, selectedEmployeeList,  selectedWorkplaceList,
-            employeeWorkplaceList
+            employeeWorkplaceList,
+            contractFromDate, contractToDate
         } = this.state;
 
         const workplaceList = efficiencyTable.workplaces;
@@ -339,6 +409,12 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                             </tr>)}
                         </tbody>
                     </Table>
+                    <b>Заключить контракт на период</b>
+                    <InputWithLabel label="Дата начала контракта:" id="contractFromDate" value={dateToISOStr(contractFromDate)}
+                                    type="date" onChange={this.onChangeContractFromDate}/>
+                    <InputWithLabel label="Дата завершения контракта:" id="contractToDate" value={dateToISOStr(contractToDate)}
+                                    type="date" onChange={this.onChangeContractToDate}/>
+                    <ErrorPanel error={this.state.contractErrorMessage}/>
                     <div className="text-end mt-2">
                         <Button className="ms-1" size="sm" color="primary" outline
                                 onClick={this.onApplyRecruitmentClick}>
@@ -367,7 +443,7 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                                             loadFunction={accessServerAPI.lookup.project}
                                             onChange={this.onChangeProjectId}
                             />
-                            <InputWithLabel label="Дата набора:" id="birthday" value={dateToISOStr(selectedProjectDate)}
+                            <InputWithLabel label="Дата набора:" id="projectDate" value={dateToISOStr(selectedProjectDate)}
                                             type="date" onChange={this.onChangeProjectDate}/>
                             <ErrorPanel error={this.state.findErrorMessage}/>
                             <div className="text-end mt-2">

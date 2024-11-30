@@ -86,11 +86,12 @@ const employees = {
     features: (id: number) => request.get<FeatureForEmployee[]>(`/employee/features/${id}`),
     updateFeatures: (id: number, data: FeatureForEmployee[]) => request.put<FeatureForEmployee[]>(`/employee/features/${id}`, data),
 };
+
 const employeeEfficiency = {
-    load: ()=> request.post<EmployeeEfficiencyTable>('/efficiency/load', {}),
+    load: (projectId: number, calcOnDate: Date)=> request.post<EmployeeEfficiencyTable>('/efficiency/load', {projectId, calcOnDate}),
     calc: (cells: EmployeeEfficiencyCell[], employeeIds: number[], workplaceIds: number[])=>
-            request.post<EmployeeWorkplace[]>('/efficiency/calc', {cells, employeeIds, workplaceIds}
-        )
+            request.post<EmployeeWorkplace[]>('/efficiency/calc', {cells, employeeIds, workplaceIds}),
+    apply: (newContracts: EmployeeWorkplace[])=> request.post<EmployeeWorkplace[]>('/efficiency/apply', newContracts)
 }
 const positions = {
     list: () => request.get<EmployeePosition[]>('/employee_position'),

@@ -1,7 +1,6 @@
 package com.example.springcursework.repository;
 
 import com.example.springcursework.model.EmployeeFeature;
-import com.example.springcursework.model.WorkplaceFeature;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmployeeFeatureRepository extends JpaRepository<EmployeeFeature, Integer> {

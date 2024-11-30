@@ -4,6 +4,7 @@ import com.example.springcursework.model.Employee;
 import com.example.springcursework.model.EmployeePositionFeature;
 import com.example.springcursework.model.FeatureForEmployee;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EmployeeService {
@@ -23,4 +24,6 @@ public interface EmployeeService {
 
     public List<FeatureForEmployee> FeaturesByEmployeeId(int id);
     public List<FeatureForEmployee> updateFeaturesByEmployeeId(int employeeId, List<FeatureForEmployee> features);
+
+    public List<Employee> freeEmployeesOnDate(LocalDateTime calcOnDate);
 }

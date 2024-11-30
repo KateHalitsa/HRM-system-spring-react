@@ -5,6 +5,7 @@ import com.example.springcursework.model.*;
 import com.example.springcursework.model.Workplace;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface WorkplaceService {
@@ -22,5 +23,7 @@ public interface WorkplaceService {
 
     public List<FeatureForWorkplace> FeaturesByWorkplaceId(int id);
     public List<FeatureForWorkplace> updateFeaturesByWorkplaceId(int workplaceId, List<FeatureForWorkplace> features);
+
+    public List<Workplace> projectVacanciesOnDate(int projectId, LocalDateTime calcOnDate);
 
 }

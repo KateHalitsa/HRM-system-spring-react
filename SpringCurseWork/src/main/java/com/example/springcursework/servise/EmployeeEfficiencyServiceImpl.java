@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,8 +17,8 @@ public class EmployeeEfficiencyServiceImpl implements EmployeeEfficiencyService
    private EmployeeEfficiencyCellRepository employeeEfficiencyRepository;
 
     @Override
-    public List<EmployeeEfficiencyCell> loadEmployeeEfficiency(){
-        List<EmployeeEfficiencyCell> res = employeeEfficiencyRepository.loadEmployeeEfficiency();
+    public List<EmployeeEfficiencyCell> loadEmployeeEfficiency(int projectId, LocalDateTime calcOnDate){
+        List<EmployeeEfficiencyCell> res = employeeEfficiencyRepository.loadEmployeeEfficiency(projectId, calcOnDate);
         return res;
     }
 

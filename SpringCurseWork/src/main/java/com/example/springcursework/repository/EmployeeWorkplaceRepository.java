@@ -9,4 +9,5 @@ public interface EmployeeWorkplaceRepository extends JpaRepository<EmployeeWorkp
     @Query(value = "SELECT wf.* FROM  workplace_feature wf WHERE  wf.workplace_id=?1 AND wf.featureId = ?2", nativeQuery = true)
   WorkplaceFeature  findByWorkplaceAndFeatureId(int workplaceId, int featureId);
      */
+
 }

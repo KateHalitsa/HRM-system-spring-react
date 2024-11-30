@@ -2,13 +2,10 @@ package com.example.springcursework.servise;
 
 import com.example.springcursework.model.EmployeeEfficiencyCell;
 import com.example.springcursework.model.EmployeeWorkplace;
-import com.example.springcursework.payload.request.EmployeeEfficiencyTableRequest;
+import com.example.springcursework.payload.request.EmployeeEfficiencyTableCalcRequest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-
-import static java.lang.Boolean.TRUE;
 
 // https://habr.com/ru/articles/63982/
 
@@ -72,7 +69,7 @@ public class HungarianAlgorithm {
         return res;
     }
 
-    private void fillMatrixByRequest(EmployeeEfficiencyTableRequest efficiencyTable) throws Exception {
+    private void fillMatrixByRequest(EmployeeEfficiencyTableCalcRequest efficiencyTable) throws Exception {
         List<Integer> employeeList = efficiencyTable.getEmployeeIds();
         List<Integer> workplaceList = efficiencyTable.getWorkplaceIds();
         List<EmployeeEfficiencyCell> cells = efficiencyTable.getCells();
@@ -95,7 +92,7 @@ public class HungarianAlgorithm {
         }
     }
 
-    public List<EmployeeWorkplace> calculate(EmployeeEfficiencyTableRequest efficiencyTable) throws Exception {
+    public List<EmployeeWorkplace> calculate(EmployeeEfficiencyTableCalcRequest efficiencyTable) throws Exception {
 
 
         // ... чтение a ...

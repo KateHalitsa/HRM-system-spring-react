@@ -6,9 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -16,62 +14,36 @@ import java.util.stream.Collectors;
 public class EmployeeWorkplaceServiceImpl implements EmployeeWorkplaceService
 {
    @Autowired
-   private EmployeeWorkplaceRepository employeePositionRepository;
+   private EmployeeWorkplaceRepository employeeWorkspaceRepository;
 
     @Override
-
     public EmployeeWorkplace insert(EmployeeWorkplace employeeVO) {
-        return this.employeePositionRepository.save(employeeVO);
+        return this.employeeWorkspaceRepository.save(employeeVO);
     }
 
     @Override
     public List<EmployeeWorkplace> findAll() {
-        return this.employeePositionRepository.findAll();
+        return this.employeeWorkspaceRepository.findAll();
     }
 
     @Override
     public void delete(int id) {
-        this.employeePositionRepository.deleteById(id);
+        this.employeeWorkspaceRepository.deleteById(id);
     }
 
     @Override
     public EmployeeWorkplace findById(int id) {
-        return this.employeePositionRepository.findById(id).get();
+        return this.employeeWorkspaceRepository.findById(id).get();
     }
-
-    private boolean findByKeys(String str, String[] keys){
-        String s = str.toLowerCase();
-        for (String key: keys){
-            if (s.indexOf(key) >= 0)
-                return true;
-        }
-        return false;
-    }
-
-    /*@Override
-    public List<EmployeeWorkplace> findByNamePart(String namePart)
-    {
-        List<EmployeeWorkplace> filteredList;
-        List<EmployeeWorkplace> originalList = this.employeePositionRepository.findAll();
-
-        String[] keys = namePart.trim().toLowerCase().split(" ");
-        if (keys.length == 0) {
-            filteredList = originalList;
-        } else {
-            filteredList = originalList.stream()
-                    .filter(employeePosition ->
-                            findByKeys(employeePosition., keys)
-                    ).collect(Collectors.toList());
-        }
-
-        filteredList.sort(Comparator.comparing(EmployeeWorkplace::getName));
-
-        return filteredList;
-    }*/
 
     @Override
     public EmployeeWorkplace updateEmployeeWorkplace(int id, EmployeeWorkplace employeeVO) {
         employeeVO.setId(id);
-        return this.employeePositionRepository.save(employeeVO);
+        return this.employeeWorkspaceRepository.save(employeeVO);
+    }
+
+    @Override
+    public List<EmployeeWorkplace> insertContacts(List<EmployeeWorkplace> contracts){
+        return this.employeeWorkspaceRepository.saveAll(contracts);
     }
 }

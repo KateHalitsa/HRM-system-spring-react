@@ -4,12 +4,12 @@ import com.example.springcursework.model.EmployeeEfficiencyCell;
 
 import java.util.List;
 
-public class EmployeeEfficiencyTableRequest {
+public class EmployeeEfficiencyTableCalcRequest {
     private List<EmployeeEfficiencyCell> cells;
     private List<Integer> employeeIds;
     private List<Integer> workplaceIds;
 
-    public EmployeeEfficiencyTableRequest(List<EmployeeEfficiencyCell> cells, List<Integer> employeeIds, List<Integer> workplaceIds){
+    public EmployeeEfficiencyTableCalcRequest(List<EmployeeEfficiencyCell> cells, List<Integer> employeeIds, List<Integer> workplaceIds){
        this.setCells(cells);
        this.setEmployeeIds(employeeIds);
        this.setWorkplaceIds(workplaceIds);
