@@ -37,7 +37,7 @@ public class LookupServiceImpl implements LookupService
     }
     @Override
     public LookupItem employeeItem(int id){
-        return this.lookupItemRepository.loadEmployeeItem(id);
+       return this.lookupItemRepository.loadEmployeeItem(id);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class LookupServiceImpl implements LookupService
 
     @Override
     public LookupItem positionItem(int id) {
-        return this.lookupItemRepository.loadPositionItem(id);
+       return this.lookupItemRepository.loadPositionItem(id);
     }
 
     @Override
@@ -59,7 +59,17 @@ public class LookupServiceImpl implements LookupService
 
     @Override
     public LookupItem projectItem(int id) {
-        return this.lookupItemRepository.loadProjectItem(id);
+       return this.lookupItemRepository.loadProjectItem(id);
+    }
+
+    @Override
+    public List<LookupItem> workplaceList(String namePart){
+        List<LookupItem>  res = this.lookupItemRepository.findWorkplaceList(prepareLikeParam(namePart));
+        return res;
+    }
+    @Override
+    public LookupItem workplaceItem(int id){
+        return this.lookupItemRepository.loadWorkplaceItem(id);
     }
 
 }

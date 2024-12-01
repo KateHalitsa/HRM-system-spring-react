@@ -11,7 +11,7 @@ import {FeatureForWorkplace} from "./FeatureForWorkplace.model";
 import {FeatureForEmployee} from "./FeatureForEmployee.model";
 import {EmployeeEfficiencyCell, EmployeeEfficiencyTable} from "./EmployeeEfficiencyTable.model";
 import {Project} from "./Project.model";
-import {EmployeeWorkplace} from "./EmployeeWorkplace.model";
+import {EmployeeWorkplace, EmployeeWorkplaceView} from "./EmployeeWorkplace.model";
 
 const token = "";
 
@@ -66,6 +66,8 @@ const lookup = {
     positionList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee_position', {findNamePart}),
     project: (id: number) => request.get<LookupItem>(`/lookup/project/${id}`),
     projectList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/project', {findNamePart}),
+    workplace: (id: number) => request.get<LookupItem>(`/lookup/workplace/${id}`),
+    workplaceList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/workplace', {findNamePart}),
 };
 const users = {
     list: () => request.get<User[]>('/user'),
@@ -129,13 +131,13 @@ const projects = {
 };
 const employeeWorkplaces = {
     list: () => request.get<EmployeeWorkplace[]>('/employee_workplace'),
+    view: () => request.get<EmployeeWorkplaceView[]>('/employee_workplace/view'),
     details: (id: number) => request.get<EmployeeWorkplace>(`/employee_workplace/${id}`),
     create: (data: EmployeeWorkplace) => request.post<EmployeeWorkplace>('/employee_workplace', data),
     update: (data: EmployeeWorkplace) => request.put<EmployeeWorkplace>(`/employee_workplace/${data.id}`, data),
     delete: (id: number) => request.delete(`/employee_workplace/${id}`),
     find: (findNamePart: string) => request.post<EmployeeWorkplace[]>('/employee_workplace/find', {findNamePart}),
-    //features: (id: number) => request.get<FeatureForEmployee[]>(`/employee_workplace/features/${id}`),
-   // updateFeatures: (id: number, data: FeatureForEmployee[]) => request.put<FeatureForEmployee[]>(`/employee/features/${id}`, data),
+    history: (employeeId: number) => request.get<EmployeeWorkplaceView[]>(`/employee_workplace/history/${employeeId}`),
 };
 const accessServerAPI = {
     loginUtils,

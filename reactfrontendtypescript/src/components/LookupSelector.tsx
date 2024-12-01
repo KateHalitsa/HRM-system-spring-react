@@ -1,13 +1,7 @@
 import React, {Component} from "react";
 import AsyncSelect from 'react-select/async';
 import {Col, Label} from "reactstrap";
-import accessServerAPI from "../model/AccessServerAPI";
-import {EmployeePosition} from "../model/EmployeePosition.model";
 import {LookupItem} from "../model/LookupItem.model";
-
-
-
-
 
 interface ILookupSelectorProps {
     label: string;

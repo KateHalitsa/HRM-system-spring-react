@@ -34,7 +34,8 @@ export const CloseButton = (props: ICloseButtonProps) => {
 
 export interface IInputWithLabelProps {
     id: string;
-    value: string;
+    value?: string;
+    checked?: boolean;
     label: string;
     onChange?: ChangeEventHandler<HTMLInputElement> | undefined; // React.ChangeEvent<HTMLInputElement>
     type?: InputType;
@@ -48,9 +49,10 @@ export const InputWithLabel = (props: IInputWithLabelProps) => {
     return <div className="row mb-1">
         <Label for={props.id} sm="2" size="sm" className="text-end pe-0">{props.label}</Label>
         <Col sm="10">
-            <Input lang="ru-ru"  type={props.type} name={props.id} id={props.id} autoComplete="off" bsSize="sm"
+            <Input lang="ru-ru"  type={props.type} name={props.id} id={props.id} autoComplete="off"
+                   bsSize={(props.type!=="checkbox")?("sm"):(undefined)}
                    placeholder={props.placeholder} complete="off"
-                   value={props.value} onChange={props.onChange}/>
+                   value={props.value} checked={props.checked} onChange={props.onChange}/>
         </Col>
     </div>
 

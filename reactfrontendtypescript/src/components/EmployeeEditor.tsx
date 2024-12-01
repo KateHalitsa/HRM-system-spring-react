@@ -11,10 +11,6 @@ import {dateToISOStr} from "./DateUtils";
 
 interface EmployeeEditProps extends WithRouterProps {}
 
-interface EmployeeEditState {
-    employee: Employee;
-    dataChanged: boolean
-}
 export interface IEmployeeEditorProps {
     employeeId: number;
     title: string;
@@ -145,9 +141,7 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
     }
 
     render() {
-        //let employeeId: number = 0;
         const employee  = this.state.employee;
-       // const title = <div>{employee.id ? 'Редактировать сотрудника' : 'Добавить сотрудника'}</div>;
 
         let buttons: ButtonType[] = [];
         if (this.props.buttons) {
@@ -171,12 +165,6 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
                                 <SaveButton onClick={() => this.onSave(false)} enabled={this.state.dataChanged} caption="Применить" />
                                 <CloseButton to="/employees" dataChanged={this.state.dataChanged}/>
                             </FormGroup>
-                           {/*  <FormGroup className="text-end">
-                                {buttons.includes("save") && <SaveButton onClick={() => this.onSave(true)} enabled={this.state.dataChanged} />}
-                                {buttons.includes("apply") && <SaveButton onClick={() => this.onSave(false)} enabled={this.state.dataChanged} caption="Применить" />}
-                                {buttons.includes("cancel") && <SaveButton onClick={() => this.onCancel()} enabled={this.state.dataChanged} caption="Отменить" color="danger"/>}
-                                {buttons.includes("close") && <CloseButton to="/workplace" dataChanged={this.state.dataChanged} />}
-                            </FormGroup>*/}
                         </Form>
                     </CardBody>
                     {this.props.childContent}

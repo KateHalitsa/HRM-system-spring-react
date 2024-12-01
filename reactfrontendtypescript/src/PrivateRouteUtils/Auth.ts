@@ -32,9 +32,9 @@ export const PageAccess: PageRoles[] = [
 ]
 
 const userInfoKey = 'userInfo!Q@W#E$R';
-const emptyUserInfo  = new UserInfoResponse(0,"", "", []);
+const emptyUserInfo  = new UserInfoResponse(0,"", "", 0,[]);
 const invalidUserID = -123;
-let connectedUserInfo  = new UserInfoResponse(invalidUserID,"", "", []);
+let connectedUserInfo  = new UserInfoResponse(invalidUserID,"", "", 0,[]);
 
 export const auth = {
 
@@ -44,7 +44,7 @@ export const auth = {
             const userInfoStr = localStorage.getItem(userInfoKey) || "";
             if (userInfoStr.length > 0){
                const jsonObj = JSON.parse(userInfoStr);
-                connectedUserInfo = new UserInfoResponse(jsonObj.id, jsonObj.username, jsonObj.email, jsonObj.roles);
+                connectedUserInfo = new UserInfoResponse(jsonObj.id, jsonObj.username, jsonObj.email, jsonObj.employeeId, jsonObj.roles);
             }
             else
             {

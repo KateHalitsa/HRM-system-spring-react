@@ -6,13 +6,15 @@ public class UserInfoResponse {
     private int id;
     private String username;
     private String email;
+    private int employeeId;
     private List<String> roles;
 
-    public UserInfoResponse(int id, String username, String email, List<String> roles) {
+    public UserInfoResponse(int id, String username, String email, int employeeId, List<String> roles) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.setEmployeeId(employeeId);
     }
 
     public int getId() {
@@ -38,6 +40,14 @@ public class UserInfoResponse {
 
     public List<String> getRoles() {
         return roles;
+    }
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 }
 

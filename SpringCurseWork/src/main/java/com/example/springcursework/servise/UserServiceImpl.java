@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService{
                 user.getId(),
                 user.getLogin(),
                 user.getEmail(),
+                user.getEmployeeId(),
                 BuildRolesForUser(roles));
     }
 

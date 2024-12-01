@@ -1,7 +1,9 @@
 package com.example.springcursework.servise;
 
 import com.example.springcursework.model.EmployeeWorkplace;
+import com.example.springcursework.model.EmployeeWorkplaceView;
 import com.example.springcursework.repository.EmployeeWorkplaceRepository;
+import com.example.springcursework.repository.EmployeeWorkplaceViewRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class EmployeeWorkplaceServiceImpl implements EmployeeWorkplaceService
 {
    @Autowired
    private EmployeeWorkplaceRepository employeeWorkspaceRepository;
+
+   @Autowired
+   private EmployeeWorkplaceViewRepository employeeWorkplaceViewRepository;
 
     @Override
     public EmployeeWorkplace insert(EmployeeWorkplace employeeVO) {
@@ -45,5 +50,15 @@ public class EmployeeWorkplaceServiceImpl implements EmployeeWorkplaceService
     @Override
     public List<EmployeeWorkplace> insertContacts(List<EmployeeWorkplace> contracts){
         return this.employeeWorkspaceRepository.saveAll(contracts);
+    }
+
+    @Override
+    public List<EmployeeWorkplaceView> view(){
+        return this.employeeWorkplaceViewRepository.findAll();
+    }
+
+    @Override
+    public List<EmployeeWorkplaceView> history(int employeeId){
+        return this.employeeWorkplaceViewRepository.findAllByEmployeeIdOrderByFromDateDesc(employeeId);
     }
 }

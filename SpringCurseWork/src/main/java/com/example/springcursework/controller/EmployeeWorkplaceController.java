@@ -2,6 +2,7 @@ package com.example.springcursework.controller;
 
 import com.example.springcursework.model.EmployeeWorkplace;
 /*import com.example.springcursework.payload.request.EmployeeWorkplaceFindRequest;*/
+import com.example.springcursework.model.EmployeeWorkplaceView;
 import com.example.springcursework.servise.EmployeeWorkplaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,11 +35,17 @@ public class EmployeeWorkplaceController {
         return this.employeeWorkplaceService.findById(id);
     }
 
-    /*@PostMapping(value = "/find")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public List<EmployeeWorkplace> find(@RequestBody EmployeeWorkplaceFindRequest findVO) {
-        return this.employeeWorkplaceService.findByNamePart(findVO.getFindNamePart());
-    }*/
+    @GetMapping(value = "/view")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<EmployeeWorkplaceView> view(/*@RequestBody EmployeeWorkplaceFindRequest findVO*/) {
+        return this.employeeWorkplaceService.view();
+    }
+
+    @GetMapping(value = "/history/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<EmployeeWorkplaceView> history(@PathVariable int id) {
+        return this.employeeWorkplaceService.history(id);
+    }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)

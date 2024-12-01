@@ -24,7 +24,8 @@ public class LookupController {
 
     @PostMapping(value = "/employee")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public List<LookupItem> employeeList(@RequestBody LookupFindRequest findVO) {return this.lookupService.employeeList(findVO.getFindNamePart());
+    public List<LookupItem> employeeList(@RequestBody LookupFindRequest findVO) {
+        return this.lookupService.employeeList(findVO.getFindNamePart());
     }
 
     @GetMapping(value = "employee_position/{id}")
@@ -48,6 +49,18 @@ public class LookupController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public List<LookupItem> projectList(@RequestBody LookupFindRequest findVO) {
         return this.lookupService.projectList(findVO.getFindNamePart());
+    }
+
+    @GetMapping(value = "workplace/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public LookupItem workplaceItem(@PathVariable int id) {
+        return this.lookupService.workplaceItem(id);
+    }
+
+    @PostMapping(value = "/workplace")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public List<LookupItem> workplaceList(@RequestBody LookupFindRequest findVO) {
+        return this.lookupService.workplaceList(findVO.getFindNamePart());
     }
 
 }

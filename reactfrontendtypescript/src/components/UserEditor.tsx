@@ -15,6 +15,7 @@ export interface IUserEditorProps {
     buttons: ButtonType[];
     navigate?: ReturnType<typeof useNavigate>;
     childContent?: JSX.Element;
+    onSave?: (newId: number) => void;
 }
 
 interface IUserEditorState {
@@ -133,6 +134,9 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
 
         promisedSave.then(savedUser => {
             this.setState({...this.state, user: savedUser, dataChanged: false, password: "", passwordConfirm: ""});
+            if (this.props.onSave !== null){
+                this.props.onSave!(savedUser.id);
+            }
             if (returnToList && this.props.navigate) {
                 this.props.navigate('/users');
             }

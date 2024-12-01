@@ -23,6 +23,7 @@ public interface LookupItemRepository extends JpaRepository<LookupItem, Integer>
             """,
             nativeQuery = true)
     public LookupItem loadEmployeeItem(int id);
+
     @Query(value = """
             SELECT e.id,  e.name
             FROM employee_position e
@@ -54,4 +55,21 @@ public interface LookupItemRepository extends JpaRepository<LookupItem, Integer>
             """,
             nativeQuery = true)
     public LookupItem loadProjectItem(int id);
+
+    @Query(value = """
+            SELECT w.id, CONCAT( p.name, ' / ',  w.name) name
+            FROM workplace w, project p
+            WHERE p.id = w.project_id and CONCAT( p.name, ' / ',  w.name) LIKE ?1
+            order by name
+            """,
+            nativeQuery = true) //
+    List<LookupItem> findWorkplaceList(String likeParam);
+
+    @Query(value = """
+            SELECT w.id, CONCAT( p.name, ' / ',  w.name) name
+            FROM workplace w, project p
+            WHERE p.id = w.project_id and w.id = ?1
+            """,
+            nativeQuery = true)
+    public LookupItem loadWorkplaceItem(int id);
 }
