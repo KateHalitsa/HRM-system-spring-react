@@ -9,8 +9,14 @@ import java.util.List;
 
 public interface FeatureForEmployeeRepository extends JpaRepository<FeatureForEmployee, Integer> {
     @Query(value = """
-            select f.id feature_id, f.name feature_name, not ISNULL(ef.employee_id) is_selected, ef.id employee_feature_id, ef.value value
-            from employee_position_feature f LEFT OUTER join employee_feature ef on (f.id = ef.feature_id and ef.employee_id = ?1)
+            SELECT 
+              f.id feature_id, 
+              f.name feature_name, 
+              ef.id employee_feature_id, 
+              ef.value VALUE,
+              (SELECT ep.name FROM employee_position ep WHERE ep.id = f.employee_position_id) employee_position_name
+            FROM employee_position_feature f LEFT OUTER JOIN employee_feature ef ON (f.id = ef.feature_id AND ef.employee_id = ?1)
+            ORDER BY employee_position_name, feature_name
             """,
             nativeQuery = true)
     List<FeatureForEmployee> findFeatureForEmployeeId(int employeeId);

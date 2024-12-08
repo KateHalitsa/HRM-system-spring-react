@@ -12,4 +12,13 @@ public interface EmployeePositionFeatureRepository extends JpaRepository<Employe
     List<EmployeePositionFeature> findByWorkplaceId(int workplaceId);
     @Query(value = "select f.* from employee_position_feature f, employee_feature ef where f.id = ef.feature_id and ef.employee_id = ?1", nativeQuery = true)
     List<EmployeePositionFeature> findByEmployeeId(int employeeId);
+
+    @Query(value = """
+            select 
+                f.*,
+                (SELECT ep.name FROM employee_position ep WHERE ep.id = f.employee_position_id) employee_position_name 
+            from employee_position_feature f
+            ORDER BY employee_position_name, f.name
+            """, nativeQuery = true)
+    List<EmployeePositionFeature> findAllSortedByPositionName();
 }

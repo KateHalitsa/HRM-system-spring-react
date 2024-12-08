@@ -6,8 +6,6 @@ import {useNavigate} from "react-router-dom";
 import {LookupSelector} from "./LookupSelector";
 import {EmployeePositionFeature} from "../model/EmployeePositionFeature.model";
 
-
-
 export type ButtonType = "save" | "apply" | "cancel" | "close";
 
 export interface IEmployeePositionFeatureEditorProps {
@@ -23,7 +21,6 @@ interface IEmployeePositionFeatureEditorState {
 
     feature: EmployeePositionFeature;
     dataChanged: boolean;
-    name: string;
     errorMessage: string;
 }
 
@@ -31,11 +28,8 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
     constructor(props: IEmployeePositionFeatureEditorProps) {
         super(props);
         this.state = {
-
             feature: new EmployeePositionFeature(),
             dataChanged: false,
-            name: "",
-
             errorMessage: ""
         };
         this.reloadEmployeePositionFeatureFromServer = this.reloadEmployeePositionFeatureFromServer.bind(this);
@@ -64,8 +58,6 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
                     foundEmployeePositionFeature => this.setState({...this.state,
                         feature: foundEmployeePositionFeature,
                         dataChanged: false,
-                        name: "",
-
                         errorMessage: ""})
                 )
         }
@@ -79,20 +71,24 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
 
     onChangePositionId(newId: number){
         let feature = this.state.feature;
-        feature.employeePositionId = newId;
+        if (newId > 0) {
+            feature.employeePositionId = newId;
+        } else {
+            feature.employeePositionId = undefined;
+        }
         this.setState({...this.state, feature, dataChanged: true});
 
     }
     validateData(){
         let errorMessage = "";
-        const {feature, name} = this.state;
+        const {feature } = this.state;
 
         if (feature.name === ""){
             errorMessage = "Заполните 'Название'"
-        }else if  (feature.employeePositionId<= 0)
+        } /*else if  (feature.employeePositionId<= 0)
         {
             errorMessage = "Заполните поле 'Профессия'"
-        }
+        }*/
 
         this.setState({...this.state, errorMessage});
 
@@ -104,9 +100,7 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
             return;
         }
 
-        const {feature, name} = this.state;
-
-
+        const {feature } = this.state;
 
         let promisedSave = (feature.id) ? (
             accessServerAPI.features.update(feature)
@@ -115,7 +109,7 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
         );
 
         promisedSave.then(savedEmployeePositionFeature => {
-            this.setState({...this.state, feature: savedEmployeePositionFeature, dataChanged: false, name: ""});
+            this.setState({...this.state, feature: savedEmployeePositionFeature, dataChanged: false});
             if (returnToList && this.props.navigate) {
                 this.props.navigate('/employee_position_feature');
             }
@@ -128,7 +122,6 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
 
     render() {
         const feature  = this.state.feature;
-        const passwordPlaceholder = feature.id ? 'для изменения пароля введите новый пароль' : '';
 
         let buttons: ButtonType[] = [];
         if (this.props.buttons) {
@@ -143,13 +136,12 @@ export class EmployeePositionFeatureEditor extends Component<IEmployeePositionFe
                         <Form>
 
                             <LookupSelector label="Профессия"
-                                            lookupObjectId={feature.employeePositionId}
+                                            lookupObjectId={(feature.employeePositionId !== undefined)?(feature.employeePositionId!):(0)}
                                             findFunction={accessServerAPI.lookup.positionList}
                                             loadFunction={accessServerAPI.lookup.position}
                                             onChange={this.onChangePositionId}
                                 /*enabled={user.id <= 0}*/  />
                             <InputWithLabel label="Название характеристики" id="name" value={feature.name} onChange={this.onChangeName}/>
-                            {/*  <InputWithLabel label="Профессия" id="employee_position_id" value={String(feature.employeePositionId)} onChange={this.onChangePosition}/>*/}
                             <ErrorPanel error={this.state.errorMessage}/>
                             <FormGroup className="text-end">
                                 {buttons.includes("save") && <SaveButton onClick={() => this.onSave(true)} enabled={this.state.dataChanged} />}

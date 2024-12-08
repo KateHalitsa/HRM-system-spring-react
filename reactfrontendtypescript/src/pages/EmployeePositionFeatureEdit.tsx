@@ -13,7 +13,7 @@ class EmployeePositionFeatureEdit extends Component<IEmployeePositionFeatureEdit
         const idStr: string = this.props.params.id;
         if (idStr !== 'new'){ featureId = parseInt(idStr) }
 
-        const title = featureId ? 'Редактировать должность' : 'Добавить должность';
+        const title = featureId ? 'Редактировать характеристику' : 'Добавить характеристику';
 
 
         const navigate = this.props.navigate;

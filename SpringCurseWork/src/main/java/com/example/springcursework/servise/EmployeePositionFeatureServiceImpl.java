@@ -15,12 +15,6 @@ import java.util.List;
 public class EmployeePositionFeatureServiceImpl implements EmployeePositionFeatureService{
     @Autowired
     private EmployeePositionFeatureRepository featureRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-   /* @Autowired
-    private RoleForEmployeePositionFeatureRepository roleForEmployeePositionFeatureRepository;
-    @Autowired
-    private EmployeePositionFeatureRoleRepository workplaceRoleRepository;*/
 
     @Override
     public EmployeePositionFeature insert(EmployeePositionFeature featureVO) {
@@ -29,7 +23,7 @@ public class EmployeePositionFeatureServiceImpl implements EmployeePositionFeatu
 
     @Override
     public List<EmployeePositionFeature> findAll() {
-        return this.featureRepository.findAll();
+        return this.featureRepository.findAllSortedByPositionName();
     }
 
     @Override

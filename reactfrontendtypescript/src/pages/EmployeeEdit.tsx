@@ -25,7 +25,6 @@ class EmployeeEdit extends Component<IEmployeeEditProps, IEmployeeEditState> {
                 <Container className="mt-1">
 
                     <EmployeeEditor employeeId={employeeId} title={title}
-                                     buttons={["save", "apply", "close"]}
                                      navigate = {navigate}
                                      childContent={featurePanel}
                     />

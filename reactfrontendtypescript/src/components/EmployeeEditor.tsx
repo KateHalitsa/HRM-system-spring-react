@@ -1,20 +1,14 @@
 import React, {Component} from 'react';
-import {withRouter, WithRouterProps} from "../PrivateRouteUtils/RouterUtils";
 import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap';
-import AppNavbar from '../components/AppNavbar';
 import {Employee} from "../model/employee.model";
 import accessServerAPI from "../model/AccessServerAPI";
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "../components/CustomControls";
-import {ButtonType, IWorkplaceEditorProps, WorkplaceEditor} from "../components/WorkplaceEditor";
 import {useNavigate} from "react-router-dom";
 import {dateToISOStr} from "./DateUtils";
-
-interface EmployeeEditProps extends WithRouterProps {}
 
 export interface IEmployeeEditorProps {
     employeeId: number;
     title: string;
-    buttons: ButtonType[];
     navigate?: ReturnType<typeof useNavigate>;
     childContent?: JSX.Element;
 }
@@ -142,11 +136,6 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
 
     render() {
         const employee  = this.state.employee;
-
-        let buttons: ButtonType[] = [];
-        if (this.props.buttons) {
-            buttons = this.props.buttons!;
-        }
         return (
         <div>
 
@@ -168,9 +157,6 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
                         </Form>
                     </CardBody>
                     {this.props.childContent}
-                    {
-                        //<EmployeeFeatures employeeId={employeeId} />
-                    }
                 </Card>
             </Container>
         </div>)

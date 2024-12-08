@@ -1,10 +1,9 @@
 import React, {Component, ReactNode} from 'react';
 import '../App.css';
-import {Button, Card, CardBody, CardHeader, Input, Label, Table} from 'reactstrap';
+import {Card, CardBody, CardHeader, Input, Label, Table} from 'reactstrap';
 import {FeatureForEmployee} from "../model/FeatureForEmployee.model";
 import accessServerAPI from "../model/AccessServerAPI";
 import {SaveButton} from "./CustomControls";
-import {Link} from "react-router-dom";
 
 interface IEmployeeFeaturesProps  {
     employeeId: number;
@@ -86,22 +85,40 @@ export class EmployeeFeatures extends Component<IEmployeeFeaturesProps, IEmploye
 
         const { features } = this.state;
 
+        let prevEmployeePositionName = "Q123XYZ";
+        const startNewSection = (positionName: string) => {
+            if (positionName !== prevEmployeePositionName){
+                prevEmployeePositionName = positionName;
+                let text;
+                if (positionName == null){
+                    text = <div>"<b>Общие</b>" характеристики:</div>
+                }else {
+                    text = <div>Характеристики по профессии "<b>{positionName}</b>":</div>
+                }
+
+                return (<tr className="table-secondary"><td colSpan={2}>{text}</td></tr>);
+            }
+            return <></>
+        }
+
         const featureList: ReactNode = features.map(feature => {
             return (
-                    <tr >
-                    <td>
-                  <Label className="form-check-label" for={"name_" + feature.featureId}>
-                    {feature.featureName}
-                  </Label>
-                    </td>
-                    <td>
-                    <Input className="form-text-input" type="text"  id={"name_" + feature.featureId}
-                           featureId={feature.featureId}
-                           value={feature.value}
-                           onChange={this.onChange} />
+                <>
+                    {startNewSection(feature.employeePositionName)}
+                    <tr>
+                        <td>
+                            <Label className="form-check-label ms-4 my-1" for={"name_" + feature.featureId}>
+                                {feature.featureName}
+                            </Label>
                         </td>
-                        </tr >
-
+                        <td>
+                            <Input className="form-text-input" bsSize="sm" type="text"  id={"name_" + feature.featureId}
+                                featureId={feature.featureId}
+                                value={feature.value}
+                                onChange={this.onChange} />
+                        </td>
+                    </tr>
+                </>
             );
         });
 
@@ -112,8 +129,8 @@ export class EmployeeFeatures extends Component<IEmployeeFeaturesProps, IEmploye
                <SaveButton onClick={() => this.saveFeatures()} enabled={this.state.featuresChanged} />
             </CardHeader>
             <CardBody className="m-0 text-start">
-                <div className="form-check ms-4">
-                <Table striped hover size="sm">
+                <div className="px-2">
+                <Table hover size="sm">
                     <thead>
                     <tr>
                         <th >Название</th>

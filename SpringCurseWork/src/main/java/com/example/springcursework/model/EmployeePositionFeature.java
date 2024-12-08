@@ -13,10 +13,8 @@ public class EmployeePositionFeature {
     @Column
     private String name;
 
-
     @Column(name = "employee_position_id")
     private Integer employeePositionId;
-
 
     public int getId() { return id; }
     public void setId(int id) {
@@ -36,6 +34,6 @@ public class EmployeePositionFeature {
 
     @Override
     public String toString() {
-        return "EmployeePositionFeature [id=" + id + ", name=" + name +", employeePositionId="+ getEmployeePositionId() +  "]";
+        return "EmployeePositionFeature [id=" + id + ", name=" + name +", employeePositionId=" + employeePositionId +  "]";
     }
 }
