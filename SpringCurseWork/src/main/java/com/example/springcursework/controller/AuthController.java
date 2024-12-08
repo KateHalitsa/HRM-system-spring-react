@@ -1,6 +1,5 @@
 package com.example.springcursework.controller;
 
-import com.example.springcursework.model.RoleForUser;
 import com.example.springcursework.model.User;
 import com.example.springcursework.payload.request.LoginRequest;
 import com.example.springcursework.payload.response.UserInfoResponse;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "auth")

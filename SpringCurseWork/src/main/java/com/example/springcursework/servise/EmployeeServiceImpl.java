@@ -1,7 +1,6 @@
 package com.example.springcursework.servise;
 
 import com.example.springcursework.model.Employee;
-import com.example.springcursework.model.EmployeePositionFeature;
 import com.example.springcursework.model.FeatureForEmployee;
 import com.example.springcursework.model.EmployeeFeature;
 import com.example.springcursework.repository.*;
@@ -21,8 +20,6 @@ public class EmployeeServiceImpl implements EmployeeService
 {
    @Autowired
    private EmployeeRepository employeeRepository;
-    @Autowired
-    private EmployeePositionFeatureRepository featureRepository;
     @Autowired
     private FeatureForEmployeeRepository featureForEmployeeRepository;
     @Autowired
@@ -48,45 +45,10 @@ public class EmployeeServiceImpl implements EmployeeService
         return this.employeeRepository.findById(id).get();
     }
 
-    private boolean findByKeys(String str, String[] keys){
-        String s = str.toLowerCase();
-        for (String key: keys){
-            if (s.indexOf(key) >= 0)
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public List<Employee> findByNamePart(String namePart)
-    {
-        List<Employee> filteredList;
-        List<Employee> originalList = this.employeeRepository.findAll();
-
-        String[] keys = namePart.trim().toLowerCase().split(" ");
-        if (keys.length == 0) {
-            filteredList = originalList;
-        } else {
-            filteredList = originalList.stream()
-                    .filter(employee ->
-                            findByKeys(employee.getFullName(), keys)
-                    ).collect(Collectors.toList());
-        }
-
-        filteredList.sort(Comparator.comparing(Employee::getFullName));
-
-        return filteredList;
-    }
-
     @Override
     public Employee updateEmployee(int id, Employee employeeVO) {
         employeeVO.setId(id);
         return this.employeeRepository.save(employeeVO);
-    }
-
-    @Override
-    public List<EmployeePositionFeature> findRelatedFeatures(int employeeId) {
-        return  featureRepository.findByEmployeeId(employeeId);
     }
 
     @Override

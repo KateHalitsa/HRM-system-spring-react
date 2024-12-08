@@ -2,7 +2,6 @@ package com.example.springcursework.controller;
 
 import com.example.springcursework.model.Employee;
 import com.example.springcursework.model.FeatureForEmployee;
-import com.example.springcursework.model.FeatureForWorkplace;
 import com.example.springcursework.servise.EmployeeService;
 import com.example.springcursework.payload.request.LookupFindRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +33,6 @@ public class EmployeeController {
     @ResponseStatus(value = HttpStatus.OK)
     public Employee findById(@PathVariable int id) {
         return this.employeeService.findById(id);
-    }
-
-    @PostMapping(value = "/find")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public List<Employee> find(@RequestBody LookupFindRequest findVO) {
-        return this.employeeService.findByNamePart(findVO.getFindNamePart());
     }
 
     @PutMapping(value = "/{id}")

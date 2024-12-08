@@ -9,21 +9,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface WorkplaceService {
-    public Workplace insert(Workplace workplaceVO);
+    Workplace insert(Workplace workplaceVO);
 
-    public List<Workplace> findAll();
+    List<Workplace> findAll();
 
-    public void delete(int id);
+    void delete(int id);
 
-    public Workplace findById(int id);
+    Workplace findById(int id);
 
-    public Workplace updateWorkplace(int id, Workplace workplacerVO);
+    Workplace updateWorkplace(int id, Workplace workplaceVO);
 
-    public List<EmployeePositionFeature> findRelatedFeatures(int userId);
+    List<FeatureForWorkplace> FeaturesByWorkplaceId(int id);
+    List<FeatureForWorkplace> updateFeaturesByWorkplaceId(int workplaceId, List<FeatureForWorkplace> features);
 
-    public List<FeatureForWorkplace> FeaturesByWorkplaceId(int id);
-    public List<FeatureForWorkplace> updateFeaturesByWorkplaceId(int workplaceId, List<FeatureForWorkplace> features);
-
-    public List<Workplace> projectVacanciesOnDate(int projectId, LocalDateTime calcOnDate);
+    List<Workplace> projectVacanciesOnDate(int projectId, LocalDateTime calcOnDate);
 
 }

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query(value = "SELECT e.* FROM  employee e WHERE" +

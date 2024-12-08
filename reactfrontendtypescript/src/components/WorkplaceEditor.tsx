@@ -5,8 +5,6 @@ import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomContr
 import {useNavigate} from "react-router-dom";
 import {LookupSelector} from "./LookupSelector";
 import {Workplace} from "../model/workplace.model";
-import {Project} from "../model/Project.model";
-
 
 export type ButtonType = "save" | "apply" | "cancel" | "close";
 
@@ -20,9 +18,7 @@ export interface IWorkplaceEditorProps {
 
 interface IWorkplaceEditorState {
     workplace: Workplace;
-    project: Project;
     dataChanged: boolean;
-    name: string;
     errorMessage: string;
 }
 
@@ -31,10 +27,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         super(props);
         this.state = {
             workplace: new Workplace(),
-            project: new Project(),
             dataChanged: false,
-            name: "",
-
             errorMessage: ""
         };
         this.reloadWorkplaceFromServer = this.reloadWorkplaceFromServer.bind(this);
@@ -64,8 +57,6 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
                     foundWorkplace => this.setState({...this.state,
                         workplace: foundWorkplace,
                         dataChanged: false,
-                        name: "",
-
                         errorMessage: ""})
                 )
         }
@@ -93,7 +84,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
 
     validateData(){
         let errorMessage = "";
-        const {workplace, name} = this.state;
+        const {workplace} = this.state;
 
         if (workplace.name === ""){
             errorMessage = "Заполните 'Название'"
@@ -117,7 +108,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
             return;
         }
 
-        const {workplace, name} = this.state;
+        const {workplace} = this.state;
 
 
 
@@ -128,7 +119,7 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
         );
 
         promisedSave.then(savedWorkplace => {
-            this.setState({...this.state, workplace: savedWorkplace, dataChanged: false, name: ""});
+            this.setState({...this.state, workplace: savedWorkplace, dataChanged: false});
             if (returnToList && this.props.navigate) {
                 this.props.navigate('/workplace');
             }
@@ -141,7 +132,6 @@ export class WorkplaceEditor extends Component<IWorkplaceEditorProps, IWorkplace
 
     render() {
         const workplace  = this.state.workplace;
-        const project  = this.state.project;
 
         let buttons: ButtonType[] = [];
         if (this.props.buttons) {

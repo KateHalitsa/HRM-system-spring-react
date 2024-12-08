@@ -153,7 +153,6 @@ export class EmployeeWorkplaceEditor extends Component<IEmployeeWorkplaceEditorP
 
     render() {
         const employeeWorkplace  = this.state.employeeWorkplace;
-        const passwordPlaceholder = employeeWorkplace.id ? 'для изменения пароля введите новый пароль' : '';
 
         let buttons: ButtonType[] = [];
         if (this.props.buttons) {

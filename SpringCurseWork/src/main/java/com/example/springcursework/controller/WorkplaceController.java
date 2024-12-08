@@ -1,12 +1,8 @@
 package com.example.springcursework.controller;
 
-
 import com.example.springcursework.model.FeatureForWorkplace;
-import com.example.springcursework.model.RoleForUser;
 import com.example.springcursework.model.Workplace;
 import com.example.springcursework.servise.WorkplaceService;
-import com.example.springcursework.servise.Z_StudentService;
-import com.example.springcursework.servise.Z_TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -62,15 +58,4 @@ public class WorkplaceController {
         return workplaceService.updateFeaturesByWorkplaceId(id, featuresVO);
     }
 
-   /* @GetMapping(value = "/features/{id}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public List<FeatureForWorkplace> ProjectsByWorkplaceId(@PathVariable int id) {
-        return workplaceService.ProjectsByWorkplaceId(id);
-    }
-
-    @PutMapping(value = "/features/{id}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public List<FeatureForWorkplace> ProjectsByWorkplaceId(@PathVariable int id, @RequestBody List<FeatureForWorkplace> featuresVO) {
-        return workplaceService.updateProjectByWorkplaceId(id, featuresVO);
-    }*/
 }

@@ -79,7 +79,7 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
 
     onChangeEmail(event: React.ChangeEvent<HTMLInputElement>)
     {
-        let user = this.state.user;;
+        let user = this.state.user;
         user.email = event.target.value;
         this.setState({...this.state, user, dataChanged: true});
     }

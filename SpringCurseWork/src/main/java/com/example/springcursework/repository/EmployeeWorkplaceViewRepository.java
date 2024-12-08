@@ -2,7 +2,6 @@ package com.example.springcursework.repository;
 
 import com.example.springcursework.model.EmployeeWorkplaceView;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

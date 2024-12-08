@@ -1,7 +1,6 @@
 package com.example.springcursework.repository;
 
 import com.example.springcursework.model.FeatureForWorkplace;
-import com.example.springcursework.model.RoleForUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

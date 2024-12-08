@@ -1,12 +1,7 @@
 package com.example.springcursework.controller;
 
 import com.example.springcursework.model.RoleForUser;
-import com.example.springcursework.model.Z_Student;
-import com.example.springcursework.model.Z_Teacher;
 import com.example.springcursework.model.User;
-import com.example.springcursework.payload.response.UserInfoResponse;
-import com.example.springcursework.servise.Z_StudentService;
-import com.example.springcursework.servise.Z_TeacherService;
 import com.example.springcursework.servise.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +15,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private Z_StudentService studentService;
-    @Autowired
-    private Z_TeacherService teacherService;
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)

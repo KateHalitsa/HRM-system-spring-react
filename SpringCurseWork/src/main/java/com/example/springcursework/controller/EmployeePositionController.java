@@ -34,12 +34,6 @@ public class EmployeePositionController {
         return this.employeePositionService.findById(id);
     }
 
-    @PostMapping(value = "/find")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public List<EmployeePosition> find(@RequestBody EmployeePositionFindRequest findVO) {
-        return this.employeePositionService.findByNamePart(findVO.getFindNamePart());
-    }
-
     @PutMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public EmployeePosition updateEmployeePosition(@PathVariable int id, @RequestBody EmployeePosition employeeVO) {

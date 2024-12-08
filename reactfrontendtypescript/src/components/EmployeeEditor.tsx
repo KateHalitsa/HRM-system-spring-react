@@ -16,7 +16,6 @@ export interface IEmployeeEditorProps {
 interface IEmployeeEditorState {
     employee: Employee;
     dataChanged: boolean;
-    name: string;
     errorMessage: string;
 }
 export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEditorState> {
@@ -26,7 +25,6 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
         this.state = {
             employee: new Employee(),
             dataChanged: false,
-            name: "",
             errorMessage: ""
         };
         this.reloadEmployeeFromServer = this.reloadEmployeeFromServer.bind(this);
@@ -56,13 +54,10 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
                     foundWorkplace => this.setState({...this.state,
                         employee: foundWorkplace,
                         dataChanged: false,
-                        name: "",
-
                         errorMessage: ""})
                 )
         }
     }
-
 
     onChangeFirstName(event: React.ChangeEvent<HTMLInputElement>) {
         let employee = this.state.employee;
@@ -89,7 +84,7 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
 
     validateData(){
         let errorMessage = "";
-        const {employee, name} = this.state;
+        const {employee} = this.state;
 
         if (employee.firstName === ""){
             errorMessage = "Заполните 'Имя'"
@@ -112,7 +107,7 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
             return;
         }
 
-        const {employee, name} = this.state;
+        const {employee} = this.state;
 
 
 
@@ -123,7 +118,7 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
         );
 
         promisedSave.then(savedWorkplace => {
-            this.setState({...this.state, employee: savedWorkplace, dataChanged: false, name: ""});
+            this.setState({...this.state, employee: savedWorkplace, dataChanged: false});
             if (returnToList && this.props.navigate) {
                 this.props.navigate('/employees');
             }

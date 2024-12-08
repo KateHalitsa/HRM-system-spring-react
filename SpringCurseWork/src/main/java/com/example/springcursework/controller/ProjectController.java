@@ -1,7 +1,6 @@
 package com.example.springcursework.controller;
 
 import com.example.springcursework.model.Project;
-//import com.example.springcursework.payload.request.ProjectFindRequest;
 import com.example.springcursework.servise.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,12 +32,6 @@ public class ProjectController {
     public Project findById(@PathVariable int id) {
         return this.employeePositionService.findById(id);
     }
-
-    /*@PostMapping(value = "/find")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public List<Project> find(@RequestBody ProjectFindRequest findVO) {
-        return this.employeePositionService.findByNamePart(findVO.getFindNamePart());
-    }*/
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)

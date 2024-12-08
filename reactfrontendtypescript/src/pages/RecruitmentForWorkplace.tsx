@@ -1,13 +1,12 @@
 import React, { Component, ReactNode } from 'react';
-import {Button, ButtonGroup, Card, CardBody, CardHeader, Col, Container, Input, Label, Table} from 'reactstrap';
+import {Button, Card, CardBody, CardHeader, Col, Container, Input, Label, Table} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
 import accessServerAPI from "../model/AccessServerAPI";
-import {EmployeeEfficiencyCell, EmployeeEfficiencyTable} from "../model/EmployeeEfficiencyTable.model";
+import {EmployeeEfficiencyTable} from "../model/EmployeeEfficiencyTable.model";
 import {ErrorPanel, InputWithLabel} from "../components/CustomControls";
 import {EmployeeWorkplace} from "../model/EmployeeWorkplace.model";
 import {LookupSelector} from "../components/LookupSelector";
 import {dateToISOStr} from "../components/DateUtils";
-import EmployeeWorkplaceList from "./EmployeeWorkplaceList";
 
 interface ISelectedId {
     [id: number]: boolean;

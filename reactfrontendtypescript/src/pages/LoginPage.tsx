@@ -64,7 +64,6 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
     }
 
     render() {
-        const myState = this.state;
         let errorMessage = this.state.errorMessage;
         if (errorMessage !== ""){
             errorMessage = "Ошибка входа: " + errorMessage;

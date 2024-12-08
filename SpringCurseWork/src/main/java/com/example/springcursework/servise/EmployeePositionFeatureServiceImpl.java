@@ -2,8 +2,6 @@ package com.example.springcursework.servise;
 
 import com.example.springcursework.model.EmployeePositionFeature;
 import com.example.springcursework.repository.EmployeePositionFeatureRepository;
-import com.example.springcursework.repository.RoleRepository;
-import com.example.springcursework.repository.EmployeePositionFeatureRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package com.example.springcursework.servise;
 
-import com.example.springcursework.model.EmployeePosition;
 import com.example.springcursework.model.EmployeeWorkplace;
 import com.example.springcursework.model.EmployeeWorkplaceView;
 
@@ -9,19 +8,17 @@ import java.util.List;
 public interface EmployeeWorkplaceService {
     EmployeeWorkplace insert(EmployeeWorkplace employeeVO);
 
-    public List<EmployeeWorkplace> findAll();
+    List<EmployeeWorkplace> findAll();
 
-    public void delete(int id);
+    void delete(int id);
 
-    public EmployeeWorkplace findById(int id);
+    EmployeeWorkplace findById(int id);
 
-    //public List<EmployeeWorkplace> findByNamePart(String namePart);
+    EmployeeWorkplace updateEmployeeWorkplace(int id, EmployeeWorkplace employeeVO);
 
-    public EmployeeWorkplace updateEmployeeWorkplace(int id, EmployeeWorkplace employeeVO);
+    List<EmployeeWorkplace> insertContacts(List<EmployeeWorkplace> contracts);
 
-    public List<EmployeeWorkplace> insertContacts(List<EmployeeWorkplace> contracts);
+    List<EmployeeWorkplaceView> view();
 
-    public List<EmployeeWorkplaceView> view();
-
-    public List<EmployeeWorkplaceView> history(int employeeId);
+    List<EmployeeWorkplaceView> history(int employeeId);
 }

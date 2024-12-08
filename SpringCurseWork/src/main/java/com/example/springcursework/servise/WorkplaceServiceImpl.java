@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -48,11 +47,6 @@ public class WorkplaceServiceImpl implements WorkplaceService{
     public Workplace updateWorkplace(int id, Workplace workplaceVO) {
         workplaceVO.setId(id);
         return this.workplaceRepository.save(workplaceVO);
-    }
-
-    @Override
-    public List<EmployeePositionFeature> findRelatedFeatures(int workplaceId) {
-        return  featureRepository.findByWorkplaceId(workplaceId);
     }
 
     @Override

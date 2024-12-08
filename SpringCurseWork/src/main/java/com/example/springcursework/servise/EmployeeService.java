@@ -10,20 +10,16 @@ import java.util.List;
 public interface EmployeeService {
     Employee insert(Employee employeeVO);
 
-    public List<Employee> findAll();
+    List<Employee> findAll();
 
-    public void delete(int id);
+    void delete(int id);
 
-    public Employee findById(int id);
+    Employee findById(int id);
 
-    public List<Employee> findByNamePart(String namePart);
+    Employee updateEmployee(int id, Employee employeeVO);
 
-    public Employee updateEmployee(int id, Employee employeeVO);
+    List<FeatureForEmployee> FeaturesByEmployeeId(int id);
+    List<FeatureForEmployee> updateFeaturesByEmployeeId(int employeeId, List<FeatureForEmployee> features);
 
-    public List<EmployeePositionFeature> findRelatedFeatures(int employeeId);
-
-    public List<FeatureForEmployee> FeaturesByEmployeeId(int id);
-    public List<FeatureForEmployee> updateFeaturesByEmployeeId(int employeeId, List<FeatureForEmployee> features);
-
-    public List<Employee> freeEmployeesOnDate(LocalDateTime calcOnDate);
+    List<Employee> freeEmployeesOnDate(LocalDateTime calcOnDate);
 }

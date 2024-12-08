@@ -62,10 +62,13 @@ const loginUtils = {
 const lookup = {
     employee: (id: number) => request.get<LookupItem>(`/lookup/employee/${id}`),
     employeeList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee', {findNamePart}),
+
     position: (id: number) => request.get<LookupItem>(`/lookup/employee_position/${id}`),
     positionList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/employee_position', {findNamePart}),
+
     project: (id: number) => request.get<LookupItem>(`/lookup/project/${id}`),
     projectList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/project', {findNamePart}),
+
     workplace: (id: number) => request.get<LookupItem>(`/lookup/workplace/${id}`),
     workplaceList: (findNamePart: string) => request.post<LookupItem[]>('/lookup/workplace', {findNamePart}),
 };
@@ -84,7 +87,6 @@ const employees = {
     create: (data: Employee) => request.post<Employee>('/employee', data),
     update: (data: Employee) => request.put<Employee>(`/employee/${data.id}`, data),
     delete: (id: number) => request.delete(`/employee/${id}`),
-    find: (findNamePart: string) => request.post<Employee[]>('/employee/find', {findNamePart}),
     features: (id: number) => request.get<FeatureForEmployee[]>(`/employee/features/${id}`),
     updateFeatures: (id: number, data: FeatureForEmployee[]) => request.put<FeatureForEmployee[]>(`/employee/features/${id}`, data),
 };
@@ -101,7 +103,6 @@ const positions = {
     create: (data: EmployeePosition) => request.post<EmployeePosition>('/employee_position', data),
     update: (data: EmployeePosition) => request.put<EmployeePosition>(`/employee_position/${data.id}`, data),
     delete: (id: number) => request.delete(`/employee_position/${id}`),
-    find: (findNamePart: string) => request.post<EmployeePosition[]>('/employee_position/find', {findNamePart})
 };
 const workplaces = {
     list: () => request.get<Workplace[]>('/workplace'),
@@ -109,7 +110,6 @@ const workplaces = {
     create: (data: EmployeePosition) => request.post<Workplace>('/workplace', data),
     update: (data: EmployeePosition) => request.put<Workplace>(`/workplace/${data.id}`, data),
     delete: (id: number) => request.delete(`/workplace/${id}`),
-    find: (findNamePart: string) => request.post<Workplace[]>('/workplace/find', {findNamePart}),
     features: (id: number) => request.get<FeatureForWorkplace[]>(`/workplace/features/${id}`),
     updateFeatures: (id: number, data: FeatureForWorkplace[]) => request.put<FeatureForWorkplace[]>(`/workplace/features/${id}`, data),
 };
@@ -119,7 +119,6 @@ const features = {
     create: (data: EmployeePosition) => request.post<Workplace>('/employee_position_feature', data),
     update: (data: EmployeePosition) => request.put<Workplace>(`/employee_position_feature/${data.id}`, data),
     delete: (id: number) => request.delete(`/employee_position_feature/${id}`),
-    find: (findNamePart: string) => request.post<Workplace[]>('/employee_position_feature/find', {findNamePart})
 };
 const projects = {
     list: () => request.get<Project[]>('/project'),
@@ -127,7 +126,6 @@ const projects = {
     create: (data: Project) => request.post<Project>('/project', data),
     update: (data: Project) => request.put<Project>(`/project/${data.id}`, data),
     delete: (id: number) => request.delete(`/project/${id}`),
-    find: (findNamePart: string) => request.post<Project[]>('/project/find', {findNamePart})
 };
 const employeeWorkplaces = {
     list: () => request.get<EmployeeWorkplace[]>('/employee_workplace'),
@@ -136,7 +134,6 @@ const employeeWorkplaces = {
     create: (data: EmployeeWorkplace) => request.post<EmployeeWorkplace>('/employee_workplace', data),
     update: (data: EmployeeWorkplace) => request.put<EmployeeWorkplace>(`/employee_workplace/${data.id}`, data),
     delete: (id: number) => request.delete(`/employee_workplace/${id}`),
-    find: (findNamePart: string) => request.post<EmployeeWorkplace[]>('/employee_workplace/find', {findNamePart}),
     history: (employeeId: number) => request.get<EmployeeWorkplaceView[]>(`/employee_workplace/history/${employeeId}`),
 };
 const accessServerAPI = {

@@ -1,7 +1,7 @@
 import { auth } from "./Auth";
 import { NavItem } from "reactstrap";
 import { NavLink } from "react-router-dom";
-import React, { FC } from "react";
+import React from "react";
 
 type NavItemProps = {
     to: string;

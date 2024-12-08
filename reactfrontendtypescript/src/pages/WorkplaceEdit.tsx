@@ -1,9 +1,8 @@
-import React, {Component, RefObject} from 'react';
+import React, {Component} from 'react';
 import {withRouter, WithRouterProps} from "../PrivateRouteUtils/RouterUtils";
 import {Container} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
 import {WorkplaceEditor} from "../components/WorkplaceEditor";
-import {UserRoles} from "../components/UserRoles";
 import {WorkplaceFeatures} from "../components/WorkplaceFeatures";
 
 interface IWorkplaceEditProps extends WithRouterProps {}
