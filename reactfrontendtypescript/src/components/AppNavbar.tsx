@@ -50,6 +50,7 @@ const AppNavbar: React.FC<AppNavbarProps> = (args) => {
                     <PrivateNavItem to="/project" name="Проекты" />
                     <PrivateNavItem to="/recruitment" name="Набор" />
                     <PrivateNavItem to="/employee_workplace" name="Назначенные" />
+                    <PrivateNavItem to="/analysis" name="Анализ" />
                 </Nav>
                 {
                     auth.isAuthenticated() ? (

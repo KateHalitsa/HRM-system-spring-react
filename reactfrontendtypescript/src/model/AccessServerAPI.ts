@@ -12,6 +12,8 @@ import {FeatureForEmployee} from "./FeatureForEmployee.model";
 import {EmployeeEfficiencyCell, EmployeeEfficiencyTable} from "./EmployeeEfficiencyTable.model";
 import {Project} from "./Project.model";
 import {EmployeeWorkplace, EmployeeWorkplaceView} from "./EmployeeWorkplace.model";
+import {WorkplaceStatistic} from "./WorkplaceStatistic";
+import {ProjectStatistic} from "./ProjectStatistic";
 
 const token = "";
 
@@ -136,6 +138,12 @@ const employeeWorkplaces = {
     delete: (id: number) => request.delete(`/employee_workplace/${id}`),
     history: (employeeId: number) => request.get<EmployeeWorkplaceView[]>(`/employee_workplace/history/${employeeId}`),
 };
+const analysis = {
+    list: () => request.get<WorkplaceStatistic[]>('/analysis'),
+};
+const projects_analysis = {
+    list: () => request.get<ProjectStatistic[]>('/analysis/project_efficiency'),
+};
 const accessServerAPI = {
     loginUtils,
     lookup,
@@ -146,7 +154,9 @@ const accessServerAPI = {
     workplaces,
     features,
     projects,
-    employeeWorkplaces
+    employeeWorkplaces,
+    analysis,
+    projects_analysis
 }
 
 export default accessServerAPI;

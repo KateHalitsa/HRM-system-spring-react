@@ -1,6 +1,7 @@
 package com.example.springcursework.servise;
 
 import com.example.springcursework.model.Project;
+import com.example.springcursework.model.ProjectEfficiency;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface ProjectService {
     Project findById(int id);
 
     Project updateProject(int id, Project projectVO);
+    List<ProjectEfficiency> getProjectEfficiency();
 }

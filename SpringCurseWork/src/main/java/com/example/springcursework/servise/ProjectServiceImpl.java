@@ -1,6 +1,7 @@
 package com.example.springcursework.servise;
 
 import com.example.springcursework.model.Project;
+import com.example.springcursework.model.ProjectEfficiency;
 import com.example.springcursework.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,10 @@ public class ProjectServiceImpl implements ProjectService
     public Project updateProject(int id, Project projectVO) {
         projectVO.setId(id);
         return this.projectRepository.save(projectVO);
+    }
+
+    @Override
+    public List<ProjectEfficiency> getProjectEfficiency() {
+        return projectRepository.findProjectEfficiency();
     }
 }
