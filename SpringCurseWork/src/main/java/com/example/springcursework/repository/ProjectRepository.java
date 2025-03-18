@@ -7,6 +7,7 @@ import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.SqlResultSetMapping;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 /*@SqlResultSetMapping(
@@ -23,4 +24,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     @Query(name = "Project.findProjectEfficiency", nativeQuery = true)
     List<ProjectEfficiency> findProjectEfficiency();  //Return type ProjectEfficiency
+    @Query(name = "Project.findProjectEfficiencyById", nativeQuery = true)
+    ProjectEfficiency findProjectEfficiencyById(@Param("projectId") int projectId);
 }

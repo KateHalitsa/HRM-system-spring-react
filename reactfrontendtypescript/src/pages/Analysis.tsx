@@ -7,11 +7,13 @@ import AreaChart from "../components/charts/Area-chart";
 import accessServerAPI from "../model/AccessServerAPI";
 import PieChart from "../components/charts/PieChart";
 import AreaChartProjectAnalysis from "../components/charts/AreaСhartProjectAnalysis";
+import StackBarChart from "../components/charts/StackBarChart";
 interface IAnalysisState {
     labels: string[];
     values: number[];
     projectsLabels: string[];
     projectsValues: number[];
+
 }
 class Analysis extends Component<{},IAnalysisState>{
     state: IAnalysisState = {
@@ -37,17 +39,18 @@ class Analysis extends Component<{},IAnalysisState>{
         }).catch(error => {
             console.error("Ошибка при загрузке данных:", error);
         });
+
     }
+    /*<!--  <h2>Графики</h2>
+<AreaChart labels={labels} values={values} />
+<AreaChartProjectAnalysis labels={projectsLabels} values={projectsValues} />-->*/
     render(): ReactNode {
         const { labels, values,projectsValues,projectsLabels } = this.state;
         return (
             <div>
                 <AppNavbar />
-                <Container fluid className="align-content-center mt-2 text-center">
-                    <h2>Графики</h2>
+                <Container fluid className="align-content-center mt-2 text-center" style={{width:"30%"}}>
 
-                        <AreaChart labels={labels} values={values} />
-                    <AreaChartProjectAnalysis labels={projectsLabels} values={projectsValues} />
                     <h2>Круговая диаграмма</h2>
                     {labels.length > 0 && values.length > 0 ? (
                         <PieChart  labels={labels} values={values}  />

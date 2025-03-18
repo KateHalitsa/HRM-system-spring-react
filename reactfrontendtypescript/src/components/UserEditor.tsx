@@ -5,6 +5,7 @@ import {Card, CardBody, CardHeader, Container, Form, FormGroup} from 'reactstrap
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "./CustomControls";
 import {useNavigate} from "react-router-dom";
 import {LookupSelector} from "./LookupSelector";
+import ImageUploader from "./ImageUploader";
 
 
 export type ButtonType = "save" | "apply" | "cancel" | "close";
@@ -16,6 +17,8 @@ export interface IUserEditorProps {
     navigate?: ReturnType<typeof useNavigate>;
     childContent?: JSX.Element;
     onSave?: (newId: number) => void;
+    imageContent?: JSX.Element;
+
 }
 
 interface IUserEditorState {
@@ -168,13 +171,15 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
                 <Card color="light"  className="mt-0 p-0">
                     <CardHeader className='py-1'>{this.props.title}</CardHeader>
                     <CardBody className="m-0 pb-0">
-                        <Form>
+                        <Form style={{display: 'flex'}}>{this.props.imageContent}
+                            <div style={{ minWidth: '50%', marginRight: '50px' }}>
                             <LookupSelector label="Сотрудник"
                                             lookupObjectId={user.employeeId}
                                             findFunction={accessServerAPI.lookup.employeeList}
                                             loadFunction={accessServerAPI.lookup.employee}
                                             onChange={this.onChangeEmployeeId}
                                             enabled={user.id <= 0} />
+
                             <InputWithLabel label="Логин" id="login" value={user.login} onChange={this.onChangeLogin}/>
                             <InputWithLabel label="Пароль" id="password" type="password"
                                             placeholder={passwordPlaceholder}
@@ -189,7 +194,7 @@ export class UserEditor extends Component<IUserEditorProps, IUserEditorState> {
                                 {buttons.includes("apply") && <SaveButton onClick={() => this.onSave(false)} enabled={this.state.dataChanged} caption="Применить" />}
                                 {buttons.includes("cancel") && <SaveButton onClick={() => this.onCancel()} enabled={this.state.dataChanged} caption="Отменить" color="danger"/>}
                                 {buttons.includes("close") && <CloseButton to="/users" dataChanged={this.state.dataChanged} />}
-                            </FormGroup>
+                            </FormGroup></div>
                         </Form>
                     </CardBody>
                     {this.props.childContent}

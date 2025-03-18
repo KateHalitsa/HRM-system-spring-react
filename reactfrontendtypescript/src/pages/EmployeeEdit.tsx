@@ -4,6 +4,7 @@ import {Container} from 'reactstrap';
 import AppNavbar from '../components/AppNavbar';
 import {EmployeeFeatures} from "../components/EmployeeFeatures";
 import {EmployeeEditor} from "../components/EmployeeEditor";
+import ImageUploader from "../components/ImageUploader";
 
 interface IEmployeeEditProps extends WithRouterProps {}
 interface IEmployeeEditState {}
@@ -16,6 +17,7 @@ class EmployeeEdit extends Component<IEmployeeEditProps, IEmployeeEditState> {
 
         const title = employeeId ? 'Редактировать пользователя' : 'Добавить пользователя';
         const featurePanel = <EmployeeFeatures employeeId={employeeId}/>;
+        const imageComponent=<ImageUploader employeeId={employeeId}/>;
 
         const navigate = this.props.navigate;
 
@@ -27,6 +29,7 @@ class EmployeeEdit extends Component<IEmployeeEditProps, IEmployeeEditState> {
                     <EmployeeEditor employeeId={employeeId} title={title}
                                      navigate = {navigate}
                                      childContent={featurePanel}
+                                     imageContent={imageComponent}
                     />
                 </Container>
             </div>

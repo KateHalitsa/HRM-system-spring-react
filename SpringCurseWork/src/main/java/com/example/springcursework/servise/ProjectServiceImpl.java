@@ -46,4 +46,8 @@ public class ProjectServiceImpl implements ProjectService
     public List<ProjectEfficiency> getProjectEfficiency() {
         return projectRepository.findProjectEfficiency();
     }
+    @Override
+    public ProjectEfficiency getProjectEfficiencyById(int projectId) {
+        return projectRepository.findProjectEfficiencyById(projectId);
+    }
 }

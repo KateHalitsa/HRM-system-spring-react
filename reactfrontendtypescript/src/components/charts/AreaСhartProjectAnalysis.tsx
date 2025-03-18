@@ -50,6 +50,10 @@ interface IAnalysisState {
 
 
 const AreaChartProjectAnalysis: FC<IAreaChartAnalysisProps> = ({ labels, values })=> {
+    // Установка одинакового цвета для всех столбцов, кроме второго
+    const backgroundColors = values.map((_, index) => {
+        return index === 1 ? 'rgba(255, 99, 132, 0.6)' : 'rgba(75, 192, 192, 0.6)'; // Второй столбец красный
+    });
     const data = {
         labels: labels,
         datasets: [
@@ -57,7 +61,7 @@ const AreaChartProjectAnalysis: FC<IAreaChartAnalysisProps> = ({ labels, values 
                 label: 'Мои данные',
                 data: values,
                 borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+               backgroundColor:backgroundColors, //'rgba(75, 192, 192, 0.2)',
                 fill: true,
                 tension: 0.4,
             },

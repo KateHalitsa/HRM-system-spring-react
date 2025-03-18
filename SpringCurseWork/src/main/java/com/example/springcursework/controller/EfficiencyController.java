@@ -1,5 +1,6 @@
 package com.example.springcursework.controller;
 
+import com.example.springcursework.model.EmployeeEfficiencyCalcResult;
 import com.example.springcursework.model.EmployeeWorkplace;
 import com.example.springcursework.payload.request.EmployeeEfficiencyForProjectRequest;
 import com.example.springcursework.payload.request.EmployeeEfficiencyTableCalcRequest;
@@ -45,7 +46,7 @@ public class EfficiencyController {
     @PostMapping(value = "/calc")
     @ResponseStatus(value = HttpStatus.OK)
     @ExceptionHandler(value = { Exception.class })
-    public List<EmployeeWorkplace> calc(@RequestBody EmployeeEfficiencyTableCalcRequest table) {
+    public EmployeeEfficiencyCalcResult calc(@RequestBody EmployeeEfficiencyTableCalcRequest table) {
 
         try {
             HungarianAlgorithm hungarianAlgorithm = new HungarianAlgorithm();

@@ -54,6 +54,7 @@ export const auth = {
         }
         return connectedUserInfo;
     },
+    
     setUserInfo(userInfo: UserInfoResponse){
         connectedUserInfo = userInfo;
         let userInfoStr = JSON.stringify(userInfo);

@@ -1,5 +1,6 @@
 package com.example.springcursework.servise;
 
+import com.example.springcursework.model.EmployeeEfficiencyCalcResult;
 import com.example.springcursework.model.EmployeeEfficiencyCell;
 import com.example.springcursework.model.EmployeeWorkplace;
 import com.example.springcursework.payload.request.EmployeeEfficiencyTableCalcRequest;
@@ -92,7 +93,7 @@ public class HungarianAlgorithm {
         }
     }
 
-    public List<EmployeeWorkplace> calculate(EmployeeEfficiencyTableCalcRequest efficiencyTable) throws Exception {
+    public EmployeeEfficiencyCalcResult calculate(EmployeeEfficiencyTableCalcRequest efficiencyTable) throws Exception {
 
 
         // ... чтение a ...
@@ -173,7 +174,24 @@ public class HungarianAlgorithm {
             res.add(employeeWorkplace);
         }
 
-        return res;
+        int totalEfficiency = 0; // Инициализация переменной для общей эффективности
+
+        for (int i = 0; i < n; ++i) {
+            int employeeId = employeeList.get(i);
+            int workplaceId = workplaceList.get(xy[i]);
+
+            EmployeeWorkplace employeeWorkplace = new EmployeeWorkplace();
+            employeeWorkplace.setEmployeeId(employeeId);
+            employeeWorkplace.setWorkplaceId(workplaceId);
+
+
+
+            // Добавление значения эффективности
+            totalEfficiency += a[i][xy[i]];
+        }
+
+        return new EmployeeEfficiencyCalcResult(res, totalEfficiency);
+        //return res;
 
 /*
         int ans = 0;

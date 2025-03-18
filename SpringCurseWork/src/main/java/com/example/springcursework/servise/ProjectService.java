@@ -16,4 +16,5 @@ public interface ProjectService {
 
     Project updateProject(int id, Project projectVO);
     List<ProjectEfficiency> getProjectEfficiency();
+    ProjectEfficiency getProjectEfficiencyById(int projectId);
 }

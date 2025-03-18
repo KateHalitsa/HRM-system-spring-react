@@ -14,6 +14,7 @@ import {Project} from "./Project.model";
 import {EmployeeWorkplace, EmployeeWorkplaceView} from "./EmployeeWorkplace.model";
 import {WorkplaceStatistic} from "./WorkplaceStatistic";
 import {ProjectStatistic} from "./ProjectStatistic";
+import {EmployeeEfficiencyCalcResult} from "./EmployeeEfficiencyCalcResult";
 
 const token = "";
 
@@ -50,7 +51,7 @@ axios.interceptors.response.use(
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const request = {
-    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+    get: <T>(url: string, config?: any) => axios.get<T>(url,config).then(responseBody),
     post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
     put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
@@ -96,7 +97,7 @@ const employees = {
 const employeeEfficiency = {
     load: (projectId: number, calcOnDate: Date)=> request.post<EmployeeEfficiencyTable>('/efficiency/load', {projectId, calcOnDate}),
     calc: (cells: EmployeeEfficiencyCell[], employeeIds: number[], workplaceIds: number[])=>
-            request.post<EmployeeWorkplace[]>('/efficiency/calc', {cells, employeeIds, workplaceIds}),
+            request.post<EmployeeEfficiencyCalcResult>('/efficiency/calc', {cells, employeeIds, workplaceIds}),
     apply: (newContracts: EmployeeWorkplace[])=> request.post<EmployeeWorkplace[]>('/efficiency/apply', newContracts)
 }
 const positions = {
@@ -143,7 +144,13 @@ const analysis = {
 };
 const projects_analysis = {
     list: () => request.get<ProjectStatistic[]>('/analysis/project_efficiency'),
+    getProjectEfficiency:(id: number)=>request.get<ProjectStatistic>(`/analysis/project_efficiency/${id}`),
 };
+const image={
+    create: (data: FormData) => request.post<EmployeeWorkplace>('/image/upload', data),
+    createById: (id: number,data: FormData) => request.post<EmployeeWorkplace>(`/image/employee/${id}/image/upload`, data),
+    getById: (id: number) => request.get<Blob>(`/image/employee/${id}/image`, { responseType: 'blob' }),
+}
 const accessServerAPI = {
     loginUtils,
     lookup,
@@ -156,7 +163,8 @@ const accessServerAPI = {
     projects,
     employeeWorkplaces,
     analysis,
-    projects_analysis
+    projects_analysis,
+    image
 }
 
 export default accessServerAPI;

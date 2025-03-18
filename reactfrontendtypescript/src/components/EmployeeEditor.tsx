@@ -5,12 +5,14 @@ import accessServerAPI from "../model/AccessServerAPI";
 import {CloseButton, ErrorPanel, InputWithLabel, SaveButton} from "../components/CustomControls";
 import {useNavigate} from "react-router-dom";
 import {dateToISOStr} from "./DateUtils";
+import ImageUploader from "./ImageUploader";
 
 export interface IEmployeeEditorProps {
     employeeId: number;
     title: string;
     navigate?: ReturnType<typeof useNavigate>;
     childContent?: JSX.Element;
+    imageContent?: JSX.Element;
 }
 
 interface IEmployeeEditorState {
@@ -138,7 +140,9 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
                 <Card color="light"  className="mt-2 p-0">
                     <CardHeader className='py-1'>{this.props.title}</CardHeader>
                     <CardBody className="m-0 pb-0">
-                        <Form>
+                        <Form style={{display: 'flex'}}>
+                            {this.props.imageContent}
+                            <div style={{ minWidth: '50%', marginRight: '50px' }}>
                             <InputWithLabel label="Имя" id="firstName" value={employee.firstName} onChange={this.onChangeFirstName}/>
                             <InputWithLabel label="Фамилия" id="lastName" value={employee.lastName} onChange={this.onChangeLastName}/>
                             <InputWithLabel label="Дата рождения" id="birthday" value={dateToISOStr(employee.birthday)}
@@ -148,7 +152,7 @@ export class EmployeeEditor extends Component<IEmployeeEditorProps, IEmployeeEdi
                                 <SaveButton onClick={() => this.onSave(true)} enabled={this.state.dataChanged} />
                                 <SaveButton onClick={() => this.onSave(false)} enabled={this.state.dataChanged} caption="Применить" />
                                 <CloseButton to="/employees" dataChanged={this.state.dataChanged}/>
-                            </FormGroup>
+                            </FormGroup></div>
                         </Form>
                     </CardBody>
                     {this.props.childContent}

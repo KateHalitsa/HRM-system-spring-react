@@ -7,11 +7,19 @@ import {ErrorPanel, InputWithLabel} from "../components/CustomControls";
 import {EmployeeWorkplace} from "../model/EmployeeWorkplace.model";
 import {LookupSelector} from "../components/LookupSelector";
 import {dateToISOStr} from "../components/DateUtils";
+import AreaChartProjectAnalysis from "../components/charts/AreaСhartProjectAnalysis";
+import {EmployeeEfficiencyCalcResult} from "../model/EmployeeEfficiencyCalcResult";
+import {ProjectStatistic} from "../model/ProjectStatistic";
+import StackBarChart from "../components/charts/StackBarChart";
 
 interface ISelectedId {
     [id: number]: boolean;
 }
 
+interface IProjectAnalysisState {
+    projectsLabels: string[];
+    projectsValues: number[];
+}
 interface RecruitmentForWorkplaceState {
     selectedProjectId: number;
     selectedProjectDate: Date;
@@ -20,14 +28,25 @@ interface RecruitmentForWorkplaceState {
     selectedEmployeeList: ISelectedId;
     selectedWorkplaceList: ISelectedId;
     errorMessage: string;
+    employeeEfficiencyCalcResult: EmployeeEfficiencyCalcResult;
     employeeWorkplaceList: EmployeeWorkplace[];
     contractFromDate: Date;
     contractToDate: Date;
     contractErrorMessage: string;
+    projectsLabels: string[];
+    projectsValues: number[];
+    totalEfficiency:number;
+    projectStatisticList: ProjectStatistic[];
+    projectStatistic: ProjectStatistic;
 }
 
-class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState> {
+class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState,IProjectAnalysisState> {
+   /*state: IProjectAnalysisState = {
 
+        projectsLabels: [],
+        projectsValues: [],
+    };
+*/
     constructor(props: {}) {
         super(props);
         this.initState();
@@ -53,16 +72,47 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             selectedEmployeeList: {},
             selectedWorkplaceList: {},
             errorMessage: "",
+            employeeEfficiencyCalcResult: new EmployeeEfficiencyCalcResult(),
             employeeWorkplaceList: [],
             contractFromDate: new Date(),
             contractToDate: new Date(),
-            contractErrorMessage: ""
+            contractErrorMessage: "",
+            projectsLabels: [],
+            projectsValues: [],
+            totalEfficiency:0,
+            projectStatisticList:[],
+            projectStatistic: new ProjectStatistic,
         };
         this.setState(this.state);
     }
 
 
     componentDidMount() {
+
+        accessServerAPI.projects_analysis.list().then(data => {
+
+            const projectsLabels= data.map(item => item.projectName);
+            const projectsValues= data.map(item => item.totalEffectiveness);
+            this.setState({ projectsLabels, projectsValues });
+        }).catch(error => {
+            console.error("Ошибка при загрузке данных:", error);
+        });
+        accessServerAPI.projects_analysis.list().then(data => {
+
+            const projectStatisticList= data;
+
+            this.setState({ projectStatisticList });
+        }).catch(error => {
+            console.error("Ошибка при загрузке данных:", error);
+        });
+       /**/ accessServerAPI.projects_analysis.getProjectEfficiency(this.state.selectedProjectId).then(data => {
+
+            const projectStatistic= data;
+
+            this.setState({ projectStatistic });
+        }).catch(error => {
+            console.error("Ошибка при загрузке данных:", error);
+        });
     }
 
     loadEmployeeEfficiencyTable(){
@@ -221,16 +271,39 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             }
         }
 
-        accessServerAPI.employeeEfficiency.calc(efficiencyTable.cells, employeeIds, workplaceIds).then(employeeWorkplaceList =>
-            {
+        accessServerAPI.employeeEfficiency.calc(efficiencyTable.cells, employeeIds, workplaceIds).then(employeeEfficiencyCalcResult =>
+            { /* if (!employeeEfficiencyCalcResult || !employeeEfficiencyCalcResult.employeeWorkplaceList) {
+                console.error("Неверный ответ от сервера:", employeeEfficiencyCalcResult);
+                return;
+            }*/
+                console.log("Ответ от сервера:", employeeEfficiencyCalcResult); // Логируем ответ для проверки
+                 let employeeWorkplaceList=employeeEfficiencyCalcResult.employeeWorkplaces ;
+                console.log("Список сотрудников на рабочих местах:", employeeWorkplaceList); // Логируем для проверки
+                if ( !Array.isArray(employeeEfficiencyCalcResult.employeeWorkplaces )) {
+                console.error("Неверный ответ от сервера:", employeeEfficiencyCalcResult);
+                return; // Выход из функции, если ответ неверный
+            }
                 const contractFromDate = this.state.selectedProjectDate;
-
+                let totalEfficiency= employeeEfficiencyCalcResult.totalEfficiency;
                 let contractToDate = new Date(contractFromDate);
                 contractToDate.setFullYear(contractToDate.getFullYear() + 1);
 
-                this.setState({...this.state, employeeWorkplaceList, contractFromDate, contractToDate});
+                this.setState({...this.state,employeeEfficiencyCalcResult, employeeWorkplaceList, contractFromDate, contractToDate,totalEfficiency});
+
             }
-        );
+
+        ).catch(error => {
+            console.error("Ошибка при вызове API:", error);
+        });
+
+        accessServerAPI.projects_analysis.getProjectEfficiency(this.state.selectedProjectId).then(data => {
+
+            const projectStatistic= data;
+
+            this.setState({ projectStatistic });
+        }).catch(error => {
+            console.error("Ошибка при загрузке данных:", error);
+        });
     }
 
     private validateContactParams(): Boolean
@@ -386,13 +459,25 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
             <></>
         );
 
+
+        const { projectsValues,projectsLabels } = this.state;
+        const { projectStatisticList } = this.state;
+
         const employeeWorkplaceListPresentation = employeeWorkplaceList.length > 0?(
+
+
 
             <Card color="light" className="m-3 mt-0">
                 <CardHeader className='py-1 m-0 navbar' >
                     <b>Результат расчета назначений</b>
                 </CardHeader>
-                <CardBody className="m-0 text-start">
+                <CardBody className="m-0 text-start" style={{display: 'flex'}} >
+                    <div  style={{  minWidth: '40%', marginRight: '20px'}}>
+                        <StackBarChart projectsData={projectStatisticList} newValues={this.state.projectStatistic} totalEffectiveness={this.state.totalEfficiency}/>
+
+                    </div>
+                    <div style={{ minWidth: '60%', marginRight: '20px', display: 'inline'}} >
+                       <span style={{color: 'rgb(208,40,74)'}}>Дополнительная эффективность:</span>{this.state.totalEfficiency}
                     <Table striped hover bordered size="sm" className="mb-2">
                         <thead>
                         <tr>
@@ -419,6 +504,7 @@ class RecruitmentForWorkplace extends Component<{}, RecruitmentForWorkplaceState
                                 onClick={this.onApplyRecruitmentClick}>
                             Применить назначения
                         </Button>
+                    </div>
                     </div>
 
                 </CardBody>
