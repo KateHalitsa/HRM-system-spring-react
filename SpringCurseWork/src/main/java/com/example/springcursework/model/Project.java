@@ -2,6 +2,8 @@ package com.example.springcursework.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "project")
 @NamedNativeQuery(
@@ -55,7 +57,10 @@ public class Project {
     @Column(name = "name")
     private String name;
 
-
+    @Column(name = "date_start")
+    private Date dateStart;
+    @Column(name = "date_finish")
+    private Date dateFinish;
     public int getId() {
         return id;
     }
@@ -75,4 +80,19 @@ public class Project {
         return "Project [id=" + id + ", name=" + name +"]";
     }
 
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public Date getDateFinish() {
+        return dateFinish;
+    }
+
+    public void setDateFinish(Date dateFinish) {
+        this.dateFinish = dateFinish;
+    }
 }

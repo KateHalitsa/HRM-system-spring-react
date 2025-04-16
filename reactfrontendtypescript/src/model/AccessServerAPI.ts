@@ -15,6 +15,7 @@ import {EmployeeWorkplace, EmployeeWorkplaceView} from "./EmployeeWorkplace.mode
 import {WorkplaceStatistic} from "./WorkplaceStatistic";
 import {ProjectStatistic} from "./ProjectStatistic";
 import {EmployeeEfficiencyCalcResult} from "./EmployeeEfficiencyCalcResult";
+import {ProjectProgress} from "./ProjectProgress";
 
 const token = "";
 
@@ -130,6 +131,13 @@ const projects = {
     update: (data: Project) => request.put<Project>(`/project/${data.id}`, data),
     delete: (id: number) => request.delete(`/project/${id}`),
 };
+const projectProgress = {
+    list: () => request.get<ProjectProgress[]>('/project_progress'),
+    details: (id: number) => request.get<ProjectProgress[]>(`/project_progress/project/${id}`),
+    create: (data: ProjectProgress[]) => request.post<ProjectProgress[]>('/project_progress', data),
+    update: (id: number, data: ProjectProgress[]) => request.put<ProjectProgress[]>(`/project_progress/${data[0].id}`, data),
+    delete: (id: number) => request.delete(`/project_progress/${id}`),
+};
 const employeeWorkplaces = {
     list: () => request.get<EmployeeWorkplace[]>('/employee_workplace'),
     view: () => request.get<EmployeeWorkplaceView[]>('/employee_workplace/view'),
@@ -164,7 +172,8 @@ const accessServerAPI = {
     employeeWorkplaces,
     analysis,
     projects_analysis,
-    image
+    image,
+    projectProgress
 }
 
 export default accessServerAPI;
