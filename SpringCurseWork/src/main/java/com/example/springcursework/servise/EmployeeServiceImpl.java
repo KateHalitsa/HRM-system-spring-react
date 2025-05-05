@@ -86,4 +86,8 @@ public class EmployeeServiceImpl implements EmployeeService
     public List<Employee> freeEmployeesOnDate(LocalDateTime calcOnDate){
         return employeeRepository.freeEmployeesOnDate(calcOnDate);
     }
+    @Override
+    public List<Employee> notFreeEmployeesOnDate(LocalDateTime calcOnDate){
+        return employeeRepository.notFreeEmployeesOnDate(calcOnDate);
+    }
 }

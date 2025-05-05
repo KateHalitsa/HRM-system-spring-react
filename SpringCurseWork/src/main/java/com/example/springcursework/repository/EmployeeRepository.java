@@ -12,5 +12,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = "SELECT e.* FROM  employee e WHERE" +
             " NOT EXISTS (SELECT * FROM employee_workplace ew WHERE ew.employee_id = e.id AND ?1 BETWEEN ew.from_date AND ew.to_date)", nativeQuery = true)
     List<Employee> freeEmployeesOnDate(LocalDateTime calcOnDate);
-
+    @Query(value = "SELECT e.* FROM  employee e WHERE" +
+            "  EXISTS (SELECT * FROM employee_workplace ew WHERE ew.employee_id = e.id AND ?1 BETWEEN ew.from_date AND ew.to_date)", nativeQuery = true)
+    List<Employee> notFreeEmployeesOnDate(LocalDateTime calcOnDate);
 }

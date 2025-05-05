@@ -42,7 +42,17 @@ public class EfficiencyController {
         );
         return res;
     }
-
+    @PostMapping(value = "/load_exist")
+    @ResponseStatus(value = HttpStatus.OK)
+    public EmployeeEfficiencyTableResponse loadExist(@RequestBody EmployeeEfficiencyForProjectRequest findVO) {
+        int projectId = findVO.getProjectId();
+        LocalDateTime calcOnDate = findVO.getCalcOnDate();
+        return new EmployeeEfficiencyTableResponse(
+                employeeEfficiencyService.loadExistEmployeeEfficiency(projectId, calcOnDate),
+                employeeService.notFreeEmployeesOnDate(calcOnDate),
+                workplaceService.projectVacanciesFilledOnDate(projectId, calcOnDate)
+        );
+    }
     @PostMapping(value = "/calc")
     @ResponseStatus(value = HttpStatus.OK)
     @ExceptionHandler(value = { Exception.class })

@@ -14,6 +14,9 @@ public interface WorkplaceRepository extends JpaRepository<Workplace, Integer> {
     @Query(value = "SELECT w.* FROM  workplace w WHERE  w.project_id=?1 " +
             "and NOT EXISTS (SELECT * FROM employee_workplace ew WHERE ew.workplace_id = w.id AND ?2 BETWEEN ew.from_date AND ew.to_date)", nativeQuery = true)
     List<Workplace> projectVacanciesOnDate(int projectId, LocalDateTime calcOnDate);
+    @Query(value = "SELECT w.* FROM  workplace w WHERE  w.project_id=?1 " +
+            "and EXISTS (SELECT * FROM employee_workplace ew WHERE ew.workplace_id = w.id AND ?2 BETWEEN ew.from_date AND ew.to_date)", nativeQuery = true)
+    List<Workplace> projectVacanciesFilledOnDate(int projectId, LocalDateTime calcOnDate);
     @Query("SELECT COUNT(w) FROM Workplace w WHERE w.employeePositionId = :positionId")
     int countByEmployeePositionId( int positionId);
 

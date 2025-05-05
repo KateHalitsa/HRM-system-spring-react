@@ -83,5 +83,7 @@ public class WorkplaceServiceImpl implements WorkplaceService{
     public List<Workplace> projectVacanciesOnDate(int projectId, LocalDateTime calcOnDate){
         return workplaceRepository.projectVacanciesOnDate(projectId, calcOnDate);
     }
-
+    public List<Workplace> projectVacanciesFilledOnDate(int projectId, LocalDateTime calcOnDate){
+        return workplaceRepository.projectVacanciesFilledOnDate(projectId, calcOnDate);
+    }
 }

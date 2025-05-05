@@ -23,5 +23,5 @@ public interface WorkplaceService {
     List<FeatureForWorkplace> updateFeaturesByWorkplaceId(int workplaceId, List<FeatureForWorkplace> features);
 
     List<Workplace> projectVacanciesOnDate(int projectId, LocalDateTime calcOnDate);
-
+    List<Workplace> projectVacanciesFilledOnDate(int projectId, LocalDateTime calcOnDate);
 }

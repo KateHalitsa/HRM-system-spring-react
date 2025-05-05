@@ -21,5 +21,10 @@ public class EmployeeEfficiencyServiceImpl implements EmployeeEfficiencyService
         List<EmployeeEfficiencyCell> res = employeeEfficiencyRepository.loadEmployeeEfficiency(projectId, calcOnDate);
         return res;
     }
+    @Override
+    public List<EmployeeEfficiencyCell> loadExistEmployeeEfficiency(int projectId, LocalDateTime calcOnDate){
+        List<EmployeeEfficiencyCell> res = employeeEfficiencyRepository.loadExistEmployeeEfficiency(projectId, calcOnDate);
+        return res;
+    }
 
 }

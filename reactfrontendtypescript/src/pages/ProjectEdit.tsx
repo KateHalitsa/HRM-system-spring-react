@@ -110,7 +110,8 @@ class ProjectEdit extends Component<ProjectEditProps, ProjectEditState> {
                 progress.date = monthDate; // начальное значение для даты
                // progress.date = new Date(monthDate.getFullYear(), monthDate.getMonth(), monthDate.getDate()); // Корректное создание даты
                 progress.projectId = this.state.project.id; // используйте id проекта
-                progress.planned_percentage = plannedPercentage;
+                //progress.planned_percentage = plannedPercentage;
+                progress.planned_percentage = (i / totalMonths) * 100;
                 progress.execution_percentage = 0; // фактический процент на момент расчета
 
                 progressList.push(progress);
@@ -152,16 +153,18 @@ class ProjectEdit extends Component<ProjectEditProps, ProjectEditState> {
                                     clear={true}
                                     //locale="ru"
                                 />
+
                             </FormGroup>
+                            <Button onClick={this.calculateProgress} >Рассчитать прогресс</Button>
                             <FormGroup className="text-end">
                                 <SaveButton onClick={() => this.onSave(true)} enabled={this.state.dataChanged} />
                                 <SaveButton onClick={() => this.onSave(false)} enabled={this.state.dataChanged} caption="Применить" />
-                                <Button onClick={this.calculateProgress} >Рассчитать прогресс</Button>
+
                                 <CloseButton to="/project" dataChanged={this.state.dataChanged}/>
                             </FormGroup>
                         </Form>
                     </CardBody>
-                    <ProjectProgressEditor projectId={project.id} calculatedProgress={this.state.calculatedProgress}/>
+                    <ProjectProgressEditor projectId={project.id} calculatedProgress={this.state.calculatedProgress} startDate={this.state.project.dateStart} finishDate={this.state.project.dateFinish}/>
                 </Card>
             </Container>
         </div>)

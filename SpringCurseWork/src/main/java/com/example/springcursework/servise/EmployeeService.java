@@ -22,4 +22,5 @@ public interface EmployeeService {
     List<FeatureForEmployee> updateFeaturesByEmployeeId(int employeeId, List<FeatureForEmployee> features);
 
     List<Employee> freeEmployeesOnDate(LocalDateTime calcOnDate);
+    List<Employee> notFreeEmployeesOnDate(LocalDateTime calcOnDate);
 }

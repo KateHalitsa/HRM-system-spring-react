@@ -97,6 +97,7 @@ const employees = {
 
 const employeeEfficiency = {
     load: (projectId: number, calcOnDate: Date)=> request.post<EmployeeEfficiencyTable>('/efficiency/load', {projectId, calcOnDate}),
+    loadExist: (projectId: number, calcOnDate: Date)=> request.post<EmployeeEfficiencyTable>('/efficiency/load_exist', {projectId, calcOnDate}),
     calc: (cells: EmployeeEfficiencyCell[], employeeIds: number[], workplaceIds: number[])=>
             request.post<EmployeeEfficiencyCalcResult>('/efficiency/calc', {cells, employeeIds, workplaceIds}),
     apply: (newContracts: EmployeeWorkplace[])=> request.post<EmployeeWorkplace[]>('/efficiency/apply', newContracts)

@@ -3,27 +3,36 @@ import '../App.css';
 import {Card, CardBody, CardHeader, Input, Label, Table} from 'reactstrap';
 
 import accessServerAPI from "../model/AccessServerAPI";
-import {SaveButton} from "./CustomControls";
+import {ErrorPanel, SaveButton} from "./CustomControls";
 import {ProjectProgress} from "../model/ProjectProgress";
 import parseDate from "@n3/react-date-picker/ts/defaults/parseDate";
 import DatePicker from "@n3/react-date-picker";
 import ProgressChart from "./charts/ProgressChart";
+import {EmployeeEfficiencyTable} from "../model/EmployeeEfficiencyTable.model";
+import EffectivityBarChart from "./charts/EffectivityChart";
+
+
+
 
 interface IProjectProgressProps  {
     projectId: number;
+    startDate: Date|null;
+    finishDate: Date|null;
     calculatedProgress:  ProjectProgress[];
 }
 
 interface IProjectListState {
     progress: ProjectProgress[];
-    progressChanged: boolean
+    progressChanged: boolean,
+    efficiencyTable: EmployeeEfficiencyTable,
+    chartData: {         labels: string[];         values: number[];     };
 }
 
 export class ProjectProgressEditor extends Component<IProjectProgressProps, IProjectListState> {
 
     constructor(props: IProjectProgressProps) {
         super(props);
-        this.state = { progress: [], progressChanged: false};
+        this.state = { progress: [], progressChanged: false,efficiencyTable:  new EmployeeEfficiencyTable(), chartData: { labels: [],values: []}};
 
 
         this.loadProgress = this.loadProgress.bind(this);
@@ -34,6 +43,7 @@ export class ProjectProgressEditor extends Component<IProjectProgressProps, IPro
 
     componentDidMount() {
         this.loadProgress(this.props.projectId);
+
     }
 
     loadProgress(projectId: number){
@@ -49,7 +59,9 @@ export class ProjectProgressEditor extends Component<IProjectProgressProps, IPro
                     date: item.date ? new Date(item.date) : null, // Преобразуйте строку в Date
                 }));
                 this.setState({ progress: updatedProgress });
+                this.loadEmployeeEfficiencyTable();
             }
+
             /* if (projectId > 0) {
             accessServerAPI.projectProgress.details(projectId).then(foundProgress => {
                 const updatedProgress = foundProgress.map(item => {
@@ -181,14 +193,70 @@ const progress=this.state.progress ;
        // this.loadProgress(this.props.projectId);
     }
 
+    loadEmployeeEfficiencyTable() {
+        const  projectId  = this.props.projectId;
+        const currentDate = new Date();
+        accessServerAPI.employeeWorkplaces.list().then(employeeWorkplaces => {
+            accessServerAPI.employeeEfficiency.loadExist(projectId, currentDate).then(foundEfficiencyTable => {
+                let efficiencyData: { [key: string]: number } = {}; // Объект для хранения данных по эффективности по датам
+
+                // Проход по всем ячейкам эффективности
+                for (const cell of foundEfficiencyTable.cells) {
+                    // Найдите соответствующее рабочее место
+                    const workplace = employeeWorkplaces.find(w => w.employeeId === cell.employeeId);
+                    if (workplace) {
+                        const fromDate = new Date(workplace.fromDate);
+                        const toDate = new Date(workplace.toDate);
+
+                        // Заполните даты
+                        for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
+                            const dateKey = date.toISOString().split('T')[0]; // Получите дату в формате YYYY-MM-DD
+                            if (!efficiencyData[dateKey]) {
+                                efficiencyData[dateKey] = 0; // Инициализация, если ещё нет
+                            }
+                            efficiencyData[dateKey] += cell.efficiency; // Агрегация эффективности
+                        }
+                    }
+                }
+
+                // Подготовьте данные для графика
+                const labels: string[] = Object.keys(efficiencyData); // Даты
+                const values = Object.values(efficiencyData); // Соответствующие значения эффективности
+                // Сортировка меток по датам
+                labels.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+                this.setState({
+                    efficiencyTable: foundEfficiencyTable,
+                    chartData: { labels, values }, // Сохраните данные графика в состоянии
+                });
+            });
+        });
+
+
+
+}
     render() {
         const projectId = this.props.projectId;
-        if (projectId <= 0){
+        const startDate= this.props.startDate;
+        const finishDate=this.props.finishDate;
+        const { chartData } = this.state;
+        if (projectId <= 0 && startDate!=null && finishDate!=null){
             return <></>;
         }
-
+        if (projectId == 0 && startDate==null || finishDate==null){
+            return <ErrorPanel error={"Заполните поля 'Дата начала' и 'Дата окончание'"}/>;
+        }
         const { progress } = this.state;
+        if (progress.length==0){
+            return (<Card color="light" className="m-3 mt-0" >
+                <CardHeader className='py-1 m-0 navbar'>
+                    <div className="me-auto">Прогресс:</div>
+                    <SaveButton onClick={this.saveProgress} enabled={this.state.progressChanged} />
+                </CardHeader>
 
+                <CardBody className="m-0 text-start" ><p style={{ textAlign: 'center' }}>Нет показателей прогресса</p></CardBody>
+            </Card>);
+        }
         let prevProjectPositionName = "Q123XYZ";
         const startNewSection = (positionName: string) => {
             if (positionName !== prevProjectPositionName){
@@ -258,7 +326,8 @@ const progress=this.state.progress ;
                         <div className="chart-container" style={{ flex: '1',overflow: 'hidden' }}>
                             <div style={{ width: '100%',height: '400px'}}> {/* Добавляем обертку */}
                                 <ProgressChart progressData={progress} />
-                            </div>
+
+                            </div><EffectivityBarChart chartData={chartData} />
                         </div>
                     </div></CardBody>
             </Card>
