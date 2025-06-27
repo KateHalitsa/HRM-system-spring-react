@@ -11,7 +11,7 @@ public class EmployeeEfficiencyCalcResult {
         this.totalEfficiency = totalEfficiency;
     }
 
-    // Геттеры
+
     public List<EmployeeWorkplace> getEmployeeWorkplaces() {
         return employeeWorkplaces;
     }
